@@ -35,13 +35,7 @@ _FONT_HEIGHT = const(8)   # altezza carattere in pixel
 
 
 class MenuItem:
-    """Base astratta per ogni nodo del menu.
 
-    Tutti i componenti del menu ereditano da questa classe.
-    Memorizza gli attributi comuni: ``name``, riferimento ``parent``,
-    handle ``display`` e flag ``visible``.
-    Le sottoclassi devono implementare ``draw()`` e ``click()``.
-    """
 
     __slots__ = ("name", "_parent", "_display", "_visible")
 
@@ -80,22 +74,6 @@ class MenuItem:
 
 
 class MenuView(MenuItem):
-    """Base astratta per viste full-screen interattive.
-
-    Una ``MenuView`` occupa l'intero display OLED e risponde alla navigazione
-    direzionale (up/down/right/left) e all'azione di conferma (select/click).
-    Le sottoclassi devono implementare almeno ``draw()``, ``select()`` e ``reset()``.
-
-    Args:
-        display:     Istanza SSD1306.
-        name:        Etichetta mostrata nell'header del menu.
-        parent:      MenuItem padre (usato per la back-navigation).
-        per_page:    Numero massimo di voci visibili per pagina.
-        line_height: Altezza in pixel riservata alla riga di intestazione.
-        font_width:  Larghezza in pixel di un carattere (font 8px di default).
-        font_height: Altezza in pixel di un carattere (font 8px di default).
-        visible:     Bool o callable che restituisce bool; nasconde la voce se False.
-    """
 
     __slots__ = ("per_page", "line_height", "font_width", "font_height")
 
@@ -146,17 +124,6 @@ class MenuView(MenuItem):
 
 
 class MenuCallback(MenuItem):
-    """Base per le voci di menu che portano un callback azione.
-
-    Estende ``MenuItem`` con un ``callback`` callable (eseguito all'attivazione),
-    una stringa ``decorator`` mostrata a destra della riga e un flag
-    ``is_active`` che controlla l'evidenziazione della selezione.
-
-    Il callback può essere:
-    - un callable semplice:    ``fn``
-    - una tupla ``(fn, arg)`` o ``(fn, (arg1, arg2, ...))`` per applicazione parziale.
-    """
-
     __slots__ = ("_callback", "_decorator", "_is_active")
 
     def __init__(
@@ -243,13 +210,6 @@ class MenuCallback(MenuItem):
 
 
 class MenuRow(MenuCallback):
-    """Riga singola disegnabile all'interno di una ``MenuList``.
-
-    Disegna ``name`` a sinistra e la stringa ``decorator`` a destra.
-    La riga è invertita (sfondo bianco, testo nero) quando ``is_active`` è True.
-    Le sottoclassi sovrascrivono ``upd_decorator()`` per aggiornare il label
-    destro prima di ogni render.
-    """
 
     __slots__ = ()  # nessun attributo aggiuntivo rispetto a MenuCallback
 
@@ -301,14 +261,6 @@ class MenuRow(MenuCallback):
 
 
 class MenuList(MenuView):
-    """Lista scorrevole di voci di menu renderizzata sull'OLED.
-
-    Le voci vengono aggiunte con ``add()``.  I metodi ``up()``/``down()``
-    fanno scorrere la selezione; ``select()`` restituisce la voce evidenziata
-    affinché possa elaborare un ``click()``.  La visibilità è memorizzata
-    nella cache: la cache viene invalidata ad ogni ``add()`` per permettere
-    visibilità dinamica (show/hide).
-    """
 
     __slots__ = ("_items", "_visible_items", "selected", "_visible_cache_valid")
 
@@ -458,22 +410,6 @@ class MenuList(MenuView):
 
 
 class ToggleItem(MenuCallback):
-    """Interruttore on/off booleano all'interno di una ``MenuList``.
-
-    Lo stato corrente viene letto tramite ``state_callback`` (callable che restituisce bool)
-    e mostrato come uno dei due label in ``toggleValue``.
-    Fare click chiama ``change_callback`` per invertire il valore, poi aggiorna
-    il decorator e ridisegna la lista padre.
-
-    Args:
-        name:            Label mostrato a sinistra della riga.
-        state_callback:  Callable che restituisce bool — stato corrente del toggle.
-        change_callback: Callable eseguito quando l'utente fa click sulla voce.
-        toggleValue:     Tupla di due stringhe: (label_quando_true, label_quando_false).
-        parent:          ``MenuList`` padre (di solito impostato automaticamente da ``add()``).
-        visible:         Bool o callable; nasconde la voce se False.
-        display:         Istanza SSD1306.
-    """
 
     __slots__ = ("state_callback", "toggleValue")
 
@@ -516,12 +452,6 @@ class ToggleItem(MenuCallback):
 
 
 class BackItem(MenuCallback):
-    """Voce di navigazione che riporta l'utente al menu padre.
-
-    Al click azzera l'indice di selezione della lista corrente,
-    ridisegna la lista padre e la restituisce affinché il controller
-    ``Menu`` aggiorni ``current_screen``.
-    """
 
     __slots__ = ()  # nessun attributo aggiuntivo rispetto a MenuCallback
 
@@ -536,14 +466,6 @@ class BackItem(MenuCallback):
 
 
 class ListItem(MenuRow):
-    """Proxy ``MenuRow`` che avvolge qualsiasi ``MenuItem`` dentro una ``MenuList``.
-
-    ``MenuList.add()`` avvolge automaticamente ogni voce in un ``ListItem``
-    in modo che la logica di rendering sia uniforme indipendentemente dal tipo
-    sottostante.  Delegare le query di visibilità e decorator all'oggetto
-    avvolto garantisce che lo stato dinamico (es. label on/off di un ToggleItem)
-    sia sempre aggiornato.
-    """
 
     __slots__ = ("obj", "obj_decorator", "visible_value")
 
@@ -587,14 +509,6 @@ class ListItem(MenuRow):
 
 
 class EnumItem(MenuRow):
-    """Singola opzione selezionabile all'interno di una lista ``MenuEnum``.
-
-    Il ``callback`` è una tupla ``(setter_fn, index)`` dove *index* è la
-    posizione di questa opzione nell'enum.  Al click il setter viene chiamato,
-    ``selected_item`` e il decorator del ``MenuEnum`` padre vengono aggiornati,
-    e il display ritorna alla schermata padre.
-    """
-
     __slots__ = ()  # nessun attributo aggiuntivo rispetto a MenuRow
 
     def __init__(
@@ -613,13 +527,6 @@ class EnumItem(MenuRow):
 
 
 class ConfirmItem(MenuRow):
-    """Riga di scelta all'interno di un dialogo ``MenuConfirm`` (es. SÌ / NO).
-
-    Il ``callback`` è una tupla ``(action_fn, position)``.
-    La posizione 0 corrisponde a ``True`` (conferma) e qualsiasi altra posizione
-    a ``False`` (annulla).  Dopo l'azione il dialogo viene chiuso e la schermata
-    padre viene ridisegnata.
-    """
 
     __slots__ = ()  # nessun attributo aggiuntivo rispetto a MenuRow
 
@@ -640,12 +547,6 @@ class ConfirmItem(MenuRow):
 
 
 class ButtonItem(MenuRow):
-    """Riga che esegue un callback e rimane nella schermata corrente.
-
-    A differenza di ``BackItem``, premere un ``ButtonItem`` esegue l'azione
-    e poi ridisegna la lista padre *senza* navigare altrove.  Usato per
-    azioni one-shot come confermare un'impostazione di data/ora o timer.
-    """
 
     __slots__ = ()  # nessun attributo aggiuntivo rispetto a MenuRow
 
@@ -663,18 +564,6 @@ class ButtonItem(MenuRow):
 
 
 class MenuEnum(MenuList):
-    """Selettore pick-one: mostra una lista di opzioni stringa e memorizza quella scelta.
-
-    Eredita da ``MenuList`` ma sovrascrive ``add()`` per memorizzare oggetti
-    ``EnumItem`` grezzi (non proxy ``ListItem``) poiché le voci enum sono omogenee.
-    L'opzione selezionata viene mostrata come decorator della riga nel menu padre.
-
-    Args:
-        display:   Istanza SSD1306.
-        name:      Label mostrato nella lista e nel decorator della riga padre.
-        items:     Lista o tupla di opzioni stringa tra cui scegliere.
-        callback:  Setter chiamato con l'indice scelto quando si seleziona un'opzione.
-    """
 
     __slots__ = ("selected_item", "callback")
 
@@ -730,16 +619,6 @@ class MenuEnum(MenuList):
 
 
 class MenuConfirm(MenuList):
-    """Dialogo di conferma Sì/No (o simile a due opzioni).
-
-    Avvolge una ``MenuList`` con esattamente due righe ``ConfirmItem``.
-    La prima voce (indice 0) è l'azione affermativa (chiama ``callback(True)``);
-    la seconda chiama ``callback(False)``.
-
-    Args:
-        items:    Tupla di esattamente due label stringa (es. ``("-> YES", "<- NO")``).
-        callback: Callable che riceve ``True`` (conferma) o ``False`` (annulla).
-    """
 
     __slots__ = ("callback",)
 
@@ -786,17 +665,6 @@ class MenuConfirm(MenuList):
 
 
 class MenuMonitoringSensor(MenuView):
-    """Schermata di monitoraggio live del sensore sull'intero OLED.
-
-    Quando ``switch`` è True, il display viene ridisegnato ad ogni chiamata a
-    ``updatingValues()`` con nuove letture.  Un click o select inverte
-    lo switch di aggiornamento live e ritorna al menu padre.
-
-    Attributi:
-        measure:     Ultima lettura del sensore primario (es. valore EC).
-        temperature: Ultima lettura della temperatura.
-        switch:      True se il refresh live continuo è attivo.
-    """
 
     __slots__ = ("status", "measure", "temperature", "_switch")
 

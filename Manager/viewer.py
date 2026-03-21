@@ -16,27 +16,14 @@ Responsibilities
 
 from machine import I2C  # type: ignore[import]
 
-# import icons.images_repo as im
-from Menu.pymenu import (
-    Menu,
-    MenuList,
-    ToggleItem,
-    MenuEnum,
-    MenuMonitoringSensor,
-    BackItem,
-    MenuConfirm,
-    MenuWifiInfo,
-    MenuSetDateTime,
-    MenuSetTimer,
-    MenuHeaterManage,
-)
-import modules.ssd1306 as ssd1306
+import Modules.ssd1306 as ssd1306
 from time import sleep, localtime, time
-from manager.sdCardManager import SDCardManager
-from resource.config import Config
-from manager.wifiConnection import WifiConnection
-from modules.ds3231 import DS3231_RTC
-from modules.relays import Relays
+from Manager.sdCardManager import SDCardManager
+from Resource.Config import Config
+from Manager.wifiConnection import WifiConnection
+from Modules.ds3231 import DS3231_RTC
+from Modules.relays import Relays
+from Menu.pymenu import Menu
 
 # Pre-build relay label strings: evita str(index+1) ad ogni ridisegno.
 _RELAY_LABELS = ("1", "2", "3", "4")
@@ -111,7 +98,7 @@ class Viewer:
         #   self._i2c = I2C(0, scl=Pin(22), sda=Pin(21), freq=800000)
 
         self._ds_rtc = ds3231_rtc  # RTC instance
-        from icons.symbols import degree_symbol
+        from Icons.symbols import degree_symbol
 
         self._degree_symbol = degree_symbol
         # Start the thread
@@ -369,7 +356,7 @@ class Viewer:
         # self.oled.invert(1)
         self.display.fill(0)
         self.display.invert(1)
-        from icons.images_repo import (
+        from Icons.images_repo import (
             fishtank_logo,
         )  # lazy import: keeps the large bitmap out of RAM until needed
 
@@ -549,6 +536,18 @@ class Viewer:
             ├── RECOVERY     (confirm)
             └── <<< BACK
         """
+        from Menu.pymenu import (
+            MenuList,
+            ToggleItem,
+            MenuEnum,
+            MenuMonitoringSensor,
+            BackItem,
+            MenuConfirm,
+            MenuWifiInfo,
+            MenuSetDateTime,
+            MenuSetTimer,
+            MenuHeaterManage,
+        )
         self.menu.set_main_screen(
             MenuList(self.display, "MENU")
             .add(

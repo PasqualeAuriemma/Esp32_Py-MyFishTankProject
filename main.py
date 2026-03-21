@@ -50,7 +50,7 @@ def main():
     # --- Real-Time Clock (RTC) ---
     print("Initializing DS3231 RTC...")
     rtc = DS3231_RTC(i2c)
-
+    
     sdm = SDCardManager(
         sck_pin=Pin(BoardPins.SCK_SD),
         mosi_pin=Pin(BoardPins.MOSI_SD),

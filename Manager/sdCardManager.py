@@ -45,13 +45,18 @@ class SDCardManager(Singleton):
         # Ensure one-time initialization when used as a Singleton.
         if getattr(self, "_singleton_initialized", True):
             return
-
+        
         # Initialize the SD card SPI interface and wrap it with the sdcard driver.
         # baudrate=10 MHz: safe upper limit for most SD cards on hardware SPI bus 1.
         # Without an explicit baudrate MicroPython may default to a very low speed.
         self._spi = SPI(
-            1, baudrate=10_000_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
+            1, baudrate=1_000_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
         )
+        """
+        self._spi = SoftSPI(
+            baudrate=10_000_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
+        )
+        """
         self._sd = sdcard.SDCard(self._spi, sd_pin)
         # Create a FAT VFS instance over the SD card (MicroPython-specific API).
         self._vfs = os.VfsFat(self._sd)  # type: ignore[attr-defined]
@@ -60,6 +65,8 @@ class SDCardManager(Singleton):
 
     def set_configuration(self, data):
         """Persist a configuration dictionary as JSON on the SD card."""
+        import gc
+        gc.collect()
         uos.mount(self._vfs, "/sd")
         try:
             # Convert dictionary to JSON string and write it.
@@ -91,6 +98,8 @@ class SDCardManager(Singleton):
         Returns:
             dict | None: config data if file is present and valid, else None.
         """
+        import gc
+        gc.collect()
         file_path = "/sd/data.json"
         try:
             uos.mount(self._vfs, "/sd")
