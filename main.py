@@ -16,11 +16,279 @@ from Manager.sdCardManager import SDCardManager
 from Manager.wifiConnection import WifiConnection
 from secrets import WIFI_SSID, WIFI_PASSWORD
 
+from Menu.pymenu import (
+    MenuList,
+    ToggleItem,
+    MenuEnum,
+    MenuMonitoringSensor,
+    BackItem,
+    MenuConfirm,
+    MenuWifiInfo,
+    MenuSetDateTime,
+    MenuSetTimer,
+    MenuHeaterManage,
+)
+
 # WiFi credentials
 
 SERVER_HOST = "myfishtank.altervista.org"
 
 gc.collect()
+
+
+def _create_menu(viewer: "Viewer", cfg: "Config"):
+    """Build and install the entire menu tree into ``viewer.menu``."""
+    viewer.menu.set_main_screen(
+        MenuList(viewer.display, "MENU")
+        .add(
+            MenuEnum(
+                viewer.display,
+                "MODE",
+                cfg.mode_list,
+                (cfg.set_mode),
+            )
+        )
+        .add(
+            MenuList(viewer.display, "RELAYS")
+            .add(
+                ToggleItem(
+                    "LIGHTS",
+                    (cfg.get_on_off_light_auto),
+                    (viewer.toggle_on_off_light_auto),
+                    ("ON", "OFF"),
+                )
+            )
+            .add(
+                ToggleItem(
+                    "FILTER",
+                    (cfg.get_on_off_filter),
+                    (viewer.toggle_on_off_filter),
+                    ("ON", "OFF"),
+                )
+            )
+            .add(
+                ToggleItem(
+                    "HEATER",
+                    (cfg.get_on_off_heater),
+                    (viewer.toggle_on_off_heater),
+                    ("ON", "OFF"),
+                )
+            )
+            .add(
+                ToggleItem(
+                    "FEEDER",
+                    (cfg.get_on_off_feeder),
+                    (viewer.toggle_on_off_feeder),
+                    ("ON", "OFF"),
+                )
+            )
+            .add(BackItem())
+        )
+        .add(
+            MenuList(viewer.display, "SENSORS")
+            .add(
+                MenuList(viewer.display, "EC")
+                .add(
+                    ToggleItem(
+                        "ACTIVATION",
+                        (cfg.get_on_off_ec),
+                        (viewer.toggle_on_off_ec),
+                    )
+                )
+                .add(
+                    MenuMonitoringSensor(
+                        viewer.display,
+                        "MONITORING",
+                        visible=(cfg.get_on_off_ec),
+                    )
+                )
+                .add(
+                    ToggleItem(
+                        "WEB SERVER",
+                        (cfg.get_on_off_ec_sending),
+                        (viewer.toggle_on_off_ec_sending),
+                        visible=(cfg.get_on_off_ec),
+                    )
+                )
+                .add(
+                    MenuEnum(
+                        viewer.display,
+                        "WEB RATE",
+                        cfg.freq,
+                        cfg.set_freq_update_web_ec,
+                        visible=(cfg.get_on_off_ec_sending),
+                    )
+                )
+                .add(
+                    MenuConfirm(
+                        viewer.display,
+                        "SEND TO WEB",
+                        ("-> SEND", "<- BACK"),
+                        viewer._send_ec,
+                        visible=(cfg.get_on_off_ec_sending),
+                    )
+                )
+                .add(BackItem())
+            )
+            .add(
+                MenuList(viewer.display, "PH")
+                .add(
+                    ToggleItem(
+                        "ACTIVATION",
+                        (cfg.get_on_off_ph),
+                        (viewer.toggle_on_off_ph),
+                    )
+                )
+                .add(
+                    MenuMonitoringSensor(
+                        viewer.display,
+                        "MONITORING",
+                        visible=(cfg.get_on_off_ph),
+                    )
+                )
+                .add(
+                    ToggleItem(
+                        "WEB SERVER",
+                        (cfg.get_on_off_ph_sending),
+                        (viewer.toggle_on_off_ph_sending),
+                        visible=(cfg.get_on_off_ph),
+                    )
+                )
+                .add(
+                    MenuEnum(
+                        viewer.display,
+                        "WEB RATE",
+                        cfg.freq,
+                        cfg.set_freq_update_web_ph,
+                        visible=(cfg.get_on_off_ph_sending),
+                    )
+                )
+                .add(
+                    MenuConfirm(
+                        viewer.display,
+                        "SEND TO WEB",
+                        ("-> SEND", "<- BACK"),
+                        viewer._send_ph,
+                        visible=(cfg.get_on_off_ph_sending),
+                    )
+                )
+                .add(BackItem())
+            )
+            .add(
+                MenuList(viewer.display, "THERMOMETER")
+                .add(
+                    ToggleItem(
+                        "ACTIVATION",
+                        (cfg.get_on_off_temperature),
+                        (viewer.toggle_on_off_temperature),
+                    )
+                )
+                .add(
+                    ToggleItem(
+                        "WEB SERVER",
+                        (cfg.get_on_off_temperature_sending),
+                        (viewer.toggle_on_off_temperature_sending),
+                        visible=(cfg.get_on_off_temperature),
+                    )
+                )
+                .add(
+                    MenuEnum(
+                        viewer.display,
+                        "WEB RATE",
+                        cfg.freq,
+                        cfg.set_freq_update_web_temperature,
+                        visible=(cfg.get_on_off_temperature_sending),
+                    )
+                )
+                .add(
+                    MenuConfirm(
+                        viewer.display,
+                        "SEND TO WEB",
+                        ("-> SEND", "<- BACK"),
+                        viewer.send_temperature,
+                        visible=(cfg.get_on_off_temperature_sending),
+                    )
+                )
+                .add(BackItem())
+            )
+            .add(BackItem())
+        )
+        .add(
+            MenuList(viewer.display, "SETTINGS")
+            .add(
+                MenuList(viewer.display, "WIFI")
+                .add(MenuWifiInfo(viewer.display, "INFO"))
+                .add(
+                    MenuConfirm(
+                        viewer.display,
+                        "CONNECTING",
+                        ("-> YES", "<- NO"),
+                        cfg.set_connection_action,
+                    )
+                )
+                .add(BackItem())
+            )
+            .add(MenuSetDateTime(viewer.display, "DATE/TIME", print))
+            .add(
+                MenuSetTimer(
+                    viewer.display,
+                    "LIGHT TIMER",
+                    cfg.get_timer_time(),
+                    cfg.set_timer_time,
+                )
+            )
+            .add(
+                MenuList(viewer.display, "HEATER AUTO")
+                .add(
+                    ToggleItem(
+                        "ACTIVATION",
+                        (cfg.get_on_off_heater_auto),
+                        (viewer.toggle_on_off_heater_auto),
+                    )
+                )
+                .add(
+                    MenuHeaterManage(
+                        viewer.display,
+                        "SETTING",
+                        cfg.get_timer_time(),
+                        cfg.set_auto_heater,
+                        visible=(cfg.get_on_off_heater_auto),
+                    )
+                )
+                .add(BackItem())
+            )
+            .add(
+                MenuList(viewer.display, "FILTER AUTO")
+                .add(
+                    ToggleItem(
+                        "ACTIVATION",
+                        (cfg.get_on_off_filter_auto),
+                        (viewer.toggle_on_off_filter_auto),
+                    )
+                )
+                .add(
+                    MenuEnum(
+                        viewer.display,
+                        "RATE",
+                        cfg.freq,
+                        cfg.set_freq_filter,
+                        visible=(cfg.get_on_off_filter_auto),
+                    )
+                )
+                .add(BackItem())
+            )
+            .add(
+                MenuConfirm(
+                    viewer.display,
+                    "RECOVERY",
+                    ("-> YES", "<- NO"),
+                    cfg.set_on_off_recovery,
+                )
+            )
+            .add(BackItem())
+        )
+        .add(BackItem())
+    )
 
 
 def main():
@@ -50,7 +318,7 @@ def main():
     # --- Real-Time Clock (RTC) ---
     print("Initializing DS3231 RTC...")
     rtc = DS3231_RTC(i2c)
-    
+
     sdm = SDCardManager(
         sck_pin=Pin(BoardPins.SCK_SD),
         mosi_pin=Pin(BoardPins.MOSI_SD),
@@ -80,6 +348,9 @@ def main():
                     viewer.menu.move(1)
             elif key == board.ok_keypad_value:
                 if not viewer.is_enabled_menu:
+                    # Lazy load: build the menu on first use to save RAM at boot.
+                    if viewer.menu.main_screen is None:
+                        _create_menu(viewer, cfg)
                     viewer.is_enabled_menu = True
                 else:
                     countdown_menu = 0
@@ -107,9 +378,9 @@ def main():
                 gc.collect()
                 _gc_counter = 0
 
-            wdt.feed()          # resetta il watchdog: conferma che il loop è vivo
-            #time.sleep_ms(100)   # 20 Hz — reattivo per UI, riduce consumo CPU
-            lightsleep(100) # consumo ridotto ~80 mA a ~20 mA
+            wdt.feed()  # resetta il watchdog: conferma che il loop è vivo
+            # time.sleep_ms(100)   # 20 Hz — reattivo per UI, riduce consumo CPU
+            lightsleep(100)  # consumo ridotto ~80 mA a ~20 mA
 
         except Exception as e:
             # Logga l'errore senza uscire dal loop; il WDT farà reset

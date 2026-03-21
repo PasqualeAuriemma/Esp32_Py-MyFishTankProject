@@ -1,151 +1,263 @@
 <#
 .SYNOPSIS
-    Compila tutti i moduli PyTank da .py a .mpy usando mpy-cross.
+    Compila tutti i moduli del progetto da .py a .mpy usando mpy-cross.
 
 .DESCRIPTION
-    Alternativa immediata ai frozen modules nel firmware: non richiede di
-    ricompilare il firmware né ESP-IDF.  Funziona con Pymakr.
-
-    Differenza rispetto ai frozen modules veri:
-      - Frozen firmware : codice in flash via XIP, 0 RAM heap usata
-      - .mpy pre-compilato: bytecode già pronto, elimina il costo del parser
-        (~10-15 KB RAM risparmiati), il bytecode viene comunque copiato in RAM
+    Compila i moduli Python in bytecode MicroPython pre-compilato.
+    Vantaggi rispetto ai .py plain:
+      - Elimina il costo del parser all'import (~10-15 KB RAM risparmiati)
+      - File piu piccoli da trasferire sul device
+      - Con -O2: rimuove assert e docstring (risparmio RAM extra)
 
     Dopo l'esecuzione:
-      - Carica i file .mpy sull'ESP32 con Pymakr (punta il progetto su build\mpy)
-      - NON caricare i .py corrispondenti (MicroPython preferisce .mpy)
-      - I file boot.py, main.py, secrets.py vengono copiati invariati
+      - Carica il contenuto di build\mpy\ sull'ESP32
+      - NON caricare .py e .mpy con lo stesso nome sullo stesso device
+      - boot.py e main.py vengono copiati invariati (MicroPython li cerca sempre come .py)
 
     Prerequisiti:
         pip install mpy-cross
 
 .PARAMETER OptLevel
-    Livello di ottimizzazione mpy-cross (0-3).
-    Default: 2  — rimuove assert e docstring (max risparmio RAM su ESP32)
-    Usa 0 per debug (conserva numeri di riga per i traceback)
+    Livello di ottimizzazione (0-3).
+    0 = debug (conserva numeri di riga nei traceback)
+    2 = produzione (rimuove assert e docstring) — default
 
 .PARAMETER OutputDir
-    Directory dove scrivere i file .mpy.
-    Default: build\mpy nella radice del progetto
+    Directory di output. Default: build\mpy nella radice del progetto.
+
+.PARAMETER Port
+    Porta seriale ESP32 per upload automatico (es. COM3, /dev/ttyUSB0).
+    Se omessa, non viene fatto l'upload.
 
 .EXAMPLE
-    .\scripts\build_mpy.ps1
-    .\scripts\build_mpy.ps1 -OptLevel 0
-    .\scripts\build_mpy.ps1 -OutputDir D:\deploy
+    .\build_mpy.ps1
+    .\build_mpy.ps1 -OptLevel 0
+    .\build_mpy.ps1 -OutputDir D:\deploy
+    .\build_mpy.ps1 -Port COM3
 #>
 
 [CmdletBinding()]
 param(
-    [int]   $OptLevel  = 2,
-    [string]$OutputDir = ""
+    [ValidateRange(0, 3)]
+    [int]    $OptLevel  = 2,
+    [string] $OutputDir = "",
+    [string] $Port      = ""
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-function Write-Step  { param($msg) Write-Host "==> $msg" -ForegroundColor Cyan }
-function Write-Ok    { param($msg) Write-Host " OK  $msg" -ForegroundColor Green }
-function Write-Warn  { param($msg) Write-Host "WARN $msg" -ForegroundColor Yellow }
-function Write-Fatal { param($msg) Write-Host "ERR  $msg" -ForegroundColor Red; exit 1 }
+# ── Helpers ────────────────────────────────────────────────────────────
+function Write-Step  { param($msg) Write-Host "`n==> $msg" -ForegroundColor Cyan }
+function Write-Ok    { param($msg) Write-Host "  OK   $msg" -ForegroundColor Green }
+function Write-Warn  { param($msg) Write-Host "  WARN $msg" -ForegroundColor Yellow }
+function Write-Fail  { param($msg) Write-Host "  ERR  $msg" -ForegroundColor Red }
+function Write-Fatal { param($msg) Write-Fail $msg; exit 1 }
 
-# ── Percorsi base ─────────────────────────────────────────────────────
-$ProjectDir = (Get-Item (Join-Path $PSScriptRoot "..")).FullName
-if ($OutputDir -eq "") { $OutputDir = Join-Path $ProjectDir "build\mpy" }
+# ── Percorsi ───────────────────────────────────────────────────────────
+# PSScriptRoot e' la cartella dello script (es. scripts\)
+# ProjectDir e' la radice del progetto (un livello su)
+$ScriptDir  = $PSScriptRoot
+if (-not $ScriptDir) {
+    # Fallback se lo script viene eseguito con . .\build_mpy.ps1
+    $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+}
+$ProjectDir = Split-Path -Parent $ScriptDir
 
-Write-Step "Progetto : $ProjectDir"
-Write-Step "Output   : $OutputDir"
-Write-Step "OptLevel : -O$OptLevel"
+if ($OutputDir -eq "") {
+    $OutputDir = Join-Path $ProjectDir "build\mpy"
+}
 
-# ────────────────────────────────────────────────────────────────────
-# 1. VERIFICA mpy-cross
-# ────────────────────────────────────────────────────────────────────
+Write-Host ""
+Write-Host "PyTank — build .mpy" -ForegroundColor White
+Write-Host "Progetto : $ProjectDir"
+Write-Host "Output   : $OutputDir"
+Write-Host "OptLevel : -O$OptLevel"
+
+# ── 1. Verifica mpy-cross ──────────────────────────────────────────────
 Write-Step "Verifica mpy-cross"
 
-if (-not (Get-Command mpy-cross -ErrorAction SilentlyContinue)) {
+$mpyCross = Get-Command mpy-cross -ErrorAction SilentlyContinue
+if (-not $mpyCross) {
     Write-Warn "mpy-cross non trovato — installazione in corso..."
-    pip install mpy-cross --quiet
+    & pip install mpy-cross --quiet
     if ($LASTEXITCODE -ne 0) {
-        Write-Fatal "Installazione mpy-cross fallita. Eseguire manualmente: pip install mpy-cross"
+        Write-Fatal "Installazione fallita. Esegui manualmente: pip install mpy-cross"
+    }
+    $mpyCross = Get-Command mpy-cross -ErrorAction SilentlyContinue
+    if (-not $mpyCross) {
+        Write-Fatal "mpy-cross ancora non trovato dopo l'installazione. Controlla il PATH."
     }
 }
-$mpyVer = mpy-cross --version 2>&1
-Write-Ok "mpy-cross: $mpyVer"
 
-# ────────────────────────────────────────────────────────────────────
-# 2. CONFIGURAZIONE
-# ────────────────────────────────────────────────────────────────────
+# Leggi la versione — mpy-cross stampa su stderr, cattura entrambi
+$mpyVerRaw = & mpy-cross --version 2>&1
+$mpyVer    = ($mpyVerRaw | Out-String).Trim()
+Write-Ok $mpyVer
 
-# Directory contenenti pure librerie da compilare
-$ModuleDirs = @("Helper", "Icons", "Manager", "Menu", "Modules", "Resource")
+# ── 2. Configurazione ──────────────────────────────────────────────────
 
-# File che devono restare .py invariati (non compilare mai)
-$SkipFiles  = @("boot.py", "main.py", "secrets.py")
+# Cartelle dei moduli da compilare (percorsi relativi alla radice progetto)
+# Adatta questo elenco alla struttura del tuo progetto
+$ModuleDirs = @(
+    "helper",
+    "icons",
+    "manager",
+    "menu",
+    "modules",
+    "resource"
+)
 
-# ────────────────────────────────────────────────────────────────────
-# 3. COMPILAZIONE .py → .mpy
-# ────────────────────────────────────────────────────────────────────
+# File che devono restare .py — MicroPython li cerca sempre con questa estensione
+$KeepAsPy = @("boot.py", "main.py", "secrets.py")
+
+# ── 3. Pulizia output precedente ───────────────────────────────────────
+Write-Step "Pulizia output precedente"
+if (Test-Path $OutputDir) {
+    Remove-Item -Path $OutputDir -Recurse -Force
+    Write-Ok "Rimossa: $OutputDir"
+}
+New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
+Write-Ok "Creata:  $OutputDir"
+
+# ── 4. Compilazione .py → .mpy ────────────────────────────────────────
 Write-Step "Compilazione moduli"
 
-$ok     = 0
-$errors = @()
+$compiled = 0
+$skipped  = 0
+$errors   = @()
+$report   = @()
 
 foreach ($dir in $ModuleDirs) {
     $srcDir = Join-Path $ProjectDir $dir
     if (-not (Test-Path $srcDir)) {
         Write-Warn "Directory non trovata: $dir — saltata"
+        $skipped++
         continue
     }
 
-    foreach ($pyFile in (Get-ChildItem -Path $srcDir -Filter "*.py" -Recurse)) {
-        # Ricostruisci il percorso relativo per mantenere la struttura di directory
-        $relative  = $pyFile.FullName.Substring($ProjectDir.Length).TrimStart('\', '/')
-        $outPath   = Join-Path $OutputDir ($relative -replace '\.py$', '.mpy')
-        $outSubDir = Split-Path $outPath -Parent
+    $pyFiles = Get-ChildItem -Path $srcDir -Filter "*.py" -Recurse -File
+    if ($pyFiles.Count -eq 0) {
+        Write-Warn "Nessun .py in: $dir — saltata"
+        continue
+    }
 
-        New-Item -ItemType Directory -Force -Path $outSubDir | Out-Null
+    foreach ($pyFile in $pyFiles) {
+        # Percorso relativo rispetto alla radice progetto
+        $relative = $pyFile.FullName.Substring($ProjectDir.Length).TrimStart([char]'\', [char]'/')
 
-        # Compila — target Xtensa LX6 (ESP32 classico)
-        # Usa xtensalx106 per ESP32 standard, xtensalx7 per ESP32-S2/S3
-        mpy-cross "-O$OptLevel" -march=xtensalx106 -o $outPath $pyFile.FullName 2>&1
+        # Percorso di output con estensione .mpy
+        $outRelative = $relative -replace '\.py$', '.mpy'
+        $outPath     = Join-Path $OutputDir $outRelative
+        $outSubDir   = Split-Path $outPath -Parent
+
+        # Crea la sottocartella di destinazione se non esiste
+        if (-not (Test-Path $outSubDir)) {
+            New-Item -ItemType Directory -Force -Path $outSubDir | Out-Null
+        }
+
+        # Compila
+        # -march=xtensalx106 = ESP32 classico (Xtensa LX6)
+        # Usa xtensalx7 per ESP32-S2/S3
+        $compileOutput = & mpy-cross "-O$OptLevel" -march=xtensalx106 -o $outPath $pyFile.FullName 2>&1
+
         if ($LASTEXITCODE -eq 0) {
-            $sizeSrc = [math]::Round($pyFile.Length / 1KB, 1)
-            $sizeDst = [math]::Round((Get-Item $outPath).Length / 1KB, 1)
-            Write-Host ("  {0,-52} {1,5} KB  ->  {2,5} KB" -f $relative, $sizeSrc, $sizeDst)
-            $ok++
+            $sizeSrc = $pyFile.Length
+            $sizeDst = (Get-Item $outPath).Length
+            $saving  = [math]::Round((1 - $sizeDst / [math]::Max($sizeSrc, 1)) * 100)
+            $report += [PSCustomObject]@{
+                File    = $relative
+                SrcKB   = [math]::Round($sizeSrc / 1KB, 1)
+                DstKB   = [math]::Round($sizeDst / 1KB, 1)
+                Saving  = "$saving%"
+            }
+            $compiled++
         } else {
-            $errors += $relative
-            Write-Warn "ERRORE: $relative"
+            $errMsg = ($compileOutput | Out-String).Trim()
+            $errors += [PSCustomObject]@{ File = $relative; Error = $errMsg }
+            Write-Fail "ERRORE: $relative"
+            if ($errMsg) { Write-Host "         $errMsg" -ForegroundColor DarkRed }
         }
     }
 }
 
-# ────────────────────────────────────────────────────────────────────
-# 4. COPIA FILE CHE RESTANO .py
-# ────────────────────────────────────────────────────────────────────
-foreach ($name in $SkipFiles) {
+# ── 5. Copia file che restano .py ──────────────────────────────────────
+Write-Step "Copia file .py invariati"
+
+foreach ($name in $KeepAsPy) {
     $src = Join-Path $ProjectDir $name
     if (Test-Path $src) {
-        Copy-Item $src (Join-Path $OutputDir $name) -Force
-        Write-Host ("  {0,-52} (copiato come .py)" -f $name) -ForegroundColor DarkGray
+        $dst = Join-Path $OutputDir $name
+        Copy-Item $src $dst -Force
+        Write-Ok "$name → copiato come .py"
     }
 }
 
-# ────────────────────────────────────────────────────────────────────
-# 5. RIEPILOGO
-# ────────────────────────────────────────────────────────────────────
+# ── 6. Tabella riepilogo compilazione ─────────────────────────────────
+if ($report.Count -gt 0) {
+    Write-Step "Riepilogo compilazione"
+    $report | Format-Table -AutoSize -Property File, SrcKB, DstKB, Saving
+}
+
+# ── 7. Upload automatico (opzionale) ──────────────────────────────────
+if ($Port -ne "") {
+    Write-Step "Upload su ESP32 ($Port)"
+
+    $mpremote = Get-Command mpremote -ErrorAction SilentlyContinue
+    if (-not $mpremote) {
+        Write-Warn "mpremote non trovato — installazione in corso..."
+        & pip install mpremote --quiet
+    }
+
+    # Carica ricorsivamente tutto il contenuto di build\mpy\
+    $allFiles = Get-ChildItem -Path $OutputDir -Recurse -File
+    foreach ($f in $allFiles) {
+        $rel     = $f.FullName.Substring($OutputDir.Length).TrimStart([char]'\', [char]'/')
+        $relUnix = $rel -replace '\\', '/'
+
+        # Crea cartella remota se necessario
+        $remoteDir = Split-Path $relUnix -Parent
+        if ($remoteDir -and $remoteDir -ne ".") {
+            & mpremote connect $Port mkdir ":$remoteDir" 2>$null
+        }
+
+        # Upload file
+        & mpremote connect $Port cp $f.FullName ":$relUnix"
+        if ($LASTEXITCODE -eq 0) {
+            Write-Ok $relUnix
+        } else {
+            Write-Fail "Upload fallito: $relUnix"
+        }
+    }
+
+    Write-Ok "Upload completato — riavvio ESP32..."
+    & mpremote connect $Port reset
+}
+
+# ── 8. Riepilogo finale ────────────────────────────────────────────────
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor White
+
 if ($errors.Count -eq 0) {
-    Write-Host "  COMPLETATO: $ok moduli compilati in .mpy" -ForegroundColor Green
+    Write-Host "  COMPLETATO: $compiled moduli compilati" -ForegroundColor Green
 } else {
-    Write-Host "  COMPLETATO CON ERRORI: $ok OK, $($errors.Count) falliti" -ForegroundColor Yellow
-    $errors | ForEach-Object { Write-Host "    - $_" -ForegroundColor Red }
+    Write-Host "  COMPLETATO CON ERRORI: $compiled OK, $($errors.Count) falliti" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "  File con errori:" -ForegroundColor Red
+    foreach ($e in $errors) {
+        Write-Host "    - $($e.File)" -ForegroundColor Red
+        if ($e.Error) {
+            Write-Host "      $($e.Error)" -ForegroundColor DarkRed
+        }
+    }
 }
+
 Write-Host "  Output: $OutputDir" -ForegroundColor White
 Write-Host "=====================================================" -ForegroundColor White
 Write-Host ""
 Write-Host "Prossimi passi:" -ForegroundColor Cyan
-Write-Host "  Punta Pymakr su questa cartella: $OutputDir" -ForegroundColor White
-Write-Host "  Caricare sull'ESP32 SOLO il contenuto di build\mpy\" -ForegroundColor White
+Write-Host "  1. Carica il contenuto di build\mpy\ sull'ESP32" -ForegroundColor White
+Write-Host "     (con Pymakr, Thonny, o: .\build_mpy.ps1 -Port COM3)" -ForegroundColor White
+Write-Host "  2. NON caricare .py e .mpy con lo stesso nome" -ForegroundColor White
+Write-Host "  3. Per debug usa -OptLevel 0 (conserva i numeri di riga)" -ForegroundColor White
 Write-Host ""
-Write-Warn "NON caricare .py e .mpy con lo stesso nome: MicroPython usa .mpy e ignora .py"
