@@ -1,7 +1,7 @@
 from machine import Pin, ADC  # type: ignore[import]
 from micropython import const  # type: ignore[import]
 
-from helper.singleton import Singleton
+from Helper.Singleton import Singleton
 
 
 class Keyboard(Singleton):

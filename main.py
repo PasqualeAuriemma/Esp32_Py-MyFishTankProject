@@ -1,21 +1,19 @@
 # main.py — usa direttamente le variabili da builtins (già globali)
 import gc
-from platform import machine
 
 gc.collect()
 
 # ── STEP 2: import pesanti — solo ora la heap è già "prenotata" ────────
 # MicroPython Libraries
 from machine import Pin, I2C, WDT , lightsleep # type: ignore[import]
-import time
 
-from resource.config import Config
-from resource.board_pins import BoardPins
-from modules.keyboard import Keyboard
-from modules.ds3231 import DS3231_RTC
-from modules.relays import Relays
-from manager.sdCardManager import SDCardManager
-from manager.wifiConnection import WifiConnection
+from Resource.Config import Config
+from Resource.board_pins import BoardPins
+from Modules.keyboard import Keyboard
+from Modules.ds3231 import DS3231_RTC
+from Modules.relays import Relays
+from Manager.sdCardManager import SDCardManager
+from Manager.wifiConnection import WifiConnection
 from secrets import WIFI_SSID, WIFI_PASSWORD
 
 # WiFi credentials
@@ -62,7 +60,7 @@ def main():
 
     relays = Relays()
 
-    from manager.viewer import Viewer
+    from Manager.viewer import Viewer
 
     viewer = Viewer(
         i2c=i2c, config=cfg, ds3231_rtc=rtc, conn=wifi, sd_manager=sdm, relays=relays

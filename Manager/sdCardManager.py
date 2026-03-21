@@ -22,12 +22,12 @@ e-mail:- muthuswamy.pugazhendi@gmail.com
 """
 
 from machine import SPI  # type: ignore[import]
-import modules.sdcard as sdcard
+import Modules.sdcard as sdcard
 import os
 import json
 import uos  # type: ignore[import]
 
-from helper.singleton import Singleton  # type: ignore[import]
+from Helper.Singleton import Singleton  # type: ignore[import]
 
 
 class SDCardManager(Singleton):

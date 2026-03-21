@@ -1,5 +1,5 @@
 from machine import Pin  # type: ignore[import]
-from resource.board_pins import BoardPins
+from Resource.board_pins import BoardPins
 
 
 class Relays:

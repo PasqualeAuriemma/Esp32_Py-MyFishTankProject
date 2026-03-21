@@ -22,7 +22,7 @@ wlan = network.WLAN(network.STA_IF)
 if wlan.active():
     # Spegni un eventuale stato residuo da un crash precedente
     wlan.active(False)
-    time.sleep_ms(300)
+    time.sleep(0.3)
 gc.collect()
  
 # Esponi l'oggetto globalmente tramite builtins

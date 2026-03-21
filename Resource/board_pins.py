@@ -1,5 +1,4 @@
 # board_pins.py
-
 """
 PIN MAPPING ESP32
 -------------------I/O DIGITALI--------------------------------
@@ -27,8 +26,8 @@ PIN MAPPING ESP32
    G22 SCL
 -----------------------------------------------------------------------------------------------------------
 """
-from micropython import const
 
+from micropython import const # type: ignore[import]
 
 class BoardPins:
     """Hardware pin mapping for the board (ESP32)."""

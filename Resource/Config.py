@@ -5,7 +5,7 @@ Singleton, __slots__ for memory, safe defaults, serialization to/from dict.
 
 import gc
 
-from helper.singleton import Singleton
+from Helper.Singleton import Singleton
 
 
 # Class-level constants (shared, not per-instance)

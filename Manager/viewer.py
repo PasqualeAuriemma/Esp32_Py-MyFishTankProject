@@ -17,7 +17,7 @@ Responsibilities
 from machine import I2C  # type: ignore[import]
 
 # import icons.images_repo as im
-from menu.pymenu import (
+from Menu.pymenu import (
     Menu,
     MenuList,
     ToggleItem,

@@ -21,7 +21,7 @@ import time
 import json
 import gc
 
-from helper.singleton import Singleton
+from Helper.Singleton import Singleton
 
 
 class WifiConnection(Singleton):
