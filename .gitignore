@@ -11,6 +11,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+stubs/
 downloads/
 eggs/
 .eggs/
@@ -187,6 +188,12 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file. However, if you prefer, 
 #  you could uncomment the following to ignore the entire vscode folder
 # .vscode/
+.pyrightconfig.json
+pyrightconfig.json
+
+.Esp32_Py-MyFishTankProject.code-workspace
+Esp32_Py-MyFishTankProject.code-workspace
+
 
 # Ruff stuff:
 .ruff_cache/
@@ -205,3 +212,6 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+.secrets.py
+secrets.py
