@@ -43,18 +43,20 @@ class SDCardManager(Singleton):
         sd_pin,
     ) -> None:
         # Ensure one-time initialization when used as a Singleton.
-        if getattr(self, "_singleton_initialized", True):
+        # False — la prima chiamata entra e inizializza
+        if getattr(self, "_singleton_initialized", False):
             return
         
         # Initialize the SD card SPI interface and wrap it with the sdcard driver.
         # baudrate=10 MHz: safe upper limit for most SD cards on hardware SPI bus 1.
         # Without an explicit baudrate MicroPython may default to a very low speed.
+        
         self._spi = SPI(
-            1, baudrate=1_000_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
+            1, baudrate=400_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
         )
         """
         self._spi = SoftSPI(
-            baudrate=10_000_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
+            baudrate=400_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
         )
         """
         self._sd = sdcard.SDCard(self._spi, sd_pin)

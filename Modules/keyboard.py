@@ -60,13 +60,11 @@ class Keyboard(Singleton):
         """
         # Take a single ADC reading as the current "snapshot" of the keyboard.
         value = self.board_pin.read()
-        print("valore da tastiera: ", value) #--------------------------------------------------------------------
-
+        
         # Convert the raw ADC reading to an approximate voltage (×100, integer arithmetic).
         # equivalente: value * 330 // 4095  (risultato = tensione * 100, int)
         analog_voltage = value * 330 // 4095
-        print("analog_voltage: ", analog_voltage) #--------------------------------------------------------------------
-
+        
         # NOTE: at the moment all branches use the same threshold. In a typical
         # resistor-ladder keyboard each key will occupy a different voltage
         # range, so in the future you may want to add per-key ranges here.
@@ -76,11 +74,11 @@ class Keyboard(Singleton):
                 # LEFT
                 return self.left_keypad_value
             elif 21 <= analog_voltage < 61:
-                # UP
-                return self.up_keypad_value
-            elif 61 <= analog_voltage < 121:
                 # DOWN
                 return self.down_keypad_value
+            elif 61 <= analog_voltage < 121:
+                # UP
+                return self.up_keypad_value
             elif 121 <= analog_voltage < 191:
                 # RIGHT
                 return self.right_keypad_value

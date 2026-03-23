@@ -54,7 +54,6 @@ class Viewer:
         "_ph",
         # Shared singletons
         "_config",
-        "_sd",
         # Relay pins
         "_light_rele",
         "_filter_rele",
@@ -68,7 +67,6 @@ class Viewer:
         config: Config,
         ds3231_rtc: DS3231_RTC,
         conn: WifiConnection,
-        sd_manager: SDCardManager,
         relays: Relays,
         width: int = 128,
         height: int = 64,
@@ -114,20 +112,7 @@ class Viewer:
         self._ph = "0"
 
         self._config = config
-
-        self._sd = sd_manager
-
-        # --- SD card bootstrap -------------------------------------------------
-        # If a saved configuration exists on the SD card, load it into Config so
-        # that the user's previous settings survive a power cycle.  Otherwise
-        # write the current (default) config so the file is ready for next time.
-        if self._sd:
-            if self._sd.if_exist_configuration():
-                file_json = self._sd.get_configuration()
-                self._config.from_json(file_json)
-            else:
-                self._sd.set_configuration(self._config.to_dict())
-
+        
         # --- Display initialisation ------------------------------------------
         # Build the SSD1306 driver and paint the initial relay-status strip
         # before the menu tree is constructed, so the screen is never blank.

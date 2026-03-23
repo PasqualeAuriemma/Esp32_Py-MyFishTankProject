@@ -27,7 +27,7 @@ if not "%~3"=="" set OUTPUT_DIR=%~3
 set SCRIPT_DIR=%~dp0
 for %%i in ("%SCRIPT_DIR%..") do set PROJECT_DIR=%%~fi
 
-if "%OUTPUT_DIR%"=="" set OUTPUT_DIR=%PROJECT_DIR%\build\mpy
+if "%OUTPUT_DIR%"=="" set OUTPUT_DIR=%PROJECT_DIR%\build
 
 :: Cartelle da compilare (relative alla radice progetto)
 set MODULE_DIRS=Helper Icons Manager Menu Modules Resource
@@ -75,8 +75,13 @@ echo.
 echo =^> Pulizia output precedente...
 
 if exist "%OUTPUT_DIR%" (
-    rmdir /s /q "%OUTPUT_DIR%"
-    echo   OK   Rimossa: %OUTPUT_DIR%
+    echo   OK   Pulizia: %OUTPUT_DIR% (tranne pymakr.conf)
+    pushd "%OUTPUT_DIR%"
+    for /f %%f in ('dir /b /a-d') do (
+        if /i not "%%f"=="pymakr.conf" del /f /q "%%f"
+    )
+    for /d %%d in (*) do rmdir /s /q "%%d"
+    popd
 )
 mkdir "%OUTPUT_DIR%"
 echo   OK   Creata : %OUTPUT_DIR%

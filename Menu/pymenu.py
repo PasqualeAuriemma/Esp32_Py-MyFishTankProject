@@ -374,6 +374,7 @@ class MenuList(MenuView):
 
     def select(self) -> None:
         """Restituisce la voce evidenziata affinché il Menu possa chiamarne ``click()``."""
+        self.__get_visible_item()
         item = self.get(self.selected)
         return item
 
@@ -1460,8 +1461,9 @@ class Menu:
 
     def reset(self):
         """Torna alla schermata radice e azzera l'indice di selezione a 0."""
-        self.current_screen = self.main_screen
-        self.current_screen.selected = 0
+        if self.main_screen:
+            self.current_screen = self.main_screen
+            self.current_screen.selected = 0
 
     def draw(self):
         return self.current_screen.draw()

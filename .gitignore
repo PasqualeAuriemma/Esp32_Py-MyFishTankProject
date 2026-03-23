@@ -216,5 +216,4 @@ __marimo__/
 .secrets.py
 secrets.py
 
-.deploy/
-deploy/
+.vscode/

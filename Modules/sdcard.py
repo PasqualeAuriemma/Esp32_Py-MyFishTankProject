@@ -35,7 +35,7 @@ import time
 # ---------------------------------------------------------------------------
 _CMD_TIMEOUT = const(100)
 _INIT_BAUD = const(100_000)  # low rate during card init
-_DATA_BAUD = const(4_000_000)  # raised after init (ESP32 max ~40 MHz)
+_DATA_BAUD = const(1_000_000)  # raised after init (ESP32 max ~40 MHz)
 
 _R1_IDLE_STATE = const(1 << 0)
 _R1_ILLEGAL_CMD = const(1 << 2)
