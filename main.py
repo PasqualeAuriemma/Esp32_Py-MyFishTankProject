@@ -59,12 +59,14 @@ def main():
     while True:
         try:
             key = board.get_digit_keyboard()
-
+     
             if key == board.up_keypad_value and viewer.is_enabled_menu:
+                print("su")
                 countdown = 0
                 viewer.menu.move(-1)
 
             elif key == board.down_keypad_value and viewer.is_enabled_menu:
+                print("giu")
                 countdown = 0
                 viewer.menu.move(1)
 
