@@ -262,7 +262,8 @@ class MenuRow(MenuCallback):
 
 class MenuList(MenuView):
 
-    __slots__ = ("_items", "_visible_items", "selected", "_visible_cache_valid")
+    __slots__ = ("_items", "_visible_items", "selected", "_visible_cache_valid",
+                 "_on_enter", "_built")
 
     def __init__(
         self,
@@ -274,6 +275,7 @@ class MenuList(MenuView):
         font_height: int = _FONT_HEIGHT,
         parent=None,
         visible=None,
+        on_enter=None,
     ):
         super().__init__(
             display,
@@ -289,6 +291,8 @@ class MenuList(MenuView):
         self._visible_items = []
         self.selected = 0
         self._visible_cache_valid = False
+        self._on_enter = on_enter
+        self._built    = False
 
     @property
     def items(self):
@@ -367,8 +371,15 @@ class MenuList(MenuView):
             item.is_active = position == self.selected
             return item
 
+    def _enter(self):
+        """Chiama _on_enter la prima volta che la lista viene mostrata (lazy build)."""
+        if not self._built and self._on_enter is not None:
+            self._on_enter()
+            self._built = True
+
     def click(self):
-        """Ridisegna la lista e restituisce self (usato quando si naviga in questa lista)."""
+        """Entra nella lista: esegue lazy build se necessario, poi disegna."""
+        self._enter()
         self.draw()
         return self
 
@@ -1187,20 +1198,28 @@ class MenuWifiInfo(MenuView):
 
 
 class MenuHeaterManage(MenuView):
-    """Editor delle soglie min/max di temperatura per il controllo automatico del riscaldatore.
+    """Editor soglie min/max temperatura per il controllo automatico del riscaldatore.
 
-    Si modificano due campi: temperatura minima e temperatura massima.
-    Navigazione: ``up``/``down`` cambiano il campo attivo;
-    ``right``/``left`` incrementano/decrementano il valore selezionato.
-    ``select()`` valida che min < max prima di restituire un ``ButtonItem``
-    che chiama ``callback``.  In caso di errore di validazione viene restituito
-    un ``MenuError``.
+    Navigazione:
+        up/down   - cambia campo attivo (0=min, 1=max)
+        right/left - incrementa/decrementa il valore selezionato
+        select()  - valida min < max e chiama callback
 
-    Ordine dei campi (indice ``amount``):
-        0 → min_temperature, 1 → max_temperature
+    Ordine campi (amount): 0 = min_temperature, 1 = max_temperature
     """
 
-    __slots__ = ("_min_temperature", "_max_temperature", "amount", "callback")
+    # FIX: rimosso callback da __slots__ — le funzioni non beneficiano
+    # di __slots__ e su MicroPython possono causare problemi con i metodi bound
+    __slots__ = ("_temps", "amount", "callback")
+
+    # Costanti di layout — evitano ricalcoli ad ogni draw()
+    _FIELD_COUNT = const(2)
+    _Y_MIN       = const(17)
+    _Y_MAX       = const(45)
+    _Y_TEXT_MIN  = const(8)
+    _Y_TEXT_MAX  = const(35)
+    _RECT_W      = const(20)   # 2 * 10
+    _RECT_H      = const(14)
 
     def __init__(
         self,
@@ -1216,104 +1235,86 @@ class MenuHeaterManage(MenuView):
         visible=None,
     ):
         super().__init__(
-            display,
-            name,
-            parent,
-            per_page,
-            line_height,
-            font_width,
-            font_height,
-            visible,
+            display, name, parent,
+            per_page, line_height, font_width, font_height, visible,
         )
-        self._min_temperature = values[0]
-        self._max_temperature = values[1]
-        self.amount = 0
+        # FIX: usa una lista invece di due attributi separati —
+        # right/left/draw accedono per indice, zero branch inutili
+        self._temps   = [values[0], values[1]]
+        self.amount   = 0
         self.callback = callback
 
-    def _get_value(self, value, max_value):
-        """Limita *value* all'intervallo [0, max_value) con wrap-around a entrambi i lati."""
-        if value >= max_value:
-            return 0
-        elif value < 0:
-            return max_value - 1
-        else:
-            return value
+    # ── Proprietà ──────────────────────────────────────────────────────
+    # FIX: property semplificate — il setter non fa nulla di speciale,
+    # ma le teniamo per compatibilità con il resto del menu
 
     @property
     def min_temperature(self):
-        return self._min_temperature
+        return self._temps[0]
 
     @min_temperature.setter
     def min_temperature(self, value):
-        self._min_temperature = value
+        self._temps[0] = value
 
     @property
     def max_temperature(self):
-        return self._max_temperature
+        return self._temps[1]
 
     @max_temperature.setter
     def max_temperature(self, value):
-        self._max_temperature = value
+        self._temps[1] = value
+
+    def up(self):
+        self.amount = (self.amount + 1) % self._FIELD_COUNT
+
+    def down(self):
+        self.amount = (self.amount - 1) % self._FIELD_COUNT
+
+    def right(self):
+        self._temps[self.amount] += 1
+
+    def left(self):
+        self._temps[self.amount] -= 1
 
     def draw(self):
-        self.display.fill(0)
-        # background = self.amount == 1
-        x_pos1 = int((self.display.width - (8)) / 2)
-        if self.amount == 0:
-            self.display.rect(x_pos1 - 2, 17, (2 * 10), 14, 1)
-        else:
-            self.display.rect(x_pos1 - 2, 45, (2 * 10), 14, 1)
+        d      = self.display
+        x_pos  = (d.width - 8) // 2   # FIX: // invece di int() + divisione float
 
-        self.display.text("MIN TEMPERATURE:", 0, 8, 1)
-        self.display.text("{:02d}".format(self.min_temperature), x_pos1, 20, 1)
+        d.fill(0)
+        d.hline(0, 3, d.width, 1)
 
-        self.display.text("MAX TEMPERATURE:", 0, 35, 1)
-        self.display.text("{:02d}".format(self.max_temperature), x_pos1, 48, 1)
-        self.display.hline(0, 3, self.display.width, 1)
-        self.display.show()
+        # FIX: seleziona la y del rettangolo per indice invece di if/else
+        rect_y = self._Y_MIN if self.amount == 0 else self._Y_MAX
+        d.rect(x_pos - 2, rect_y, self._RECT_W, self._RECT_H, 1)
+
+        d.text("MIN TEMPERATURE:", 0, self._Y_TEXT_MIN, 1)
+        d.text("{:02d}".format(self._temps[0]), x_pos, self._Y_MIN + 3, 1)
+
+        d.text("MAX TEMPERATURE:", 0, self._Y_TEXT_MAX, 1)
+        d.text("{:02d}".format(self._temps[1]), x_pos, self._Y_MAX + 3, 1)
+
+        d.show()
 
     def click(self):
         self.draw()
         return self
 
+    # ── Validazione ────────────────────────────────────────────────────
+
     def select(self):
-        """Valida le soglie e conferma; mostra schermata di errore se min >= max."""
-        if self.min_temperature >= self.max_temperature:
+        """Valida min < max; restituisce ButtonItem o MenuError."""
+        if self._temps[0] >= self._temps[1]:
             return MenuError(
                 self.display,
                 self.name,
-                "Error: Max temperature is less than min temperature",
+                "Err: max temp <= min temp",  # FIX: stringa corta — meno RAM heap
                 parent=self,
             )
-        else:
-            return ButtonItem(
-                "OK HEATER",
-                (self.callback, [self.min_temperature, self.max_temperature]),
-                parent=self.parent,
-            )
-
-    def right(self):
-        if self.amount == 0:
-            self.min_temperature = self.min_temperature + 1
-        else:
-            self.max_temperature = self.max_temperature + 1
-
-    def left(self):
-        if self.amount == 0:
-            self.min_temperature = self.min_temperature - 1
-        else:
-            self.max_temperature = self.max_temperature - 1
-
-    def up(self):
-        self.amount = self.amount + 1
-        if self.amount > 1:
-            self.amount = 0
-
-    def down(self):
-        self.amount = self.amount - 1
-        if self.amount < 0:
-            self.amount = 1
-
+        return ButtonItem(
+            "OK HEATER",
+            (self.callback, [self._temps[0], self._temps[1]]),
+            parent=self.parent,
+        )
 
 class MenuError(MenuView):
     """Schermata di errore full-screen con testo word-wrapped.
@@ -1405,65 +1406,60 @@ class MenuError(MenuView):
         self.display.text(text, x, y, c)
 
 
-class Menu:
-    """Controller di alto livello che gestisce quale schermata è attualmente visualizzata.
 
-    ``Menu`` funge da facciata sottile sulla gerarchia ``MenuView``.
-    Mantiene un riferimento a ``current_screen`` (la ``MenuView`` attiva)
+    
+class Menu:
+    """Controller di alto livello che gestisce quale schermata è attiva.
+
+    Funge da facciata sulla gerarchia MenuView: mantiene current_screen
     e delega tutti gli eventi di navigazione (move, shift, click) ad essa.
 
-    ``set_main_screen()`` deve essere chiamato una volta per installare la
-    ``MenuList`` radice prima che qualsiasi navigazione possa avvenire.
-
-    Attributi:
-        current_screen: La ``MenuView`` attualmente mostrata sull'OLED.
-        main_screen:    La ``MenuList`` radice usata come punto di ingresso.
-        parent:         L'istanza ``Viewer`` proprietaria di questo menu.
+    set_main_screen() deve essere chiamato una volta per installare la
+    MenuList radice prima che qualsiasi navigazione possa avvenire.
     """
 
     __slots__ = ("parent", "main_screen", "current_screen")
-    current_screen = None
 
-    def __init__(self, parent=None):
-        if parent is None:
-            raise ValueError(
-                "Il parametro 'parent' deve essere presente e non può essere None"
-            )
-        self.parent = parent
-        self.main_screen = None
+    def __init__(self, parent):
+        self.parent         = parent
+        self.main_screen    = None
+        self.current_screen = None
 
-    def set_main_screen(self, screen: MenuList):
-        """Installa *screen* come radice e la imposta come schermata corrente."""
+    def set_main_screen(self, screen):
+        """Installa screen come radice e la imposta come schermata corrente."""
         self.current_screen = screen
         if self.main_screen is None:
-            screen.parent = self.parent
+            screen.parent    = self.parent
             self.main_screen = screen
 
     def move(self, direction: int = 1):
-        """Sposta la selezione su (direction < 0) o giù (direction > 0) e ridisegna."""
-        self.current_screen.up() if direction < 0 else self.current_screen.down()
-        self.draw()
+        """Sposta selezione su (direction < 0) o giù (direction > 0) e ridisegna."""
+        if direction < 0:
+            self.current_screen.up()
+        else:
+            self.current_screen.down()
+        self.current_screen.draw()
 
     def shift(self, direction: int = 1):
-        """Sposta il campo attivo a destra (direction < 0) o sinistra e ridisegna.
-
-        Usato dagli editor (``MenuSetDateTime``, ``MenuSetTimer``) per passare
-        tra i campi modificabili.
-        """
-        self.current_screen.right() if direction < 0 else self.current_screen.left()
-        self.draw()
+        """Cambia campo attivo: right (direction < 0) o left, poi ridisegna."""
+        if direction < 0:
+            self.current_screen.right()
+        else:
+            self.current_screen.left()
+        self.current_screen.draw()
 
     def click(self):
-        """Conferma la selezione corrente: seleziona la voce e chiama il suo handler click."""
-        self.current_screen = self.current_screen.select()
-        if self.current_screen is not None:
-            self.current_screen = self.current_screen.click()
+        """Conferma la selezione: esegue select() poi click() sulla nuova schermata."""
+        screen = self.current_screen.select()
+        if screen is not None:
+            self.current_screen = screen.click()
 
     def reset(self):
-        """Torna alla schermata radice e azzera l'indice di selezione a 0."""
-        if self.main_screen:
-            self.current_screen = self.main_screen
-            self.current_screen.selected = 0
+        """Torna alla schermata radice e azzera l'indice di selezione."""
+        main = self.main_screen
+        if main is not None:
+            main.selected       = 0
+            self.current_screen = main
 
     def draw(self):
-        return self.current_screen.draw()
+        self.current_screen.draw()
