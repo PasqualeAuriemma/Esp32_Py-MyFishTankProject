@@ -61,12 +61,10 @@ def main():
             key = board.get_digit_keyboard()
      
             if key == board.up_keypad_value and viewer.is_enabled_menu:
-                print("su")
                 countdown = 0
                 viewer.menu.move(-1)
 
             elif key == board.down_keypad_value and viewer.is_enabled_menu:
-                print("giu")
                 countdown = 0
                 viewer.menu.move(1)
 
@@ -76,7 +74,7 @@ def main():
                     # click OK. menuBuilder importato lazy — non occupa RAM
                     # durante il boot normale.
                     if viewer.menu.main_screen is None:
-                        from Manager.menuBuilder import build_menu
+                        from Menu.menuBuilder import build_menu
                         build_menu(viewer, cfg)
                         gc.collect()
                         print("[main] Menu built - heap: {} bytes".format(
@@ -108,7 +106,7 @@ def main():
                 gc_counter = 0
 
             wdt.feed()
-            lightsleep(200)
+            lightsleep(250)
 
         except Exception as e:
             print("[main] errore loop:", e)
