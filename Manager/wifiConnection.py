@@ -105,10 +105,14 @@ class WifiConnection(Singleton):
             # Check final connection status
             if self.is_connected():
                 self.log_message("\nWiFi connected successfully!")
-                self.log_message("Network configuration: {}".format(self._wlan.ifconfig()))
+                self.log_message(
+                    "Network configuration: {}".format(self._wlan.ifconfig())
+                )
                 return True
             else:
-                self.log_message("Failed to connect. Status: {}".format(self._wlan.status()))
+                self.log_message(
+                    "Failed to connect. Status: {}".format(self._wlan.status())
+                )
                 self.log_message("Deactivating WiFi interface to reset state.")
                 self._wlan.active(False)
                 return False
@@ -148,7 +152,9 @@ class WifiConnection(Singleton):
             self.log_message("WiFi disconnected successfully!")
             return True
         except OSError as e:
-            self.log_message("Caught an OSError: {}. Failed to disconnect from WiFi.".format(e))
+            self.log_message(
+                "Caught an OSError: {}. Failed to disconnect from WiFi.".format(e)
+            )
             return False
 
     def connection_status(self):

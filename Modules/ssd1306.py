@@ -381,14 +381,12 @@ class SSD1306_SPI(SSD1306):
 
     def poweron(self):
         self.res.high()
-        # Small reset pulse sequence; use milliseconds where available.
         sleep_ms = getattr(time, "sleep_ms", None)
         if sleep_ms is not None:
             sleep_ms(1)
             self.res.low()
             sleep_ms(10)
         else:
-            # Fallback for environments without sleep_ms (e.g. CPython tests).
             time.sleep(0.001)
             self.res.low()
             time.sleep(0.01)

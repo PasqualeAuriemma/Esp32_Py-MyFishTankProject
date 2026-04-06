@@ -31,25 +31,25 @@ class NTP:
         try:
             # 1. Connetti WiFi
             if not self._wifi.connect():
-                print("[ntp] Connessione WiFi fallita.")
+                # print("[ntp] Connessione WiFi fallita.")
                 return False
 
             # 2. Sync NTP → aggiorna machine.RTC() interno dell'ESP32
             ntptime.settime()
-            print("[ntp] NTP sync OK — ora UTC: {}".format(time.localtime()))
+            # print("[ntp] NTP sync OK — ora UTC: {}".format(time.localtime()))
 
             # 3. Copia l'ora sul chip DS3231 fisico (sopravvive ai reboot)
             self._rtc.datetime = time.localtime()
-            print("[ntp] DS3231 aggiornato.")
+            # print("[ntp] DS3231 aggiornato.")
 
             return True
 
         except OSError as e:
-            print("[ntp] Errore di rete: {}".format(e))
+            # print("[ntp] Errore di rete: {}".format(e))
             return False
 
         except Exception as e:
-            print("[ntp] Errore imprevisto: {}".format(e))
+            # print("[ntp] Errore imprevisto: {}".format(e))
             return False
 
         finally:

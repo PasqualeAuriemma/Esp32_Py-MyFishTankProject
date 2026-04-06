@@ -105,13 +105,13 @@ class Viewer:
         self._is_enabled_menu = False
         self._exit_menu = True
         self._time = "00:00:00"
-        self._last_second = -1   # int cache: evita alloc stringa ogni ciclo in run()
+        self._last_second = -1  # int cache: evita alloc stringa ogni ciclo in run()
         self._temperature = "0"
         self._ec = "0"
         self._ph = "0"
 
         self._config = config
-        
+
         # --- Display initialisation ------------------------------------------
         # Build the SSD1306 driver and paint the initial relay-status strip
         # before the menu tree is constructed, so the screen is never blank.
@@ -244,7 +244,7 @@ class Viewer:
         unix_epoch_time1 = str(self._ds_rtc.unix_epoch_time(time()))
         print("Unix epoch time:", unix_epoch_time1)
         if value:
-            self._con.send_value_to_web(self.ec, "Ec", unix_epoch_time1)
+            self._con.send_value_to_web(self._ec, "Ec", unix_epoch_time1)
 
     def _send_ph(self, value):
         """Send the current pH reading to the remote web endpoint.
@@ -258,7 +258,7 @@ class Viewer:
         unix_epoch_time1 = str(self._ds_rtc.unix_epoch_time(time()))
         print("Unix epoch time:", unix_epoch_time1)
         if value:
-            self._con.send_value_to_web(self.ph, "PH", unix_epoch_time1)
+            self._con.send_value_to_web(self._ph, "PH", unix_epoch_time1)
 
     def send_temperature(self, value):
         """Send the current temperature reading to the remote web endpoint.
@@ -271,7 +271,7 @@ class Viewer:
         """
         unix_epoch_time1 = str(self._ds_rtc.unix_epoch_time(time()))
         if value:
-            self._con.send_value_to_web(self.temperature, "Temp", unix_epoch_time1)
+            self._con.send_value_to_web(self._temperature, "Temp", unix_epoch_time1)
 
     @property
     def exit_menu(self):
@@ -287,18 +287,15 @@ class Viewer:
         """Current time string displayed on the main screen (format HH:MM:SS)."""
         return self._time
 
-    @property
-    def temperature(self):
+    def get_temperature(self):
         """Last temperature reading as a string (°C)."""
         return self._temperature
 
-    @property
-    def ec(self):
+    def get_ec(self):
         """Last EC (electrical conductivity) reading as a string (µS/cm)."""
         return self._ec
 
-    @property
-    def ph(self):
+    def get_ph(self):
         """Last pH reading as a string."""
         return self._ph
 
@@ -307,18 +304,15 @@ class Viewer:
         """Set the displayed time string (HH:MM:SS)."""
         self._time = value
 
-    @temperature.setter
-    def temperature(self, value):
+    def set_temperature(self, value):
         """Set the last temperature reading (string, °C)."""
         self._temperature = value
 
-    @ec.setter
-    def ec(self, value):
+    def set_ec(self, value):
         """Set the last EC reading (string, µS/cm)."""
         self._ec = value
 
-    @ph.setter
-    def ph(self, value):
+    def set_ph(self, value):
         """Set the last pH reading (string)."""
         self._ph = value
 
@@ -389,17 +383,17 @@ class Viewer:
 
         # Temperature row: label, zero-padded value, custom degree symbol, unit.
         self.display.text("TEMP:", 0, 23)
-        self.display.text("{0:02}".format(self.temperature), 48, 23)
+        self.display.text("{0:02d}".format(int(self._temperature)), 48, 23)
         self.display.show_custom_char(self._degree_symbol, 64, 23)  # °
         self.display.text("C", 72, 23)
 
         # EC row: label and zero-padded value with unit.
         self.display.text("EC:", 0, 33)
-        self.display.text("{0:03}".format(self.ec) + " uS/cm", 32, 33)
+        self.display.text("{0:03}".format(self._ec) + " uS/cm", 32, 33)
 
         # pH row: label and value.
         self.display.text("PH:", 0, 43)
-        self.display.text(self.ph, 32, 43)
+        self.display.text(self._ph, 32, 43)
 
     def show_rele_symbol(self, rele):
         """Render the relay-status strip in the bottom 12 rows of the OLED.

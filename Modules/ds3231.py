@@ -96,7 +96,7 @@ class DS3231_RTC:
         if 0 <= value <= 6:
             self._weekday_start = value
         else:
-            raise ValueError("Weekday can only be in range 0-6")
+            raise ValueError("[DS3231_RTC] Error: Weekday can only be in range 0-6")
 
     @property
     def addr(self) -> int:
@@ -136,9 +136,9 @@ class DS3231_RTC:
             self.i2c.readfrom_mem_into(self.addr, DATETIME_REG, self._timebuf)
         except OSError as e:
             if e.errno == 19:  # ENODEV: No such module
-                print("Errore: RTC DS3231 module doesn't exist.")
+                print("[DS3231_RTC] Errore: RTC DS3231 module doesn't exist.")
             else:
-                print("Errore: {}".format(e))
+                print("[DS3231_RTC] Errore: {}".format(e))
 
         # 0x00 - Seconds    BCD
         # 0x01 - Minutes    BCD
@@ -172,12 +172,14 @@ class DS3231_RTC:
         yearday = self.day_of_year(year=year, month=month, day=day)
         try:
             if self.OSF():
-                print("WARNING: Oscillator stop flag set. Time may not be accurate.")
+                print(
+                    "[DS3231_RTC] WARNING: Oscillator stop flag set. Time may not be accurate."
+                )
         except OSError as e:
             if e.errno == 19:  # ENODEV: No such module
-                print("Errore: RTC DS3231 module doesn't exist.")
+                print("[DS3231_RTC] Errore: RTC DS3231 module doesn't exist.")
             else:
-                print("Errore: {}".format(e))
+                print("[DS3231_RTC] Errore: {}".format(e))
 
         return (
             year,

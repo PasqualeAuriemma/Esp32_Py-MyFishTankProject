@@ -27,7 +27,8 @@ PIN MAPPING ESP32
 -----------------------------------------------------------------------------------------------------------
 """
 
-from micropython import const # type: ignore[import]
+from micropython import const  # type: ignore[import]
+
 
 class BoardPins:
     """Hardware pin mapping for the board (ESP32)."""
@@ -57,3 +58,4 @@ class BoardPins:
 
     # DS18B20, OneWire Temperature Sensor
     DS18B20 = const(13)
+    

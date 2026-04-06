@@ -65,7 +65,7 @@ class SDCardManager(Singleton):
             return spi, sd
         except Exception as e:
             print("[SDCardManager] SPI fallito: {} ...".format(e))
-            raise OSError(19, "SD card non rilevata - controlla pin e collegamenti")
+            raise OSError(19, "[SDCardManager] SD card non rilevata - controlla pin e collegamenti")
 
     def set_configuration(self, data):
         """Persist a configuration dictionary as JSON on the SD card."""
@@ -123,13 +123,13 @@ class SDCardManager(Singleton):
             uos.mount(self._vfs, _MOUNT_POINT)
             try:
                 with open(file_path, "r") as file:
-                    print("Reading from SD card")
+                    #print("[SDCardManager] Reading from SD card")
                     data = json.load(file)
                 return data
             finally:
                 uos.umount(_MOUNT_POINT)
         except OSError as e:
             if e.errno == 2:  # ENOENT: No such file or directory
-                print("Errore: Il file '{}' non è stato trovato.".format(file_path))
+                print("[SDCardManager] Errore: Il file '{}' non è stato trovato.".format(file_path))
             else:
-                print("Errore: {}".format(e))
+                print("[SDCardManager] Errore: {}".format(e))

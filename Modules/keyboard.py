@@ -21,16 +21,16 @@ class Keyboard(Singleton):
     # Raw threshold used to decide when the analog line is considered "active".
     _PRESS_THRESHOLD = const(2000)
     # code_keys = [1, 2, 3, 4, 5, 6, 0]
-    # {right, left, up, down, ok, 'null at the moment', resetKey} 
+    # {right, left, up, down, ok, 'null at the moment', resetKey}
     # Key codes as class-level const — zero dict lookup, inlineabili da mpy-cross.
     # Eliminano il dict _KEY_TO_CODE e le property che lo interrogavano.
     right_keypad_value = const(1)
-    left_keypad_value  = const(2)
-    up_keypad_value    = const(3)
-    down_keypad_value  = const(4)
-    ok_keypad_value    = const(5)
+    left_keypad_value = const(2)
+    up_keypad_value = const(3)
+    down_keypad_value = const(4)
+    ok_keypad_value = const(5)
     reset_keypad_value = const(0)
-    null_keypad_value  = const(6)  # nessun tasto premuto
+    null_keypad_value = const(6)  # nessun tasto premuto
 
     def __init__(self, pin: int) -> None:
         """
@@ -60,11 +60,11 @@ class Keyboard(Singleton):
         """
         # Take a single ADC reading as the current "snapshot" of the keyboard.
         value = self.board_pin.read()
-        
+
         # Convert the raw ADC reading to an approximate voltage (×100, integer arithmetic).
         # equivalente: value * 330 // 4095  (risultato = tensione * 100, int)
         analog_voltage = value * 330 // 4095
-        
+
         # NOTE: at the moment all branches use the same threshold. In a typical
         # resistor-ladder keyboard each key will occupy a different voltage
         # range, so in the future you may want to add per-key ranges here.
