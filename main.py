@@ -10,7 +10,9 @@ from Modules.ds3231         import DS3231_RTC
 from Modules.relays         import Relays
 from Manager.sdCardManager  import SDCardManager
 from Manager.wifiConnection import WifiConnection
-from secrets import WIFI_SSID, WIFI_PASSWORD
+from secrets import WIFI_SSID, WIFI_PASSWORD # type: ignore[import]
+from Modules.ds18b20 import DS18B20
+
 
 SERVER_HOST = "myfishtank.altervista.org"
 gc.collect()
@@ -28,6 +30,8 @@ def main():
     board      = Keyboard(BoardPins.KEYPAD_ANALOG)
     countdown  = 0
     gc_counter = 0
+    
+    termometer = DS18B20(pin=BoardPins.DS18B20, resolution=12)
 
     print("[main] Initializing I2C...")
     i2c = I2C(0, scl=Pin(BoardPins.I2C_SCL),
@@ -67,6 +71,7 @@ def main():
 
     while True:
         try:
+            wdt.feed()
             key = board.get_digit_keyboard()
      
             if key == board.up_keypad_value and viewer.is_enabled_menu:
@@ -99,7 +104,13 @@ def main():
                 countdown = 0
                 viewer.menu.shift(-1)
 
+            temperature = termometer.read_temperature()
+
+            viewer.set_temperature(str(temperature))
+
             viewer.run()
+            
+            wdt.feed()
 
             if viewer.is_enabled_menu:
                 countdown += 1
@@ -118,7 +129,7 @@ def main():
             lightsleep(250)
 
         except Exception as e:
-            print("[main] errore loop:", e)
+            print("[main] Error: loop", e)
             gc.collect()
 
 
