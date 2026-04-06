@@ -233,6 +233,8 @@ class Config(Singleton):
     def on_automatic_process(self):
         """Re-enable auto: restore on/off state from _temp."""
         s = self._saved_state
+        if s is None:
+            return 0
         self.set_on_off_light_auto(s["light"])
         self.set_on_off_heater(s["heater"])
         self.set_on_off_filter(s["filter"])
@@ -305,7 +307,7 @@ class Config(Singleton):
             "temperature": self.temperature,
             "ec": self.ec,
             "ph": self.ph,
-            "onOffRecovery": self.on_off_recovery,
+            "onOffRecovery": self._on_off_recovery,
         }
 
     def _freq_index(self, value):

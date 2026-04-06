@@ -24,7 +24,7 @@ def main():
     # Critico per la sicurezza: impedisce che riscaldatore/filtro rimangano
     # bloccati ON in caso di eccezione o hang dell'interprete.
     wdt        = WDT(timeout=30000)
-    cfg        = Config()
+    _cfg       = Config()
     board      = Keyboard(BoardPins.KEYPAD_ANALOG)
     countdown  = 0
     gc_counter = 0
@@ -41,20 +41,29 @@ def main():
         from Manager.ntpManager import NTP
         NTP(wifi, rtc).sync()
         gc.collect()
-
+    
     sdm = SDCardManager(
         sck_pin  = Pin(BoardPins.SCK_SD),
         mosi_pin = Pin(BoardPins.MOSI_SD),
         miso_pin = Pin(BoardPins.MISO_SD),
         sd_pin   = Pin(BoardPins.CS_SD, Pin.OUT),
     )
+    
+    if sdm:
+        if sdm.if_exist_configuration():
+            file_json = sdm.get_configuration()
+            _cfg.from_json(file_json)
+
+    gc.collect()
 
     relays = Relays()
+    relays.init_relays_status(_cfg)
+    gc.collect()
 
     from Manager.viewer import Viewer
-    viewer = Viewer(i2c=i2c, config=cfg, ds3231_rtc=rtc, conn=wifi, relays=relays)
+    viewer = Viewer(i2c=i2c, config=_cfg, ds3231_rtc=rtc, conn=wifi, relays=relays)
     gc.collect()
-    print("[main] Heap post-Viewer: {} bytes".format(gc.mem_free()))
+    print("[main] Heap 2: {} bytes".format(gc.mem_free()))
 
     while True:
         try:
@@ -75,10 +84,8 @@ def main():
                     # durante il boot normale.
                     if viewer.menu.main_screen is None:
                         from Menu.menuBuilder import build_menu
-                        build_menu(viewer, cfg)
+                        build_menu(viewer, _cfg)
                         gc.collect()
-                        print("[main] Menu built - heap: {} bytes".format(
-                            gc.mem_free()))
                     viewer.is_enabled_menu = True
                 else:
                     countdown = 0
@@ -99,7 +106,9 @@ def main():
             if countdown >= 100:
                 countdown = 0
                 viewer.is_enabled_menu = False
-
+                sdm.set_configuration(_cfg.to_dict())
+                gc.collect()
+                
             gc_counter += 1
             if gc_counter >= 500:
                 gc.collect()

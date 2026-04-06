@@ -114,7 +114,6 @@ class MenuView(MenuItem):
         pass
 
     def select(self):
-        # print("Sono qua select")
         # called when menu.click() is called (on button press)
         # should return Instance of MenuItem (usually self.parent - if want to go level up or self to stay in current context)
         raise NotImplementedError()
@@ -376,6 +375,14 @@ class MenuList(MenuView):
         if not self._built and self._on_enter is not None:
             self._on_enter()
             self._built = True
+    
+    def set_built(self, value):
+        """Setter esplicito per lo stato di build, usato nei test."""
+        self._built = value
+
+    def set_visible_cache_valid(self, value):
+        """Setter esplicito per lo stato di cache visibile, usato nei test."""
+        self._visible_cache_valid = value
 
     def click(self):
         """Entra nella lista: esegue lazy build se necessario, poi disegna."""
@@ -439,7 +446,6 @@ class ToggleItem(MenuCallback):
         self._check_callable(state_callback)
         self.state_callback = state_callback
         self.toggleValue = toggleValue
-        # print("ToggleItem init name " + self.name + " and it is visible " + str(self.visible) + " and it is visible 2 " + str(visible))
         self.upd_decorator()
 
     def check_status(self):
@@ -451,15 +457,17 @@ class ToggleItem(MenuCallback):
         self.decorator = (
             self.toggleValue[0] if self.check_status() else self.toggleValue[1]
         )
-        # print("ToggleItem decorator setting " + self.decorator)
 
     def click(self):
         """Esegue ``change_callback``, aggiorna il decorator e ridisegna la lista padre."""
-        # print("Toggle item click " + self.name + " parent " + str(self.parent) +  " visible " + str(self.visible))
         self._call_callable(self.callback)
         self.upd_decorator()
-        # print("Toggle item click parent name " + self.parent.name)
-        self.parent.draw()
+        if self.parent is not None and hasattr(self.parent, "draw") and hasattr(self.parent, "set_visible_cache_valid"):
+            self.parent.set_visible_cache_valid(False)
+            self.parent.draw()
+        elif self.parent is not None and hasattr(self.parent, "draw"):
+            self.parent.draw()
+          
         return self.parent
 
 
@@ -566,7 +574,6 @@ class ButtonItem(MenuRow):
         self, name, callback=None, parent=None, decorator="", visible=None, display=None
     ):
         super().__init__(name, callback, decorator, visible, parent, display)
-        # print(name)
 
     def click(self):
         """Esegue il callback e ridisegna la lista padre."""

@@ -29,4 +29,3 @@ gc.collect()
 builtins.WLAN_INSTANCE = wlan
 
 gc.collect()
-print("[boot] WiFi driver OK - heap libera:", gc.mem_free(), "bytes")

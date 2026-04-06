@@ -215,11 +215,6 @@ class WifiConnection(Singleton):
         """
         gc.collect()
 
-        # Stampa RAM disponibile (debug) se supportato da MicroPython
-        mem_free = getattr(gc, "mem_free", None)
-        if mem_free is not None:
-            print("[wifi] RAM libera:", mem_free(), "bytes")
-
         headers = {
             "Content-Type": "application/json",
             "Connection": "close",  # IMPORTANTE: evita keep-alive]

@@ -18,7 +18,6 @@ from machine import I2C  # type: ignore[import]
 
 import Modules.ssd1306 as ssd1306
 from time import sleep, localtime, time
-from Manager.sdCardManager import SDCardManager
 from Resource.Config import Config
 from Manager.wifiConnection import WifiConnection
 from Modules.ds3231 import DS3231_RTC
@@ -121,19 +120,12 @@ class Viewer:
 
         # --- Menu tree -------------------------------------------------------
         self.menu = Menu(self)
-        #self.set_menu()
 
         # --- Relay pin references (from the Relays object) -------------------
-        self._light_rele = relays.light
-        self._filter_rele = relays.filter
-        self._heater_rele = relays.heater
-        self._feeder_rele = relays.feeder
-
-        # Ensure all relays start in the OFF (0) state at boot.
-        self._light_rele.value(0)
-        self._filter_rele.value(0)
-        self._heater_rele.value(0)
-        self._feeder_rele.value(0)
+        self._light_rele = relays.get_light_rele()
+        self._filter_rele = relays.get_filter_rele()
+        self._heater_rele = relays.get_heater_rele()
+        self._feeder_rele = relays.get_feeder_rele()
         # self.init_screen()
         # self.display.poweroff()
 
@@ -163,28 +155,31 @@ class Viewer:
         new_val = not self._config.get_on_off_light_auto()
         self._config.set_on_off_light_auto(new_val)
         self._config.relay0 = new_val
-        self._light_rele.value(1 if new_val else 0)
+        self._light_rele.value(0 if new_val else 1)
         return self._config.get_on_off_light_auto()
 
     def toggle_on_off_filter(self):
         """Toggle the water-filter relay (relay 1) and sync the flag in Config."""
         new_val = not self._config.get_on_off_filter()
         self._config.set_on_off_filter(new_val)
-        self._filter_rele.value(1 if new_val else 0)
+        self._config.relay1 = new_val
+        self._filter_rele.value(0 if new_val else 1)
         return self._config.get_on_off_filter()
 
     def toggle_on_off_heater(self):
         """Toggle the heater relay (relay 2) and sync the flag in Config."""
         new_val = not self._config.get_on_off_heater()
         self._config.set_on_off_heater(new_val)
-        self._heater_rele.value(1 if new_val else 0)
+        self._config.relay2 = new_val
+        self._heater_rele.value(0 if new_val else 1)
         return self._config.get_on_off_heater()
 
     def toggle_on_off_feeder(self):
         """Toggle the fish-feeder relay (relay 3) and sync the flag in Config."""
         new_val = not self._config.get_on_off_feeder()
         self._config.set_on_off_feeder(new_val)
-        self._feeder_rele.value(1 if new_val else 0)
+        self._config.relay3 = new_val
+        self._feeder_rele.value(0 if new_val else 1)
         return self._config.get_on_off_feeder()
 
     def toggle_on_off_heater_auto(self):
@@ -422,7 +417,6 @@ class Viewer:
         # Clear only the status-strip area so the content rows above are untouched.
         self.display.fill_rect(0, 52, 128, 12, 0)
         for index, rele_status in enumerate(rele):
-            print(rele_status)    #--------------------------------------------------------------------
             if rele_status:
                 # Relay ON → filled (solid) button.
                 self.display.show_fill_button_with_text(

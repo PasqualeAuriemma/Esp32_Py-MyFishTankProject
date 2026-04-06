@@ -23,12 +23,12 @@ e-mail:- muthuswamy.pugazhendi@gmail.com
 
 from machine import SPI  # type: ignore[import]
 import Modules.sdcard as sdcard
-import os
-import json
-import uos  # type: ignore[import]
-
+import os, json, uos, gc  # type: ignore[import]
 from Helper.Singleton import Singleton  # type: ignore[import]
 
+_INIT_BAUD   = 1_000_000
+_MOUNT_POINT = "/sd"
+_CONFIG_FILE = "/SETTINGS.JSON"
 
 class SDCardManager(Singleton):
     """Singleton manager for SD card access on ESP32."""
@@ -43,56 +43,72 @@ class SDCardManager(Singleton):
         sd_pin,
     ) -> None:
         # Ensure one-time initialization when used as a Singleton.
-        # False — la prima chiamata entra e inizializza
         if getattr(self, "_singleton_initialized", False):
             return
         
         # Initialize the SD card SPI interface and wrap it with the sdcard driver.
         # baudrate=10 MHz: safe upper limit for most SD cards on hardware SPI bus 1.
-        # Without an explicit baudrate MicroPython may default to a very low speed.
-        
-        self._spi = SPI(
-            1, baudrate=400_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
-        )
-        """
-        self._spi = SoftSPI(
-            baudrate=400_000, sck=sck_pin, mosi=mosi_pin, miso=miso_pin
-        )
-        """
-        self._sd = sdcard.SDCard(self._spi, sd_pin)
+        self._spi, self._sd = self._init_spi(sck_pin, mosi_pin, miso_pin, sd_pin)
         # Create a FAT VFS instance over the SD card (MicroPython-specific API).
         self._vfs = os.VfsFat(self._sd)  # type: ignore[attr-defined]
 
         self._singleton_initialized = True
 
+    @staticmethod
+    def _init_spi(sck_pin, mosi_pin, miso_pin, sd_pin):
+        # Initialize the SD card SPI interface and wrap it with the sdcard driver.
+        # baudrate=10 MHz: safe upper limit for most SD cards on hardware SPI bus 1.
+        try:
+            spi = SPI(2, baudrate=_INIT_BAUD, polarity=0, phase=0, sck=sck_pin, mosi=mosi_pin, miso=miso_pin)
+            gc.collect()
+            sd = sdcard.SDCard(spi, sd_pin)
+            return spi, sd
+        except Exception as e:
+            print("[SDCardManager] SPI fallito: {} ...".format(e))
+            raise OSError(19, "SD card non rilevata - controlla pin e collegamenti")
+
     def set_configuration(self, data):
         """Persist a configuration dictionary as JSON on the SD card."""
         import gc
         gc.collect()
-        uos.mount(self._vfs, "/sd")
+        uos.mount(self._vfs, _MOUNT_POINT)
         try:
             # Convert dictionary to JSON string and write it.
             json_data = json.dumps(data)
-            with open("/sd/data.json", "w") as file:
+            with open(_MOUNT_POINT + _CONFIG_FILE, "w") as file:
                 file.write(json_data)
         finally:
             # Always unmount, even on error, to avoid leaving VFS mounted.
-            uos.umount("/sd")
+            uos.umount(_MOUNT_POINT)
+
+    def _mount_do(self, fn):
+        """Monta /sd, esegue fn(), smonta sempre. Ritorna il valore di fn()."""
+        uos.mount(self._vfs, _MOUNT_POINT)
+        try:
+            return fn()
+        finally:
+            uos.umount(_MOUNT_POINT)        
 
     def if_exist_configuration(self):
         """Return True if a valid configuration file exists on the SD card."""
-        uos.mount(self._vfs, "/sd")
         try:
-            os.stat("/sd/data.json")
-            return True
-        except OSError as e:
-            if e.errno == 2:  # ENOENT: file not found → not an error
+            uos.mount(self._vfs, _MOUNT_POINT)
+            try:
+                os.stat(_MOUNT_POINT + _CONFIG_FILE)
+                return True
+            except OSError as e:
+                if e.errno == 2:  # ENOENT: file not found → not an error
+                    return False
+                print("[SDCardManager] Errore SD stat:", e)
                 return False
-            print("Errore SD stat: {}".format(e))
+            finally:
+                uos.umount(_MOUNT_POINT)
+        except OSError as e:
+            if e.errno == 19:  # ENODEV: No device
+                print("[SDCardManager] Errore: SD card non trovata o non inizializzata (ENODEV). Controlla collegamenti e SD.")
+                return False
+            print("[SDCardManager] Errore mount SD:", e)
             return False
-        finally:
-            # Always unmount, even on unexpected exceptions.
-            uos.umount("/sd")
 
     def get_configuration(self):
         """Read configuration JSON from SD and return it as a dict.
@@ -102,16 +118,16 @@ class SDCardManager(Singleton):
         """
         import gc
         gc.collect()
-        file_path = "/sd/data.json"
+        file_path = _MOUNT_POINT + _CONFIG_FILE
         try:
-            uos.mount(self._vfs, "/sd")
+            uos.mount(self._vfs, _MOUNT_POINT)
             try:
                 with open(file_path, "r") as file:
                     print("Reading from SD card")
                     data = json.load(file)
                 return data
             finally:
-                uos.umount("/sd")
+                uos.umount(_MOUNT_POINT)
         except OSError as e:
             if e.errno == 2:  # ENOENT: No such file or directory
                 print("Errore: Il file '{}' non è stato trovato.".format(file_path))

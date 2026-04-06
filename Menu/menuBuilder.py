@@ -24,7 +24,7 @@ from Menu.pymenu import (
 
 
 def build_menu(viewer, cfg):
-    """Installa il menu radice. Chiamare quando viewer.menu.main_screen is None."""
+    """Installa il menu radice. Chiamato quando viewer.menu.main_screen is None."""
     _build_root(viewer, cfg)
     gc.collect()
 
@@ -75,7 +75,7 @@ def _build_ec(ml, viewer, cfg):
     d = viewer.display
     (
         ml
-        .add(ToggleItem("ACTIVATION", cfg.get_on_off_ec,        viewer.toggle_on_off_ec))
+        .add(ToggleItem("ACTIVATION", cfg.get_on_off_ec,         viewer.toggle_on_off_ec))
         .add(MenuMonitoringSensor(d,  "MONITORING",              visible=cfg.get_on_off_ec))
         .add(ToggleItem("WEB SERVER", cfg.get_on_off_ec_sending, viewer.toggle_on_off_ec_sending, visible=cfg.get_on_off_ec))
         .add(MenuEnum(d, "WEB RATE",  cfg.freq,                  cfg.set_freq_update_web_ec,      visible=cfg.get_on_off_ec_sending))
