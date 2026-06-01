@@ -571,16 +571,29 @@ class TestWifiConnection(unittest.TestCase):
     def test_host_property(self):
         self.assertEqual(self.wifi.host, "host.test")
 
-    def test_send_value_connects_if_needed(self):
-        """send_value_to_web deve connettersi automaticamente se non connesso."""
-        result = self.wifi.send_value_to_web("25.0", "Temp", "12345")
+    def test_send_value_sync_connects_if_needed(self):
+        """_send_value_to_web_sync deve connettersi automaticamente se non connesso."""
+        result = self.wifi._send_value_to_web_sync("25.0", "Temp", "12345")
         self.assertTrue(result)
 
-    def test_send_value_no_host_returns_false(self):
+    def test_send_value_sync_no_host_returns_false(self):
         _reset_singleton(self.WC)
         wifi2 = self.WC(_FakeWLAN(), "ssid", "pw", host=None)
-        result = wifi2.send_value_to_web("25.0", "Temp", "12345")
+        result = wifi2._send_value_to_web_sync("25.0", "Temp", "12345")
         self.assertFalse(result)
+
+    def test_send_value_queues_correctly(self):
+        """send_value_to_web deve accodare il dato senza connettersi immediatamente."""
+        self.wifi.disconnect()
+        result = self.wifi.send_value_to_web("25.0", "Temp", "12345")
+        self.assertTrue(result)
+        self.assertFalse(self.wifi.is_connected()) # Non deve connettersi al volo
+        self.assertTrue(self.wifi.has_queued_items())
+        
+        # Verifica pop e contenuto
+        item = self.wifi.pop_queue()
+        self.assertEqual(item, ("25.0", "Temp", "12345"))
+        self.assertFalse(self.wifi.has_queued_items())
 
     def test_singleton_returns_same_instance(self):
         wifi2 = self.WC(self.wlan, "OtherSSID", "OtherPass")

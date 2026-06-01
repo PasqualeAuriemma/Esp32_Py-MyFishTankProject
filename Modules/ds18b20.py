@@ -33,7 +33,7 @@
 #       print(addr.hex(), temp)
 
 import gc
-import time
+import utime as time # type: ignore[import]
 from machine import Pin # type: ignore[import]
 from micropython import const # type: ignore[import]
 
@@ -186,7 +186,7 @@ class DS18B20:
         Usa time.sleep_ms() — il WDT viene resettato dal chiamante nel loop.
         """
         self._ds.convert_temp()
-        time.sleep(self._conv_time_ms / 1000)
+        time.sleep_ms(self._conv_time_ms)
 
     def read_temperature(self, rom=None) -> float:
         """
@@ -224,7 +224,10 @@ class DS18B20:
 
             except onewire.OneWireError as e:
                 self._log("Error: 1-Wire tentativo {}: {}".format(attempt + 1, e))
-                time.sleep(_RETRY_DELAY_MS / 1000)
+                time.sleep_ms(200)
+                if attempt == _MAX_RETRIES - 2:
+                    self._scan()
+                continue
             except Exception as e:
                 self._log("Error: imprevisto: {}".format(e))
                 return _TEMP_INVALID
@@ -251,7 +254,7 @@ class DS18B20:
         try:
             # Una sola conversione per tutti i sensori — efficiente
             self._ds.convert_temp()
-            time.sleep(self._conv_time_ms / 1000)
+            time.sleep_ms(self._conv_time_ms)
 
             for rom in self._roms:
                 try:

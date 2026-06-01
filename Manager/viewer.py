@@ -383,7 +383,7 @@ class Viewer:
 
         # Temperature row: label, zero-padded value, custom degree symbol, unit.
         self.display.text("TEMP:", 0, 23)
-        self.display.text("{0:02d}".format(int(self._temperature)), 48, 23)
+        self.display.text("{0:02}".format(self._temperature), 48, 23)
         self.display.show_custom_char(self._degree_symbol, 64, 23)  # °
         self.display.text("C", 72, 23)
 

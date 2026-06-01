@@ -80,6 +80,8 @@ class Config(Singleton):
         # Singleton guard and saved-state snapshot
         "_singleton_initialized",
         "_saved_state",
+        "_ph_offset",
+        "_ph_slope",
     )
 
     def __init__(self):
@@ -126,6 +128,31 @@ class Config(Singleton):
         self._send_action_ph = False
         self._singleton_initialized = True
         self._saved_state = None
+        self._ph_offset = 0.0
+        self._ph_slope = 0.0
+        gc.collect()
+
+
+    @property
+    def ph_offset(self):
+        """Return the pH offset value."""
+        return self._ph_offset
+
+    @property
+    def ph_slope(self):
+        """Return the pH slope value."""
+        return self._ph_slope
+    
+    @ph_offset.setter
+    def ph_offset(self, value):
+        """Set the pH offset value."""
+        self._ph_offset = value
+
+    @ph_slope.setter
+    def ph_slope(self, value):
+        """Set the pH slope value."""
+        self._ph_slope = value
+
 
     @property
     def freq(self):

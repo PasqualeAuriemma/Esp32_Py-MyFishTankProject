@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Populating HTML Table from JSON File (jQuery/Ajax)</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/script.js"></script>
+    <!-- Custom CSS -->
+    <style>
+
+    </style>
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient" id="topNavBar">
+        <div class="container">
+            <a class="navbar-brand" href="https://Sourcecodester.com">
+            Sourcecodester
+            </a>
+        </div>
+    </nav>
+    <div class="container py-3" id="page-container">
+        <h3><b>Populating HTML Table from JSON File using jQuery and Ajax</b></h3>
+        <hr>
+        <div id="printables">
+            <div class="to_print" id="first_element">
+                <h3 class="text-center"><b>Sample Table List</b></h3>
+                <hr>
+                <table class="table table-bordered table-striped" id="table-list">
+                    <thead>
+                        <tr class="bg-primary bg-gradient text-white">
+                            <th class="text-capitalize text-center py-1 px-2">#</th>
+                            <th class="text-capitalize text-center py-1 px-2">name</th>
+                            <th class="text-capitalize text-center py-1 px-2">phone</th>
+                            <th class="text-capitalize text-center py-1 px-2">email</th>
+                            <th class="text-capitalize text-center py-1 px-2">region</th>
+                            <th class="text-capitalize text-center py-1 px-2">country</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div id="loader" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <center><button type="button" class="btn btn-sm btn-success rounded-0 my-2" id="reload_data">Reload Data</button></center>
+    </div>
+</body>
+
+</html>

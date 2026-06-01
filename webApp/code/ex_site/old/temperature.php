@@ -1,0 +1,527 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <title>PIA12 FISH TANK - AQUARIUM</title>
+    <link rel="icon" type="image/png" href="/images/salmon.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main14.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link href="assets/css/bootstrap5.0.1.min.css" rel="stylesheet"  crossorigin="anonymous">        
+    <script src="assets/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <style type="text/css" media="screen">
+      .outer {
+              width: 100%;  
+              }
+      .outer > * {
+        display:inline-block;
+        vertical-align:middle;
+      
+      }
+    </style>
+  </head>
+  <body class="homepage is-preload">
+    <div id="page-wrapper">
+      <!-- Header -->
+      <section id="header-sub" class="wrapper">
+        <!-- Logo -->
+        <div id="logo">
+            <h1><a href="index.php">AQUARIUM PIA12</a></h1>
+            <p>The easy way to manage your fish tank</p>
+        </div>
+        <!-- Nav -->
+        <!--<nav id="nav">
+          <ul>
+            <li class="current"><a href="index.html">Home</a></li>
+            <li>
+              <a href="#">Measurements</a>
+                <ul>
+                  <li><a href="temperature.php">Temperature</a></li>
+                  <li><a href="ph.txt">PH</a></li>
+                  <li><a href="ec.php">EC</a></li>
+                  <li><a href="tds.php">TDS</a></li>
+                </ul>
+              </li>
+            <li><a href="left-sidebar.html">Left Sidebar</a></li>
+            <li><a href="right-sidebar.html">Right Sidebar</a></li>
+            <li><a href="no-sidebar.html">Contatti</a></li>
+          </ul>
+        </nav>-->
+      </section>
+      <!-- Temperatura -->
+      <section id="intro" class="wrapper style1">
+        <div class="title">Temperature</div>
+        <div class="container">
+          <div class="row aln-center">
+            <div class="col-6 col-12-medium">
+              <section class="highlight">
+                 <p class="style2">
+                  Overview with charts
+                  <a href="#!" data-id="" data-bs-toggle="modal" data-bs-target="#addTemperatureModal"   class="btn btn-success btn-sm" >Add Temperature</a>
+              </p>
+              </section>
+            </div>    
+            <div class="col-6 col-12-medium">
+              <section class="highlight"> 
+                <div style="width: 100%; height: 100%;">
+                  <?php
+                    $dataNow1 = date('Y-m-d'); ?>
+                  
+                  <div class="col-md-3"  style="width: 100%;">
+                    <div class = "outer">  
+                    <div> <h1>On</h1> </div> 
+                    <div>   <input type="text" name="from_date" id="from_date" class="form-control"  size="7" placeholder="<?php echo "$dataNow1" ?>" /> </div> 
+                    <div>   <h1> arrived: </h1> </div> 
+                    <div>   <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info"  style=" border: 0;
+                        line-height: 2.5; font-size: 1rem; text-align: center; color: #fff;
+                        text-shadow: 1px 1px 1px #000; border-radius: 10px; background-color: rgba(220, 0, 0, 1);
+                        background-image: linear-gradient(to top left, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 30%,
+                        rgba(0, 0, 0, 0)); box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+                        inset -2px -2px 3px rgba(0, 0, 0, .6);" /> </div> 
+                  
+                    </div>
+                  </div>  
+                  <?php
+                    $dataNow1 = date('Y-m-d');  
+                    $query4 = "SELECT data_send as date, temperature as temp FROM my_myfishtank.temp_tab WHERE FROM_UNIXTIME(data_send, '%Y-%m-%d') = '$dataNow1' ORDER BY data_send";
+                    include("connection.php");
+                    $result_list = $con->query($query4);
+                    $con->close();
+                  ?>
+                  <div id="list1">
+                    <?php
+                      echo "<ol>";
+                      if ($result_list->num_rows > 0) {
+                        while($row4 = $result_list->fetch_assoc()) {
+                          echo "<li> At ".gmdate("H:i:s\ ", $row4['date'])."  Temperature = ".$row4['temp']."°</li>";
+                        }
+                      }
+                      echo '</ol>';
+                    ?>
+                  </div>  
+                </div>
+              </section>
+            </div>
+          </div>
+          
+          <div id="areachart" style="margin: 0px 2px;"></div>
+          <div id="buttonAreaChart">
+            <button3 id="change7D" class="buttonTrend">7 Days</button3>
+            <button1 id="change1M" class="buttonTrend">1 Month</button1>
+            <button2 id="change2M" class="buttonTrend">2 Months</button2>
+            <button3 id="changeALL" class="buttonTrend">All</button3>
+          </div>
+          <p style="clear:both"><br>
+          <div class="row aln-center">
+            <div class="col-6 col-12-medium">
+              <section class="highlight">
+                <div id="piechart" style="width: 100%; height: 100%; position: relative;"></div>
+              </section>
+            </div>    
+            <div class="col-6 col-12-medium">
+              <section class="highlight">
+                <div id="columnchart" style="width: 100%; height: 100%; overflow:auto; position: relative;"></div> 		
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Main -->
+<!--  <section id="main" class="wrapper style2">
+        <div class="title">EC</div>
+        <div class="container">
+
+        </div>
+      </section> -->
+      <!-- Main -->
+<!--  <section id="main" class="wrapper style4">
+        <div class="title">PH</div>
+        <div class="container">
+
+        </div>
+      </section> -->        
+      <!-- Footer -->
+      <section id="footer" class="wrapper">
+        <div class="container">
+          <div class="row">
+            <div class="col-6 col-12-medium">
+            <!-- Contact -->
+              <section class="feature-list small">
+                <div class="row">
+                  <div class="col-6 col-12-small">
+                    <section>
+                      <h3 class="icon solid fa-comment">Social</h3>
+                      <p>
+                        <a href="https://github.com/PasqualeAuriemma/MyFishTankProject">Github</a><br />
+                        <a href="https://www.linkedin.com/in/pasquale-auriemma-780953b8/">LinkedIn</a><br />
+                        <a href="https://it.altervista.org/">Altervista</a>
+                      </p>
+                    </section>
+                  </div>
+                  <div class="col-6 col-12-small">
+                    <section>
+                      <h3 class="icon solid fa-envelope">Email</h3>
+                        <p>
+                          <a href="#">info@untitled.tld</a>
+                        </p>
+                    </section>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+          <div id="copyright">
+            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Licenza Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
+            <br />Quest'opera è distribuita con Licenza <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribuzione 4.0 Internazionale</a>.
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <link href="css/bootstrap5.0.1.min.css" rel="stylesheet"  crossorigin="anonymous">        
+    <script src="js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>      
+    <!-- Scripts -->
+    <script src="sito/assets/js/jquery.min.js"></script>
+    <script src="sito/assets/js/jquery.dropotron.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script src="sito/assets/js/browser.min.js"></script>
+    <script src="sito/assets/js/breakpoints.min.js"></script>
+    <script src="sito/assets/js/util.js"></script>
+    <!-- <script src="sito/assets/js/main.js"></script> -->
+    <!-- oppure <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script> -->
+    <script src="sito/assets\js\flickity.pkgd.min.js"></script>
+    <script type="text/javascript">
+			$(document).on('submit','#addTemperature',function(e){
+      			e.preventDefault();
+                var key= $('#addKeyField').val();
+                var temp= $('#addTField').val();
+                if (key == "Pia12"){
+                       $.ajax({
+                         url:"add_temperature.php",
+                         type:"post",
+                         data:{temp:temp},
+                         success:function(data){
+                           var json = JSON.parse(data);
+                           var status = json.status;
+                           if(status=='true'){
+                            //location.reload(true);
+                            $('#addTemperatureModal').modal('hide');
+                            var frm = document.getElementsByName('addTemperature')[0];
+                            frm.reset();  // Reset all form data
+                            setInterval(function(){$("#list1").load(window.location.href + " #list1" );}, 1000);
+                            //setInterval('location.reload(true)', 1000);
+                           }else{
+                            alert('Query failed');
+                           }
+                         }
+                      });
+    			}else{
+      				alert('Key wrong');
+    			}
+  			});
+    </script>  
+    <script>  
+      $(document).ready(function(){  
+           $.datepicker.setDefaults({  
+                dateFormat: 'yy-mm-dd'   
+           });  
+           $(function(){  
+                $("#from_date").datepicker();   
+           });  
+           $('#filter').click(function(){  
+                var selected_date = $('#from_date').val();   
+                if(selected_date != '')  
+                {  
+                     $.ajax({  
+                          url:"filter_temp.php",  
+                          method:"POST",   
+                          data:{date:selected_date},  
+                          success:function(data)  
+                          {   
+                             $('#list1').html(data);  
+                          }  
+                     });  
+                } else {  
+                   alert("Please Select Date");  
+                }  
+           });  
+      });  
+    </script>   
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1', {packages: ['corechart', 'bar', "calendar"]});
+      google.setOnLoadCallback(setDataForAreaChart);
+
+      function setDataForAreaChart(){
+
+        <?php // PHP Google Charts
+        $dataNow = date('Y-m-d', strtotime("-1 month"));
+        $year = date('Y');
+        $query4 = "SELECT AVG(temperature) as media FROM my_myfishtank.temp_tab WHERE FROM_UNIXTIME(data_send, '%Y-%m-%d') >= '$dataNow'";
+        $query2 = "SELECT ROUND(temperature, 0) AS temp, count(id) as count FROM my_myfishtank.temp_tab GROUP BY temp";
+        $query1 = "SELECT data_arrive as date, temperature as temp FROM my_myfishtank.temp_tab WHERE FROM_UNIXTIME(data_send, '%Y-%m-%d') >= '$dataNow' ORDER BY data_send"; 
+        $query3 = "SELECT FROM_UNIXTIME(data_send, '%Y,%m -1 ,%d') as data, COUNT(data_send) as value FROM my_myfishtank.temp_tab WHERE FROM_UNIXTIME(data_send, '%Y') = '$year' GROUP BY FROM_UNIXTIME(data_send, '%Y-%m-%d')"; 
+        ?> 
+        drawPieAreaColumnCharts();
+      }
+
+
+      var data_val;
+      var data_val2;
+      var data_val3;
+      function drawPieAreaColumnCharts() {
+
+        data_val = google.visualization.arrayToDataTable([
+          ['Date', 'Temp'],
+          <?php // PHP Google Charts
+          include("connection.php");
+          $result1 = $con->query($query1);
+
+          if ($result1->num_rows > 0) {
+            // output data of each row
+            while($row1 = $result1->fetch_assoc()) {
+              echo "['".$row1['date']."',".$row1['temp']."],";
+            }
+          }
+          ?>
+        ]);
+         <?php
+          $resultMedia = $con->query($query4);
+          if ($resultMedia->num_rows > 0) {
+             // output data of each row
+             while($rowMedia = $resultMedia->fetch_assoc()) {
+               $media_temp = $rowMedia["media"];
+             }
+          } else {
+            $media_temp = 0;
+          }
+        $formatted_temperature = number_format($media_temp, 1);
+        echo "
+        var options_val = {  
+          height: '1400px',
+          width: '100px',
+          title: 'Temperature average of 30 days is: $formatted_temperature',
+          hAxis: {textPosition: 'none'},
+          explorer: { maxZoomIn: .5 , maxZoomOut: 8 },
+          backgroundColor: '#f1f8e9',
+          vAxis: {'title': 'Temperature', 'minValue': 22, 'maxValue': 35},
+          chartArea:{
+            top: 36,
+            left: 36,
+            right: 18,
+            bottom: 36
+          },
+        };"; ?>
+
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn({ type: 'date', id: 'Date' });
+        dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+        dataTable.addRows([
+          <?php // PHP Google Charts
+
+
+          $result3 = $con->query($query3);
+
+          if ($result3->num_rows > 0) {
+            // output data of each row
+            while($row3 = $result3->fetch_assoc()) {
+
+              echo "[new Date(".$row3['data']."),".$row3['value']."],";
+            }
+          }
+
+          ?>]);
+
+
+        var options_val3 = {
+          width: '950',
+          title: "Number of daily measurements",
+
+          colorAxis: {minValue: 0,  colors: ['#FF0000', '#0903ab']},
+          calendar: {
+            dayOfWeekLabel: {
+              fontName: 'Times-Roman',
+              fontSize: 12,
+              color: 'white',
+              bold: false,
+              italic: false
+            }, 
+            monthLabel: {
+              fontName: 'Times-Roman',
+              fontSize: 12,
+              color: '#d5cbc3',
+              bold: true,
+              italic: true
+            },
+            underMonthSpace: 16,
+            daysOfWeek: 'SMTWTFS',
+          }
+        };
+
+        data_val2 = google.visualization.arrayToDataTable([
+          ['Temperature', 'Count'],
+          <?php 
+          $result2 = $con->query($query2);
+          if ($result2->num_rows > 0) {
+            // output data of each row
+            while($row2 = $result2->fetch_assoc()) {
+              echo "['".$row2['temp']."',".$row2['count']."],";
+            }
+          }
+          ?>
+        ]);
+        var options_val2 = {
+          pieSliceText: 'percentage',
+          backgroundColor: 'transparent',
+          is3D: true,
+          chartArea:{left:'20%',top:0,width:'100%',height:'100%'},
+          legend: {textStyle: {color: 'white', fontSize: 14}}
+        };
+        var chart_val3 = new google.visualization.Calendar(document.getElementById('columnchart'));
+        var chart_val2 = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chart_val = new google.visualization.AreaChart(document.getElementById('areachart'));
+
+        function resize() {  
+          chart_val3.clearChart();
+          chart_val3.draw(dataTable, options_val3);
+          chart_val2.clearChart();
+          chart_val2.draw(data_val2, options_val2);
+          chart_val.clearChart();
+          chart_val.draw(data_val, options_val);
+        }
+
+        window.onload = resize();
+        window.onresize = resize;
+        var button7D = document.getElementById('change7D');
+        var button1M = document.getElementById('change1M');
+        var button2M = document.getElementById('change2M');
+        var buttonALL = document.getElementById('changeALL');
+        
+        button7D.onclick = function () {
+
+          data_val = google.visualization.arrayToDataTable([
+            ['Date', 'Temp'],
+            <?php // PHP Google Charts
+            $dataNow = date('Y-m-d', strtotime("-7 day"));
+            $query31 = "SELECT data_arrive as date, temperature as temp FROM my_myfishtank.temp_tab WHERE FROM_UNIXTIME(data_send, '%Y-%m-%d') >= '$dataNow' ORDER BY data_send";          
+            
+            $result31 = $con->query($query31);
+            if ($result31->num_rows > 0) {
+              // output data of each row
+              while($row31 = $result31->fetch_assoc()) {
+                echo "['".$row31['date']."',".$row31['temp']."],";
+              }
+            }?>]);
+
+          chart_val.clearChart(); 
+          chart_val.draw(data_val, options_val);
+
+        };
+        
+        button2M.onclick = function () {
+
+          data_val = google.visualization.arrayToDataTable([
+            ['Date', 'Temp'],
+            <?php // PHP Google Charts
+            $dataNow = date('Y-m-d', strtotime("-2 month"));
+            $query31 = "SELECT data_arrive as date, temperature as temp FROM my_myfishtank.temp_tab WHERE FROM_UNIXTIME(data_send, '%Y-%m-%d') >= '$dataNow' ORDER BY data_send";          
+            
+            $result31 = $con->query($query31);
+            if ($result31->num_rows > 0) {
+              // output data of each row
+              while($row31 = $result31->fetch_assoc()) {
+                echo "['".$row31['date']."',".$row31['temp']."],";
+              }
+            }?>]);
+
+          chart_val.clearChart(); 
+          chart_val.draw(data_val, options_val);
+
+        };
+
+        button1M.onclick = function () {
+
+          data_val = google.visualization.arrayToDataTable([
+            ['Date', 'Temp'],
+            <?php // PHP Google Charts
+            $dataNow = date('Y-m-d', strtotime("-1 month"));
+            $query31 = "SELECT data_arrive as date, temperature as temp FROM my_myfishtank.temp_tab WHERE FROM_UNIXTIME(data_send, '%Y-%m-%d') >= '$dataNow' ORDER BY data_send";          
+            $result31 = $con->query($query31);
+
+            if ($result31->num_rows > 0) {
+              // output data of each row
+              while($row31 = $result31->fetch_assoc()) {
+                echo "['".$row31['date']."',".$row31['temp']."],";
+              }
+            }
+            ?>
+          ]);
+          chart_val.clearChart(); 
+          chart_val.draw(data_val, options_val);
+
+        };
+
+        buttonALL.onclick = function () {
+
+          data_val = google.visualization.arrayToDataTable([
+            ['Date', 'Temp'],
+            <?php // PHP Google Charts
+
+            $query31 = "SELECT data_arrive as date, temperature as temp FROM my_myfishtank.temp_tab ORDER BY data_send";          
+            $result31 = $con->query($query31);
+
+            if ($result31->num_rows > 0) {
+              // output data of each row
+              while($row31 = $result31->fetch_assoc()) {
+                echo "['".$row31['date']."',".$row31['temp']."],";
+              }
+            }
+            ?>
+          ]);
+          chart_val.clearChart(); 
+          chart_val.draw(data_val, options_val);
+
+        };
+      }
+    </script>
+    <?php      
+    $con->close();
+    ?>
+        <!-- Add Fertilization Modal -->
+    	<div class="modal fade" id="addTemperatureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  			<div class="modal-dialog">
+    			<div class="modal-content">
+      				<div class="modal-header">
+        				<h5 class="modal-title" id="exampleModalLabel">Add Temperature</h5>
+        				<button7 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button7>
+      				</div>
+      				<div class="modal-body">
+        				<form id="addTemperature" name="addConductivity" action="">
+             				<div class="mb-3 row">
+            					<label for="addKeyField" class="col-md-3 form-label">Key</label>
+            					<div class="col-md-9">
+              						<input type="password" class="form-control" id="addKeyField" name="key" >
+            					</div>
+          					</div>
+          					<div class="mb-3 row">
+            					<label for="addTField" class="col-md-3 form-label">Temperature</label>
+            					<div class="col-md-9">
+              						<input type="number" class="form-control" id="addTField" name="temperature" >
+            					</div>
+          					</div>
+          					<div class="text-center">
+            					<button type="submit" class="btn btn-primary">Submit</button>
+          					</div>
+        				</form> 
+      				</div>
+     				<div class="modal-footer">
+        				<!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+      				</div>
+    			</div>
+  			</div>
+		</div>  
+  </body>
+</html>

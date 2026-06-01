@@ -6,10 +6,10 @@ class Relays:
     """Wrapper for all relay pins (outputs)."""
 
     def __init__(self) -> None:
-        self._light = Pin(BoardPins.RELAY_LIGHT, Pin.OUT)
-        self._filter = Pin(BoardPins.RELAY_FILTER, Pin.OUT)
-        self._heater = Pin(BoardPins.RELAY_HEATER, Pin.OUT)
-        self._feeder = Pin(BoardPins.RELAY_FEEDER, Pin.OUT)
+        self._light = Pin(BoardPins.RELAY_LIGHT_PIN, Pin.OUT)
+        self._filter = Pin(BoardPins.RELAY_FILTER_PIN, Pin.OUT)
+        self._heater = Pin(BoardPins.RELAY_HEATER_PIN, Pin.OUT)
+        self._feeder = Pin(BoardPins.RELAY_FEEDER_PIN, Pin.OUT)
 
     def init_relays_status(self, config):
         """Initialize relay states based on Config."""

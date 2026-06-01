@@ -149,7 +149,7 @@ class MenuCallback(MenuItem):
 
     @property
     def decorator(self):
-        return self._decorator if not callable(self._decorator) else self.decorator()
+        return self._decorator if not callable(self._decorator) else self._decorator()
 
     @decorator.setter
     def decorator(self, value):
@@ -248,6 +248,7 @@ class MenuRow(MenuCallback):
             font_width:  Larghezza carattere in pixel.
             font_height: Altezza carattere in pixel.
         """
+        assert self.display is not None, "[MenuRow] Error: Display must be set to draw text!"
         self.upd_decorator()
         menu_y_end = int((self.display.height - line_height) / per_page)
         y = menu_y_end + (pos * menu_y_end)
@@ -402,6 +403,7 @@ class MenuList(MenuView):
         La finestra scorre in modo che la voce selezionata sia sempre visibile.
         Dopo aver disegnato tutte le righe, il buffer del display viene inviato con ``show()``.
         """
+        assert self.display is not None, "[MenuList] Error: Display must be set to draw text!"
         self.display.fill(0)
         self._menu_header(self.name)
         elements = self.count()
@@ -423,6 +425,7 @@ class MenuList(MenuView):
 
     def _menu_header(self, text):
         """Disegna il titolo centrato e una linea separatrice orizzontale."""
+        assert self.display is not None, "[MenuList] Error: Display must be set to draw text!"
         x = int((self.display.width / 2) - (len(text) * self.font_width / 2))
         self.display.text(str.upper(self.name), x, 0, 1)
         self.display.hline(0, self.line_height, self.display.width, 1)
@@ -584,7 +587,7 @@ class ButtonItem(MenuRow):
 
 class MenuEnum(MenuList):
 
-    __slots__ = ("selected_item", "callback")
+    __slots__ = ("selected_item", "callback", "_decorator")
 
     def __init__(
         self,
@@ -735,6 +738,7 @@ class MenuMonitoringSensor(MenuView):
 
     def draw(self):
         """Renderizza la schermata di monitoraggio con i valori correnti di misura e temperatura."""
+        assert self.display is not None, "[MenuMonitoringSensor] Error: Display must be set to draw text!"
         self.display.fill(0)
         self.display.rect(0, 0, self.display.width, self.display.height, 1)
         self._centered_text("WIFI: " + str(self.measure), 20, 1)
@@ -750,6 +754,7 @@ class MenuMonitoringSensor(MenuView):
 
     def _centered_text(self, text, y, c):
         """Disegna *text* centrato orizzontalmente alla posizione verticale *y*."""
+        assert self.display is not None, "[MenuMonitoringSensor] Error: Display must be set to draw text _centered_text!"
         x = int(self.display.width / 2 - len(text) * 8 / 2)
         self.display.text(text, x, y, c)
 

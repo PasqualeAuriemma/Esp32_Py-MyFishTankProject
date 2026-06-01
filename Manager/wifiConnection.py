@@ -27,7 +27,15 @@ from Helper.Singleton import Singleton
 class WifiConnection(Singleton):
     """Handles the WiFi connection for the device. Singleton: one instance per device."""
 
-    __slots__ = ("_ssid", "_password", "_host", "_wlan", "_singleton_initialized")
+    __slots__ = (
+        "_ssid",
+        "_password",
+        "_host",
+        "_wlan",
+        "_singleton_initialized",
+        "_queue",
+        "_queue_lock",
+    )
 
     # Mappa stati WiFi → stringa leggibile: allocata UNA VOLTA al caricamento del modulo.
     # Con moduli frozen, vive in flash invece che in RAM.
@@ -53,6 +61,9 @@ class WifiConnection(Singleton):
         self._host = host
         # Initialize the interface, but don't activate it immediately
         self._wlan = wlan_driver
+        self._queue = []
+        import _thread
+        self._queue_lock = _thread.allocate_lock()
         self._singleton_initialized = True
 
     @property
@@ -167,12 +178,33 @@ class WifiConnection(Singleton):
 
     def send_value_to_web(self, value, key, timestamp):
         """
-        Invia un valore a un endpoint web.
-        Tenta la connessione se non è già attivo.
-        NOTA: Non si disconnette automaticamente per efficienza.
+        Accoda un valore per l'invio asincrono in background.
+        Ritorna sempre True indicando che il dato è stato accodato.
+        """
+        self.log_message("[wifi] Accodato dato per l'invio: {} = {}".format(key, value))
+        self._queue_lock.acquire()
+        self._queue.append((value, key, timestamp))
+        self._queue_lock.release()
+        return True
 
-        Ritorna:
-            bool: True se l'invio ha avuto successo, False altrimenti.
+    def has_queued_items(self):
+        """Verifica se ci sono dati in coda da inviare."""
+        self._queue_lock.acquire()
+        res = len(self._queue) > 0
+        self._queue_lock.release()
+        return res
+
+    def pop_queue(self):
+        """Estrae il primo elemento dalla coda."""
+        self._queue_lock.acquire()
+        item = self._queue.pop(0) if self._queue else None
+        self._queue_lock.release()
+        return item
+
+    def _send_value_to_web_sync(self, value, key, timestamp):
+        """
+        Invia un valore a un endpoint web in modo sincrono.
+        Questa funzione deve essere eseguita dal thread di background.
         """
         if self._host is None:
             self.log_message("[wifi] Host non configurato. Impossibile inviare i dati.")
@@ -190,13 +222,11 @@ class WifiConnection(Singleton):
         url = "https://{}/take{}.php".format(self._host, key)
         data = {key: value, "Date": timestamp}
 
-        # Log sintetico per ridurre allocazioni superflue di stringhe.
         self.log_message("[wifi] Invio dati a {}.".format(url))
 
         try:
             response_text = self._post_https_request(url, data)
         finally:
-            # Libera il dizionario e altre variabili locali il prima possibile.
             try:
                 del data
             except NameError:

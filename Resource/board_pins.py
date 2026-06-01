@@ -31,31 +31,37 @@ from micropython import const  # type: ignore[import]
 
 
 class BoardPins:
-    """Hardware pin mapping for the board (ESP32)."""
+   """Hardware pin mapping for the board (ESP32)."""
 
-    # --- I2C Devices (OLED Display and RTC) ---
-    # Pins for I2C bus might need to be configured depending on the ESP32 board.
-    # Default for many boards are: SDA=21, SCL=22
-    I2C_SDA = const(21)
-    I2C_SCL = const(22)
+   # --- I2C Devices (OLED Display and RTC) ---
+   # Pins for I2C bus might need to be configured depending on the ESP32 board.
+   # Default for many boards are: SDA=21, SCL=22
+   I2C_SDA_PIN = const(21)
+   I2C_SCL_PIN = const(22)
 
-    SCK_SD = const(18)
-    MOSI_SD = const(23)
-    MISO_SD = const(19)
-    CS_SD = const(5)
+   SCK_SD_PIN = const(18)
+   MOSI_SD_PIN = const(23)
+   MISO_SD_PIN = const(19)
+   CS_SD_PIN = const(5)
 
-    # Relays
-    RELAY_LIGHT = const(27)  # int C inline, zero heap overhead
-    RELAY_FILTER = const(26)
-    RELAY_HEATER = const(25)
-    RELAY_FEEDER = const(33)
+   # Relays
+   RELAY_LIGHT_PIN = const(27)  # int C inline, zero heap overhead
+   RELAY_FILTER_PIN = const(26)
+   RELAY_HEATER_PIN = const(25)
+   RELAY_FEEDER_PIN = const(33)
 
-    # Analog Inputs (Potentiometers for menu control)
-    # A value > 2000 is considered a "press".
-    # pin G4 (Tasti keypad) T0
-    # Keypad analog
-    KEYPAD_ANALOG = const(4)
+   # Analog Inputs (Potentiometers for menu control)
+   # A value > 2000 is considered a "press".
+   # pin G4 (Tasti keypad) T0
+   # Keypad analog
+   KEYPAD_PIN = const(4)
 
-    # DS18B20, OneWire Temperature Sensor
-    DS18B20 = const(13)
+   # DS18B20, OneWire Temperature Sensor
+   DS18B20_PIN = const(13)
+
+   # TDS-EC Meter v 1.0 KS0429
+   EC_ADC_PIN = const(0)  # ADC1 channel 6
+   MOSFET_EC_PIN = const(17)  # GPIO for controlling EC measurement power
+   MOSFET_PH_PIN = const(14)  # GPIO for controlling PH measurement power
+   PH_ADC_PIN = const(34)  # ADC1 channel 6
     
