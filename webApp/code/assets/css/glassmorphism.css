@@ -1,0 +1,514 @@
+/* ════════════════════════════════════════════════════════════════
+   Glassmorphism CSS - MyFishTank Aquarium Theme
+   Modern glass effect with Aquarium Blue Palette
+   ════════════════════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────────────────────
+   COLOR PALETTE & VARIABLES - AQUARIUM BLUE THEME
+   ────────────────────────────────────────────────────────────── */
+:root {
+  /* Glass Effect */
+  --glass-bg-light: rgba(255, 255, 255, 0.05);
+  --glass-bg-medium: rgba(255, 255, 255, 0.08);
+  --glass-bg-dark: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(0, 212, 255, 0.3);
+  --glass-blur: 10px;
+  --glass-blur-strong: 20px;
+
+  /* Primary Colors */
+  --primary-cyan: #00d4ff;
+  --primary-blue: #0099ff;
+  --secondary-purple: #7c3aed;
+  --accent-cyan: #06b6d4;
+  --accent-green: #10b981;
+
+  /* Background */
+  --dark-bg: #0a0e27;
+  --dark-bg-secondary: #0f1729;
+  --dark-panel: #111d3d;
+  --dark-panel-hover: #1a2847;
+
+  /* Text */
+  --text-primary: #e0e7ff;
+  --text-secondary: #a0aec0;
+  --text-muted: #64748b;
+
+  /* Shadow */
+  --shadow-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.15);
+  --shadow-glow-purple: 0 0 20px rgba(124, 58, 237, 0.15);
+  --shadow-hover: 0 8px 32px rgba(0, 212, 255, 0.1);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+  /* Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   GLOBAL STYLES
+   ────────────────────────────────────────────────────────────── */
+html, body {
+  background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-bg-secondary) 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+}
+
+* {
+  transition: var(--transition-fast);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   CARD COMPONENTS - MAIN GLASSMORPHISM
+   ────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-smooth);
+  overflow: hidden;
+}
+
+.card:hover {
+  background: var(--glass-bg-medium);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--shadow-hover), var(--shadow-card);
+  transform: translateY(-2px);
+}
+
+.card.glass-primary {
+  border-color: var(--primary-cyan);
+  box-shadow: var(--shadow-glow-cyan), var(--shadow-card);
+}
+
+.card.glass-primary:hover {
+  box-shadow: 0 0 40px rgba(0, 212, 255, 0.25), var(--shadow-hover), var(--shadow-card);
+}
+
+.card.glass-secondary {
+  border-color: var(--secondary-purple);
+  box-shadow: var(--shadow-glow-purple), var(--shadow-card);
+}
+
+.card-header {
+  background: var(--glass-bg-medium);
+  backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: 16px 16px 0 0;
+  padding: 1.25rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   BUTTONS
+   ────────────────────────────────────────────────────────────── */
+.btn {
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--primary-blue) 100%);
+  color: #000;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+  transform: translateY(-2px);
+  color: #000;
+  background: linear-gradient(135deg, #00e5ff 0%, #00b0d4 100%);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--secondary-purple) 0%, var(--accent-cyan) 100%);
+  color: #fff;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
+}
+
+.btn-secondary:hover {
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.btn-outline-glass {
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+}
+
+.btn-outline-glass:hover {
+  background: var(--glass-bg-medium);
+  border-color: var(--primary-cyan);
+  color: var(--primary-cyan);
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-icon:hover {
+  background: var(--glass-bg-medium);
+  border-color: var(--primary-cyan);
+  color: var(--primary-cyan);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   NAVBAR & SIDEBAR
+   ────────────────────────────────────────────────────────────── */
+.navbar {
+  background: var(--glass-bg-dark);
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+  color: var(--primary-cyan) !important;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.sidebar {
+  background: var(--glass-bg-dark);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-right: 1px solid var(--glass-border);
+}
+
+.nav-link {
+  color: var(--text-secondary) !important;
+  transition: var(--transition-smooth);
+  border-left: 3px solid transparent;
+  padding-left: calc(1rem - 3px) !important;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-cyan) !important;
+  border-left-color: var(--primary-cyan);
+  background: var(--glass-bg-medium);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   MODALS & DROPDOWNS
+   ────────────────────────────────────────────────────────────── */
+.modal-content {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.modal-header {
+  background: var(--glass-bg-medium);
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: 16px 16px 0 0;
+}
+
+.modal-header .btn-close {
+  filter: brightness(1.5);
+}
+
+.modal-backdrop {
+  background: rgba(10, 14, 39, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.dropdown-menu {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.dropdown-item {
+  color: var(--text-secondary);
+  transition: var(--transition-fast);
+}
+
+.dropdown-item:hover,
+.dropdown-item.active {
+  background: var(--glass-bg-medium);
+  color: var(--primary-cyan);
+  border-radius: 8px;
+  margin: 0.25rem 0.5rem;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   FORM INPUTS
+   ────────────────────────────────────────────────────────────── */
+.form-control,
+.form-select {
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  border-radius: 10px;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: var(--glass-bg-medium);
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.15), inset 0 0 0 0.2rem rgba(0, 212, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.form-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   TABLES
+   ────────────────────────────────────────────────────────────── */
+.table {
+  color: var(--text-primary);
+}
+
+.table thead th {
+  background: var(--glass-bg-medium);
+  border-color: var(--glass-border);
+  border-bottom: 2px solid var(--primary-cyan);
+  color: var(--primary-cyan);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--glass-border);
+  transition: var(--transition-fast);
+}
+
+.table tbody tr:hover {
+  background: var(--glass-bg-medium);
+  border-color: var(--primary-cyan);
+}
+
+.table tbody td {
+  vertical-align: middle;
+  color: var(--text-secondary);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background: var(--glass-bg-dark);
+}
+
+.table-striped tbody tr:nth-of-type(odd):hover {
+  background: var(--glass-bg-medium);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   BADGES & PILLS
+   ────────────────────────────────────────────────────────────── */
+.badge {
+  background: var(--glass-bg-light);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.badge-primary {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 153, 255, 0.2) 100%);
+  border-color: var(--primary-cyan);
+  color: var(--primary-cyan);
+}
+
+.badge-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   ANIMATIONS
+   ────────────────────────────────────────────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: var(--shadow-glow-cyan);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.25);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.glass-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.slide-in {
+  animation: slide-in 0.5s ease-out;
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   SCROLLBAR STYLING
+   ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-cyan);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   UTILITIES
+   ────────────────────────────────────────────────────────────── */
+.text-primary-cyan {
+  color: var(--primary-cyan) !important;
+}
+
+.text-secondary-purple {
+  color: var(--secondary-purple) !important;
+}
+
+.border-glass {
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 12px;
+}
+
+.bg-glass {
+  background: var(--glass-bg-light) !important;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.glass-shadow {
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   RESPONSIVE ADJUSTMENTS
+   ────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .card {
+    border-radius: 12px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .navbar {
+    backdrop-filter: blur(var(--glass-blur-strong));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -13,22 +13,17 @@
     <!-- plugins:css -->
     <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
-    
+
     <!-- endinject -->
     <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="assets/vendors/jvectormap/jquery-jvectormap.css">
     <link rel="stylesheet" href="assets/vendors/flag-icon-css/css/flag-icon.min.css">
-    
-    <link rel="stylesheet" href="assets/vendors/owl-carousel-2/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/vendors/owl-carousel-2/owl.theme.default.min.css">
-
-    <!-- End plugin css for this page -->
     <!-- inject:css -->
     <!-- endinject -->
     <!-- Layout styles -->
    
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/glassmorphism.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="assets/images/salmon.png" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
@@ -363,38 +358,53 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h1 class="card-title">MyFishTank</h1>
-                                    <div style="z-index:0;" class="owl-carousel owl-theme full-width owl-carousel-dash portfolio-carousel" id="owl-carousel-basic">
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/acquarium.jpg" alt="">
-                                        </div>
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/acquarium1.jpg" alt="">
-                                        </div>
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/acquarium2.jpg" alt="">
-                                        </div>
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/acquarium4.jpg" alt="">
-                                        </div>
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/riallestimento0.jpg" alt="">
-                                        </div>
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/riallestimento2.jpg" alt="">
-                                        </div>
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/riallestimento3.jpg" alt="">
-                                        </div> 
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/riallestimento4.jpg" alt="">
-                                        </div>
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/riallestimento5.jpg" alt="">
-                                        </div>
-                                        <div class="item">
-                                            <img src="assets/images/dashboard/riallestimento6.jpg" alt="">
+                                    <!-- Modern Image Gallery -->
+                                    <div id="image-gallery" style="position: relative; width: 100%; overflow: hidden; border-radius: 12px;">
+                                        <img id="gallery-main" src="assets/images/dashboard/acquarium.jpg" alt="Aquarium Gallery" style="width: 100%; height: auto; display: block; transition: opacity 0.3s ease;">
+                                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/acquarium.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="0">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/acquarium1.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="1">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/acquarium2.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="2">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/acquarium4.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="3">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento0.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="4">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento2.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="5">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento3.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="6">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento4.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="7">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento5.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="8">
+                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento6.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="9">
                                         </div>
                                     </div>
+                                    <script>
+                                        // Simple gallery functionality
+                                        const galleryImages = [
+                                            'assets/images/dashboard/acquarium.jpg',
+                                            'assets/images/dashboard/acquarium1.jpg',
+                                            'assets/images/dashboard/acquarium2.jpg',
+                                            'assets/images/dashboard/acquarium4.jpg',
+                                            'assets/images/dashboard/riallestimento0.jpg',
+                                            'assets/images/dashboard/riallestimento2.jpg',
+                                            'assets/images/dashboard/riallestimento3.jpg',
+                                            'assets/images/dashboard/riallestimento4.jpg',
+                                            'assets/images/dashboard/riallestimento5.jpg',
+                                            'assets/images/dashboard/riallestimento6.jpg'
+                                        ];
+
+                                        document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+                                            thumb.addEventListener('click', function() {
+                                                const index = this.dataset.index;
+                                                document.getElementById('gallery-main').src = galleryImages[index];
+
+                                                // Update highlight
+                                                document.querySelectorAll('.gallery-thumb').forEach(t => {
+                                                    t.style.borderColor = 'transparent';
+                                                });
+                                                this.style.borderColor = 'var(--primary-cyan)';
+                                            });
+                                        });
+
+                                        // Set initial highlight
+                                        document.querySelector('.gallery-thumb').style.borderColor = 'var(--primary-cyan)';
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -697,15 +707,13 @@
     <script src="assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
-    
-    
+
+
     <script src="assets/vendors/chart.js/Chart.min.js"></script>
     <script src="assets/vendors/progressbar.js/progressbar.min.js"></script>
-    <script src="assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
-    <script src="assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 
     <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!--<script type="text/javascript" src="https://www.google.com/jsapi"></script>-->
     <!--<script src="assets/js/data-picker.js"></script>-->
     <!--<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.0.js"></script> 
@@ -719,7 +727,6 @@
    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-   <script src="assets/vendors/owl-carousel-2/owl.carousel.min.js"></script>
 
     <!-- End plugin js for this page -->
     <!-- inject:js -->
@@ -741,11 +748,13 @@
     <script src="js/fertilizationTable.js"></script>
     <script src="js/waterValuesTable.js"></script>
     <script src="js/loginManaging.js"></script>
-    
+    <script src="assets/js/glassmorphism-enhancements.js"></script>
+
     <script type="text/javascript">
-    	
+
     </script>
 
+    <!-- Google Charts disabled - using Chart.js instead
     <script>
           google.charts.load('current', {'packages':['gauge', 'corechart']});
           //google.load('visualization', '1', {packages: ['corechart', 'gauge']});
@@ -759,7 +768,7 @@
             var h = $(window).height();
             var y = Math.floor(h * 0.3);
             //console.log("height: " + h + ", y = " + y);
-            
+
             var dataEC = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
                 ['µS/cm', <?php echo $ec;?>],
@@ -771,13 +780,13 @@
                 max: 1000,
                 height: y,
                 width: x
-            };   
-            
+            };
+
             var chartE = new google.visualization.Gauge(document.getElementById('chart_ec'));
-            
+
             chartE.clearChart();
             chartE.draw(dataEC, optionsEC);
-            
+
             var dataTemp = google.visualization.arrayToDataTable([
               ['Label', 'Value'],
               ['Gradi °', <?php echo $temperature;?>],
@@ -806,19 +815,19 @@
                 height: y,
                 width: x
             };
-              
+
             var chartT = new google.visualization.Gauge(document.getElementById('chart_temp'));
 
             var chartP = new google.visualization.Gauge(document.getElementById('chart_ph'));
                 chartT.clearChart();
                 chartT.draw(dataTemp, options);
-              
+
                 chartP.clearChart();
                 chartP.draw(dataPH, optionsPH);
-           
+
         }
-          
-        //create trigger to resizeEnd event     
+
+        //create trigger to resizeEnd event
         function resize () {
             var w = $(window).width();
             var x = Math.floor(w * 0.23);
@@ -826,7 +835,7 @@
             var h = $(window).height();
             var y = Math.floor(h * 0.3);
             //console.log("height: " + h + ", y = " + y);
-            
+
             var dataEC = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
                 ['µS/cm', <?php echo $ec;?>],
@@ -838,18 +847,18 @@
                 max: 1000,
                 height: y,
                 width: x
-            };   
-            
+            };
+
             var chartE = new google.visualization.Gauge(document.getElementById('chart_ec'));
-            
+
             chartE.clearChart();
             chartE.draw(dataEC, optionsEC);
-            
+
             var dataTemp = google.visualization.arrayToDataTable([
               ['Label', 'Value'],
               ['Gradi °', <?php echo $temperature;?>],
             ]);
-            
+
             var dataPH = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
                 ['pH', <?php echo $ph;?>],
@@ -864,7 +873,7 @@
                 width: x
             };
 
-         
+
             var optionsPH = {
                 yellowFrom: 0, yellowTo: 6.5,
                 greenFrom: 6.5, greenTo: 8,
@@ -874,20 +883,21 @@
                 height: y,
                 width: x
             };
-              
+
               var chartT = new google.visualization.Gauge(document.getElementById('chart_temp'));
 
               var chartP = new google.visualization.Gauge(document.getElementById('chart_ph'));
               chartT.clearChart();
               chartT.draw(dataTemp, options);
-              
+
               chartP.clearChart();
               chartP.draw(dataPH, optionsPH);
         }
 
         window.onload = resize;
         window.onresize = resize;
-    </script> 
+    </script>
+    --> 
        
     <!-- End custom js for this page -->
     <script>
@@ -1014,7 +1024,7 @@
                       <label class="form-check-label">
                         <input type="submit" class="form-check-input"> Remember me </label>
                     </div>
-                    <a href="#" class="forgot-pass">Forgot password</a>
+                    <a href="#" id="forgotPasswordLink" class="forgot-pass">Forgot password</a>
                  </div>
                  <div class="text-center">
                     <button class="btn btn-primary btn-block enter-btn" id="login" >Log in</button>
@@ -1027,14 +1037,72 @@
                       <i class="mdi mdi-google-plus"></i> Google plus </button>
                  </div>
                  <div class="modal-footer">
-                	  <p class="sign-up">Don't have an Account?<a href="#"> Sign Up</a></p> 
+                	  <p class="sign-up">Don't have an Account?<a href="#" id="signupLink"> Sign Up</a></p>
                  </div>
                </form>
             </div>
           </div>
         </div>
-    </div>  
-    <div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    </div>
+    <!-- Sign Up Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          	<div class="modal-header">
+                    <h3 class="card-title text-left mb-3">Sign Up</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <form id="signupForm">
+                 <div class="form-group">
+                    <input type="text" class="form-control p_input" placeholder="First Name" id="firstNameSignUp" required>
+                 </div>
+                 <div class="form-group">
+                    <input type="email" class="form-control p_input" placeholder="Email" id="emailSignUp" required>
+                 </div>
+                 <div class="form-group">
+                    <input type="password" class="form-control p_input" placeholder="Password" id="passwordSignUp" required>
+                 </div>
+                 <div class="form-group">
+                    <input type="password" class="form-control p_input" placeholder="Confirm Password" id="passwordConfirmSignUp" required>
+                 </div>
+                 <div class="text-center">
+                    <button type="button" class="btn btn-primary btn-block enter-btn" id="signupBtn">Register</button>
+                 </div>
+                 <div class="modal-footer">
+                	  <p>Already have an Account?<a href="#" class="backToLogin"> Log In</a></p>
+                 </div>
+               </form>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          	<div class="modal-header">
+                    <h3 class="card-title text-left mb-3">Forgot Password</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <form id="forgotPasswordForm">
+                 <p class="text-muted">Enter your email to receive a password reset link</p>
+                 <div class="form-group">
+                    <input type="email" class="form-control p_input" placeholder="Email" id="emailForgot" required>
+                 </div>
+                 <div class="text-center">
+                    <button type="button" class="btn btn-primary btn-block enter-btn" id="forgotPasswordBtn">Send Reset Link</button>
+                 </div>
+                 <div class="modal-footer">
+                	  <a href="#" class="backToLogin">Back to Login</a>
+                 </div>
+               </form>
+            </div>
+          </div>
+        </div>
+    </div>
 		<div id="dialog">
             	<div class="card-body">
                   <div class="table-responsive">

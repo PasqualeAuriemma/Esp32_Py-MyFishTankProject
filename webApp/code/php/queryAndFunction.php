@@ -231,6 +231,7 @@ function calculate_median($arr) {
           
 function calculate_average($arr) {
   $count = count($arr); //total numbers in array
+  $total = 0;
   foreach ($arr as $value) {
     $total = $total + $value; // total value of array numbers
   }

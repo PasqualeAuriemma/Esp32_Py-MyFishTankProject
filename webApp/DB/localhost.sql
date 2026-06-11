@@ -104,7 +104,9 @@ CREATE TABLE `users` (
   `id` int NOT NULL,
   `firstName` varchar(50) NOT NULL,
   `email` varchar(40) NOT NULL,
-  `password` varchar(50) NOT NULL
+  `password` varchar(50) NOT NULL,
+  `reset_token` varchar(255) DEFAULT NULL,
+  `reset_token_expiry` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --

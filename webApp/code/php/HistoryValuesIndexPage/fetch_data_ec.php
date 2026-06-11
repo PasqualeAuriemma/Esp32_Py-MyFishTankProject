@@ -37,7 +37,7 @@ while($row = mysqli_fetch_assoc($query)){
 }
 
 $output = array(
-	'draw'=> intval($_POST['draw']),
+	'draw'=> intval($_GET['draw'] ?? 1),
 	'recordsTotal' => $count_rows ,
 	'recordsFiltered' => $total_all_rows,
 	'data' => $data,
