@@ -311,22 +311,6 @@ function showVolumes() {
         <!-- page-body-wrapper ends -->
     </div>
     
-    
-    
-    <script>
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("volumes").innerHTML = this.responseText;
-      }
-    };
-    xmlhttp.open("GET","getFertilizationVolumes.php,true);
-    xmlhttp.send();
-  
-
-</script>
-    
-    
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="assets/vendors/js/vendor.bundle.base.js"></script>
