@@ -751,7 +751,6 @@
     <script src="assets/js/glassmorphism-enhancements.js"></script>
 
     <script type="text/javascript">
-
     </script>
 
     <!-- Google Charts disabled - using Chart.js instead
@@ -1065,6 +1064,9 @@
                  </div>
                  <div class="form-group">
                     <input type="password" class="form-control p_input" placeholder="Confirm Password" id="passwordConfirmSignUp" required>
+                 </div>
+                 <div class="form-group">
+                    <input type="text" class="form-control p_input" placeholder="Invite Code" id="inviteCode" required>
                  </div>
                  <div class="text-center">
                     <button type="button" class="btn btn-primary btn-block enter-btn" id="signupBtn">Register</button>
