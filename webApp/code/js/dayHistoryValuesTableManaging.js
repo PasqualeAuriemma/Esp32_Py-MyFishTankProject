@@ -1,268 +1,98 @@
-$(document).ready(function() {
-	
-  $.datepicker.setDefaults({  
-    dateFormat: 'yy-mm-dd'   
-  });  
-  $(function(){  
-    $("#datepicker_ec").datepicker();   
-  });  
-  $('#filter_ec').click(function(){  
-    var selected_date = $('#datepicker_ec').val();   
-   
-    if(selected_date != '')  
-    {  
-      $("#table_id").DataTable({
-        "destroy": true,
-        "bProcessing": true,
-        "iDisplayLength": 4,
-        "dom": 'rtip',
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-          $('td', nRow).css('background-color', 'rgba(33,37,41)');
-        },
-        "ajax": {
-           "url": "php/HistoryValuesIndexPage/fetch_data_ec.php",
-           "data": {"d": selected_date},
-           "type": "GET"
-        },                
-        "aoColumns": [{mData: 'id'},
-                      {mData: 'data'},
-                      {mData: 'ec'}],
-        "columnDefs": [{"targets": [0],
-                        "visible": false,
-                        "searchable": false},
-                       {"targets": [1,2], /* column index */
-                        "orderable": false /* true or false */}
-                      ]    
-      });  
-    } else {  
-      alert("Please Select Date");  
-    }  
-  });  
-     
-	$('#table_id').DataTable({
-		"bProcessing": true,
-        "iDisplayLength": 4,
-        "dom": 'rtip',
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                        $('td', nRow).css('background-color', 'rgba(33,37,41)');},
-        "ajax": {
-                  "url": "php/HistoryValuesIndexPage/fetch_data_ec.php",
-                  "type": "GET",
-                  "data": {"d": "noData"},
-                },        
-    	"aoColumns": [{mData: 'id'},
-                      {mData: 'data'},
-                      {mData: 'ec'}],
-        "columnDefs": [{"targets": [0],
-                        "visible": false,
-                        "searchable": false,
-                        "orderable": false},
-                       {"targets": [1,2], /* column index */
-                        "orderable": false /* true or false */}
-                      ]    
-	});  
-         
-         
-    $(document).on('click','.addConductivity',function(e){
-     var table = $('#table_id').DataTable();
-     e.preventDefault();
-     var ec= $('#addECField').val();
-     $.ajax({
-       url:"php/HistoryValuesIndexPage/add_ec.php",
-       type:"post",
-       data:{ec:ec},
-       success:function(data){
-         var json = JSON.parse(data);
-         var status = json.status;
-         if(status=='true'){
-          $('#addECField').val("");
-          $("#table_id").DataTable({
-        "destroy": true,
-        "bProcessing": true,
-        "iDisplayLength": 4,
-        "dom": 'rtip',
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-          $('td', nRow).css('background-color', 'rgba(33,37,41)');
-        },
-        "ajax": {
-           "url": "php/HistoryValuesIndexPage/fetch_data_ec.php",
-           "data": {"d": "noData"},
-           "type": "GET"
-        },                
-        "aoColumns": [{mData: 'id'},
-                      {mData: 'data'},
-                      {mData: 'ec'}],
-        "columnDefs": [{"targets": [0],
-                        "visible": false,
-                        "searchable": false},
-                       {"targets": [1,2], /* column index */
-                        "orderable": false,
-                        "width": "300%" /* true or false */}
-                      ]    
-      });  
-          //setInterval('location.reload(true)', 1000);
-         }else{
-           alert('Conductivity adding failed');
-         }
-       }
-     });
+$(document).ready(function () {
 
-   });
-   
-  $(function(){$("#datepicker_ph").datepicker();});
-  
-  $('#filter_ph').click(function(){  
-    var selected_date = $('#datepicker_ph').val();   
-    if(selected_date != '')  
-    {  
-      $("#ph_history").DataTable({
-        "destroy": true,
-        "bProcessing": true,
-        "iDisplayLength": 4,
-        "dom": 'rtip',
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-          $('td', nRow).css('background-color', 'rgba(33,37,41)');},
-        "ajax": {
-           "url": "php/HistoryValuesIndexPage/fetch_data_ph.php",
-           "data": {"d": selected_date},
-           "type": "GET"
-        },      
-        "aoColumns": [{mData: 'id'},
-                      {mData: 'data'},
-                      {mData: 'ph'}],
-        "columnDefs": [{"targets": [0],
-                        "visible": false,
-                        "searchable": false},
-                       {"targets": [1,2], /* column index */
-                        "orderable": false /* true or false */}
-                      ]    
-      });  
-    } else {  
-      alert("Please Select Date");  
-    }  
-  }); 
-  
-    $("#ph_history").DataTable({
-    	"bProcessing": true,
-        "iDisplayLength": 4,
-        "dom": 'rtip',
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                        $('td', nRow).css('background-color', 'rgba(33,37,41)');},
-        "ajax": {
-           "url": "php/HistoryValuesIndexPage/fetch_data_ph.php",
-           "data": {"d": "noData"},
-           "type": "GET"
-        },        
-        "aoColumns": [{mData: 'id'},
-              		  {mData: 'data'},
-              		  {mData: 'ph'}],
-        "columnDefs": [{"targets": [0],
-                        "visible": false,
-                        "searchable": false},
-                       {"targets": [1,2], /* column index */
-                        "orderable": false /* true or false */}]
-	});  
-      
-  
-  $(document).on('click', '.addPH',function(e){
-      e.preventDefault();
-      var ph= $('#addPHFieldP').val();
-      $.ajax({
-          url:"php/HistoryValuesIndexPage/add_ph.php",
-          type:"post",
-          data:{ph:ph},
-          success:function(data){
-            var json = JSON.parse(data);
-            var status = json.status;
-            if(status=='true'){
-                  $('#addPHFieldP').val("");
-                  mytables = $("#ph_history").DataTable();
-    	          mytables.draw();
-                  setInterval('location.reload(true)', 1000);
-            }else{
-              alert('Ph adding failed');
-            }
-          }
-        }); 
+    $.datepicker.setDefaults({ dateFormat: 'yy-mm-dd' });
+    $('#datepicker_ec').datepicker();
+    $('#datepicker_ph').datepicker();
+    $('#datepicker_t').datepicker();
+
+    // ── Helper: crea/ricrea una DataTable con i parametri dati ───────────────
+    function buildTable(tableId, url, data, columns) {
+        $(tableId).DataTable({
+            destroy:        true,
+            bProcessing:    true,
+            iDisplayLength: 4,
+            dom:            'rtip',
+            fnRowCallback:  function (nRow) {
+                $('td', nRow).css('background-color', 'rgba(33,37,41)');
+            },
+            ajax: { url: url, data: data, type: 'GET' },
+            aoColumns:   columns,
+            columnDefs: [
+                { targets: [0], visible: false, searchable: false, orderable: false },
+                { targets: '_all', orderable: false }
+            ]
+        });
+    }
+
+    var colEC   = [{ mData: 'id' }, { mData: 'data' }, { mData: 'ec' }];
+    var colPH   = [{ mData: 'id' }, { mData: 'data' }, { mData: 'ph' }];
+    var colT    = [{ mData: 'id' }, { mData: 'data' }, { mData: 't'  }];
+    var ecUrl   = 'php/HistoryValuesIndexPage/fetch_data_ec.php';
+    var phUrl   = 'php/HistoryValuesIndexPage/fetch_data_ph.php';
+    var tUrl    = 'php/HistoryValuesIndexPage/fetch_data_t.php';
+
+    // ── Caricamento iniziale delle tre tabelle ────────────────────────────────
+    buildTable('#table_id',           ecUrl, { d: 'noData' }, colEC);
+    buildTable('#ph_history',         phUrl, { d: 'noData' }, colPH);
+    buildTable('#temperature_history', tUrl, { d: 'noData' }, colT);
+
+    // ── Filtri per data ───────────────────────────────────────────────────────
+    $('#filter_ec').on('click', function () {
+        var d = $('#datepicker_ec').val();
+        if (!d) { alert('Please select a date'); return; }
+        buildTable('#table_id', ecUrl, { d: d }, colEC);
     });
-      
-  $(function(){$("#datepicker_t").datepicker();});  
-  
-  $('#filter_t').click(function(){  
-    var selected_date = $('#datepicker_t').val();   
-    if(selected_date != '')  
-    {  
-      $("#temperature_history").DataTable({
-        "destroy": true,
-        "bProcessing": true,
-        "iDisplayLength": 4,
-        "dom": 'rtip',
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-          $('td', nRow).css('background-color', 'rgba(33,37,41)');},
-        "ajax": {
-           "url": "php/HistoryValuesIndexPage/fetch_data_t.php",
-           "data": {"d": selected_date},
-           "type": "GET"
-        },       
-        "sServerMethod": "GET",
-                
-        "aoColumns": [{mData: 'id'},
-                      {mData: 'data'},
-                      {mData: 't'}],
-        "columnDefs": [{"targets": [0],
-                        "visible": false,
-                        "searchable": false},
-                       {"targets": [1,2], /* column index */
-                        "orderable": false /* true or false */}
-                      ]    
-      });  
-    } else {  
-      alert("Please Select Date");  
-    }  
-  }); 
-    
-    $("#temperature_history").DataTable({
-		"bProcessing": true,
-        "iDisplayLength": 4,
-        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                        $('td', nRow).css('background-color', 'rgba(33,37,41)');},
-        "dom": 'rtip',
-        "ajax": {
-           "url": "php/HistoryValuesIndexPage/fetch_data_t.php",
-           "data": {"d": "noData"},
-           "type": "GET"
-        },
-        "aoColumns": [{mData: 'id'},
-              		  {mData: 'data'},
-               		  {mData: 't'}],
-        "columnDefs": [{"targets": [0],
-                        "visible": false,
-                        "searchable": false},
-                       {"targets": [1,2], /* column index */
-                        "orderable": false /* true or false */}]
-	});     
-    
-      $(document).on('click','.addTemperature',function(e){
-      e.preventDefault();     
-      //var table = $('#temperature_history').DataTable();
-      var temp= $('#addTField').val();
-      $.ajax({
-        url:"php/HistoryValuesIndexPage/add_temperature.php",
-        type:"post",
-        data:{temp:temp},
-        success:function(data){
-          var json = JSON.parse(data);
-          var status = json.status;
-          if(status=='true'){
-          
-            myTable = $("#temperature_history").DataTable();  
-            myTable.draw();
-            setInterval('location.reload(true)', 1000);
-          }else{
-            alert('Temperature adding failed');
-          }
-        }
-      });
+
+    $('#filter_ph').on('click', function () {
+        var d = $('#datepicker_ph').val();
+        if (!d) { alert('Please select a date'); return; }
+        buildTable('#ph_history', phUrl, { d: d }, colPH);
     });
-    
+
+    $('#filter_t').on('click', function () {
+        var d = $('#datepicker_t').val();
+        if (!d) { alert('Please select a date'); return; }
+        buildTable('#temperature_history', tUrl, { d: d }, colT);
+    });
+
+    // ── Helper aggiunta valore + refresh tabella ──────────────────────────────
+    function addValue(url, fieldId, data, tableId, colDefs) {
+        $.ajax({
+            url: url, type: 'post', data: data,
+            success: function (response) {
+                var json = JSON.parse(response);
+                if (json.status === 'true') {
+                    $(fieldId).val('');
+                    buildTable(tableId, url.replace('add_', 'fetch_data_'), { d: 'noData' }, colDefs);
+                    // Sostituito setInterval con setTimeout: reload una volta sola
+                    setTimeout(function () { location.reload(true); }, 800);
+                } else {
+                    alert('Adding failed');
+                }
+            },
+            error: function () { alert('Network error. Please try again.'); }
+        });
+    }
+
+    $(document).on('click', '.addConductivity', function (e) {
+        e.preventDefault();
+        addValue('php/HistoryValuesIndexPage/add_ec.php',
+                 '#addECField', { ec: $('#addECField').val() },
+                 '#table_id', colEC);
+    });
+
+    $(document).on('click', '.addPH', function (e) {
+        e.preventDefault();
+        addValue('php/HistoryValuesIndexPage/add_ph.php',
+                 '#addPHFieldP', { ph: $('#addPHFieldP').val() },
+                 '#ph_history', colPH);
+    });
+
+    $(document).on('click', '.addTemperature', function (e) {
+        e.preventDefault();
+        addValue('php/HistoryValuesIndexPage/add_temperature.php',
+                 '#addTField', { temp: $('#addTField').val() },
+                 '#temperature_history', colT);
+    });
+
 });

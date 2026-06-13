@@ -97,7 +97,7 @@ $(document).on('submit','#updateQuantities',function(e){
           // table.cell(parseInt(trid) - 1,2).data(email);
           // table.cell(parseInt(trid) - 1,3).data(mobile);
           // table.cell(parseInt(trid) - 1,4).data(city);
-          var button =   '<td><a href="javascript:void();" data-id="' +id + '" class="btn btn-info btn-sm editbtnF" ><i class="mdi mdi-table-edit"></i></a>  <a href="#!"  data-id="' +id + '"   class="btn btn-danger btn-sm deleteBtnF" ><i class="mdi mdi-table-row-remove"></i></a></td>';
+          var button =   '<td><a href="javascript:void(0)" data-id="' +id + '" class="btn btn-info btn-sm editbtnF" ><i class="mdi mdi-table-edit"></i></a>  <a href="javascript:void(0)"  data-id="' +id + '"   class="btn btn-danger btn-sm deleteBtnF" ><i class="mdi mdi-table-row-remove"></i></a></td>';
           var row = table.row("[id='"+trid+"']");
           var dateClass = new Date(date);
           var MyDateString = ('0' + dateClass.getDate()).slice(-2) + '/'
@@ -114,7 +114,7 @@ $(document).on('submit','#updateQuantities',function(e){
 });
 
 
-$(document).on('click','.editbtnF ',function(event){
+$(document).on('click','.editbtnF',function(event){
   $(this).removeClass().addClass("btn btn-info btn-sm editbtnConfirmF");
   var $row = $(this).closest("tr").off("mousedown");
   $row.find("td").not(':first').not(':last').each(function(i, el) {
@@ -125,31 +125,6 @@ $(document).on('click','.editbtnF ',function(event){
       value : txt
     }).data('original-text', txt));
   });
-  /*
-  var table = $('#fertilizationTable').DataTable();
-  var trid = $(this).closest('tr').attr('id');
-  // console.log(selectedRow);
-  var id = $(this).data('id');
-  $('#updateFertilizationModal').modal('show');
-  $.ajax({
-    url:"Fertilization/get_single_quantity.php",
-    data:{id:id},
-    type:'post',
-    success:function(data){
-      var json = JSON.parse(data);
-      $('#kField').val(json.k);
-      $('#mgField').val(json.mg);
-      $('#feField').val(json.fe);
-      $('#rinverdenteField').val(json.rinverdente);
-      $('#pField').val(json.p);
-      $('#nField').val(json.n);
-      $('#npkField').val(json.npk);
-      $('#idQ').val(id);
-      $('#dateQ').val(json.data);
-      $('#tridQ').val(trid);
-    }
-  })
-  */
 });
 
 $(document).on('click','.deleteBtnF',function(event){
