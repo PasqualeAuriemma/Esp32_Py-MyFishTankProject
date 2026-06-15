@@ -728,6 +728,23 @@
    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
+    <!-- Google Charts loader, necessario per google_gauge.js
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    -->
+    <!-- ECharts: gauge moderni con lancetta e fasce colorate (Opzione 3)
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    -->
+    <!-- Highcharts (Opzione 5) — scegli UNA delle due righe:
+    A) CDN diretto (richiede internet):  -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <!--  B) Locale (funziona anche offline — scarica i file e mettili in assets/vendors/highcharts/): -->
+    <!--  <script src="assets/vendors/highcharts/highcharts.js"></script> -->
+    <!--  <script src="assets/vendors/highcharts/highcharts-more.js"></script> -->
+
+
+
+
     <!-- End plugin js for this page -->
     <!-- inject:js -->
     <script src="assets/js/off-canvas.js"></script>
@@ -744,6 +761,10 @@
     <script src="js/t_chart.js"></script>
     <script src="js/ec_ph_temperature_join_chart.js"></script>
     <script src="js/dayHistoryValuesTableManaging.js"></script>
+    <!-- <script src="js/google_gauge.js"></script> -->
+    <!-- <script src="js/echarts_gauge.js"></script> -->
+    <script src="js/highcharts_gauge.js"></script>
+    
     
     <script src="js/fertilizationTable.js"></script>
     <script src="js/waterValuesTable.js"></script>
@@ -753,183 +774,9 @@
     <script type="text/javascript">
     </script>
 
-    <!-- Google Charts disabled - using Chart.js instead
-    <script>
-          google.charts.load('current', {'packages':['gauge', 'corechart']});
-          //google.load('visualization', '1', {packages: ['corechart', 'gauge']});
-          google.charts.setOnLoadCallback(drawCharts);
-
-          function drawCharts() {
-
-           var w = $(window).width();
-            var x = Math.floor(w * 0.23);
-            //console.log("width: " + w + ", x = " + x);
-            var h = $(window).height();
-            var y = Math.floor(h * 0.3);
-            //console.log("height: " + h + ", y = " + y);
-
-            var dataEC = google.visualization.arrayToDataTable([
-                ['Label', 'Value'],
-                ['µS/cm', <?php echo $ec;?>],
-            ]);
-             var optionsEC = {
-                yellowFrom: 600, yellowTo: 820,
-                redFrom: 820, redTo: 1000,
-                minorTicks: 10,
-                max: 1000,
-                height: y,
-                width: x
-            };
-
-            var chartE = new google.visualization.Gauge(document.getElementById('chart_ec'));
-
-            chartE.clearChart();
-            chartE.draw(dataEC, optionsEC);
-
-            var dataTemp = google.visualization.arrayToDataTable([
-              ['Label', 'Value'],
-              ['Gradi °', <?php echo $temperature;?>],
-            ]);
-
-            var dataPH = google.visualization.arrayToDataTable([
-                ['Label', 'Value'],
-                ['pH', <?php echo $ph;?>],
-            ]);
-
-           var options = {
-                yellowFrom: 28, yellowTo: 34,
-                redFrom: 34, redTo: 45,
-                minorTicks: 5,
-                max: 45,
-                height: y,
-                width: x
-            };
-
-            var optionsPH = {
-                yellowFrom: 0, yellowTo: 6.5,
-                greenFrom: 6.5, greenTo: 7.3,
-                redFrom: 7.3, redTo: 12,
-                minorTicks: 0,
-                max: 12,
-                height: y,
-                width: x
-            };
-
-            var chartT = new google.visualization.Gauge(document.getElementById('chart_temp'));
-
-            var chartP = new google.visualization.Gauge(document.getElementById('chart_ph'));
-                chartT.clearChart();
-                chartT.draw(dataTemp, options);
-
-                chartP.clearChart();
-                chartP.draw(dataPH, optionsPH);
-
-        }
-
-        //create trigger to resizeEnd event
-        function resize () {
-            var w = $(window).width();
-            var x = Math.floor(w * 0.23);
-            //console.log("width: " + w + ", x = " + x);
-            var h = $(window).height();
-            var y = Math.floor(h * 0.3);
-            //console.log("height: " + h + ", y = " + y);
-
-            var dataEC = google.visualization.arrayToDataTable([
-                ['Label', 'Value'],
-                ['µS/cm', <?php echo $ec;?>],
-            ]);
-             var optionsEC = {
-                yellowFrom: 600, yellowTo: 820,
-                redFrom: 820, redTo: 1000,
-                minorTicks: 10,
-                max: 1000,
-                height: y,
-                width: x
-            };
-
-            var chartE = new google.visualization.Gauge(document.getElementById('chart_ec'));
-
-            chartE.clearChart();
-            chartE.draw(dataEC, optionsEC);
-
-            var dataTemp = google.visualization.arrayToDataTable([
-              ['Label', 'Value'],
-              ['Gradi °', <?php echo $temperature;?>],
-            ]);
-
-            var dataPH = google.visualization.arrayToDataTable([
-                ['Label', 'Value'],
-                ['pH', <?php echo $ph;?>],
-            ]);
-
-           var options = {
-                yellowFrom: 28, yellowTo: 34,
-                redFrom: 34, redTo: 45,
-                minorTicks: 5,
-                max: 45,
-                height: y,
-                width: x
-            };
+    <script src="js/getFertilizationVolumes.js"></script>
 
 
-            var optionsPH = {
-                yellowFrom: 0, yellowTo: 6.5,
-                greenFrom: 6.5, greenTo: 8,
-                redFrom: 8, redTo: 12,
-                minorTicks: 0,
-                max: 12,
-                height: y,
-                width: x
-            };
-
-              var chartT = new google.visualization.Gauge(document.getElementById('chart_temp'));
-
-              var chartP = new google.visualization.Gauge(document.getElementById('chart_ph'));
-              chartT.clearChart();
-              chartT.draw(dataTemp, options);
-
-              chartP.clearChart();
-              chartP.draw(dataPH, optionsPH);
-        }
-
-        window.onload = resize;
-        window.onresize = resize;
-    </script>
-    --> 
-       
-    <!-- End custom js for this page -->
-    <script>
-      function showVolumes() {
-        try {
-          // Opera 8.0+, Firefox, Safari
-          var xmlhttp = new XMLHttpRequest();
-        }catch (e) {
-          // Internet Explorer Browsers
-          try {
-            var xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-          }catch (e) {
-            try{
-              var xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }catch (e){
-              // Something went wrong
-              alert("Your browser broke!");
-              return false;
-            }
-          }
-        }
-
-        xmlhttp.onreadystatechange = function() {
-           if (this.readyState == 4 && this.status == 200) {
-             document.getElementById("volumes").innerHTML = this.responseText;
-           }
-        };
-        xmlhttp.open("GET","php/FertilizationVolumes/getFertilizationVolumes.php",true);
-        xmlhttp.send();
-      }
-    </script>
-
-    
     <script type="text/javascript">
         var windowWidth = $(window).width();
         var windowHeight = $(window).height();
