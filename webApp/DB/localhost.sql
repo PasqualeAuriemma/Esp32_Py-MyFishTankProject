@@ -63,6 +63,22 @@ CREATE TABLE `fertilization_volumes` (
   `data_inizio` date DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
+--
+-- Dati del PMDD per la tabella `fertilization_volumes`
+--
+ 
+INSERT INTO `fertilization_volumes` (`id`, `fertilizzante`, `qnt`, `data_inizio`) VALUES
+(1, 'Potassio', 1000, '2020-11-07'),
+(2, 'Magnesio', 1000, NULL),
+(3, 'Ferro', 500, NULL),
+(4, 'Rinverdente', 1000, NULL),
+(5, 'Fosforo', 250, NULL),
+(6, 'Azoto', 250, NULL),
+(7, 'Stick', 20, NULL),
+(8, 'Co2', 23, '2024-01-20');
+
+
 --
 -- Struttura della tabella `ph_tab`
 --
@@ -104,7 +120,7 @@ CREATE TABLE `users` (
   `id` int NOT NULL,
   `firstName` varchar(50) NOT NULL,
   `email` varchar(40) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `password`  varchar(255) NOT NULL,
   `reset_token` varchar(255) DEFAULT NULL,
   `reset_token_expiry` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
