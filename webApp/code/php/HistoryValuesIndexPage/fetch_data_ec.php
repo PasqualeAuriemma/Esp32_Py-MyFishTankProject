@@ -1,46 +1,46 @@
-<?php 
-if (!empty($_GET)){
-  $data = $_GET["d"];
-}else{
-   $data = date('Y-m-d');
-} 
+<?php
 header('Content-Type: application/json');
 include("../connection.php");
 include("../queryAndFunction.php");
 
 if ($con->connect_error) {
-  die("Connection failed: " . $con->connect_error);
+    http_response_code(500);
+    exit(json_encode(['status' => 'error', 'message' => 'Connection failed']));
 }
 
-if ($data == "noData"){
-	$dataNow1 = date('Y-m-d');
-}else{
-    $dataNow1 = $data;
+// ── Validazione parametro "d" ─────────────────────────────────────────────────
+// Accetta solo "noData" oppure una data nel formato YYYY-MM-DD.
+// Qualsiasi altro input ricade sulla data odierna.
+$d = $_GET['d'] ?? 'noData';
+
+if ($d === 'noData') {
+    $dataNow1 = date('Y-m-d');
+} elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $d)) {
+    $dataNow1 = $d;
+} else {
+    $dataNow1 = date('Y-m-d');
 }
-$output= array();
-  
+
 $sql = getDailyDescTDS_EC($dataNow1);
 
-$totalQuery = mysqli_query($con,$sql);
-$total_all_rows = mysqli_num_rows($totalQuery);
+$query = $con->query($sql);
+$count_rows = $query->num_rows;
 
-$query = mysqli_query($con,$sql);
-$count_rows = mysqli_num_rows($query);
-
-$data = array();
-$result = $con->query($sql);
-
-while($row = mysqli_fetch_assoc($query)){
-	$sub_array = array();
-	$sub_array = [ "id" => $row['id'], "data" => gmdate("H:i:s", $row['data']), "ec" => $row['ec']];
-	$data[] = $sub_array;
+$data = [];
+while ($row = $query->fetch_assoc()) {
+    $data[] = [
+        'id'   => $row['id'],
+        'data' => gmdate('H:i:s', $row['data']),
+        'ec'   => $row['ec'],
+    ];
 }
 
-$output = array(
-	'draw'=> intval($_GET['draw'] ?? 1),
-	'recordsTotal' => $count_rows ,
-	'recordsFiltered' => $total_all_rows,
-	'data' => $data,
-);
-echo  json_encode($output);
-?>
+$output = [
+    'draw'            => isset($_GET['draw']) ? intval($_GET['draw']) : 1,
+    'recordsTotal'    => $count_rows,
+    'recordsFiltered' => $count_rows,
+    'data'            => $data,
+];
+
+$con->close();
+echo json_encode($output);

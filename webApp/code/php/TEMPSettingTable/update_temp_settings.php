@@ -1,28 +1,37 @@
-<?php 
+<?php
 session_start();
 
+if (empty($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== '1') {
+    http_response_code(401);
+    exit(json_encode(['status' => 'error', 'message' => 'Unauthorized']));
+}
+
+header('Content-Type: application/json');
 include('../connection.php');
-include("../queryAndFunction.php");
+include('../queryAndFunction.php');
 
-$id = $_POST['id'];
+$id   = isset($_POST['id'])        ? intval($_POST['id'])        : 0;
+$temp = isset($_POST['temp'])      ? trim($_POST['temp'])        : '';
+$send = isset($_POST['data_send']) ? trim($_POST['data_send'])   : '';
 
-$temp = $_POST['temp'];
-$temp = !empty($temp) ? "'$temp'" : "NULL";
-$send = $_POST['data_send'];
-$send = !empty($send) ? "'$send'" : "NULL";
+if ($id <= 0) {
+    exit(json_encode(['status' => 'error', 'message' => 'Invalid ID']));
+}
+if (empty($temp) || empty($send)) {
+    exit(json_encode(['status' => 'error', 'message' => 'Missing fields']));
+}
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $send)) {
+    exit(json_encode(['status' => 'error', 'message' => 'Invalid date format']));
+}
 
-$sql = getUpdateTableQuery($id, $temp, $send, "temperature");
+$stmt = $con->prepare("UPDATE temp_tab SET temperature = ?, data_send = ? WHERE id = ?");
+$stmt->bind_param("ssi", $temp, $send, $id);
 
-$query= mysqli_query($con,$sql);
-$lastId = mysqli_insert_id($con);
+if ($stmt->execute()) {
+    echo json_encode(['status' => 'true']);
+} else {
+    echo json_encode(['status' => 'false', 'message' => 'Update failed']);
+}
 
-if($query == true){
-    $data = array('status' => 'true',);
-    echo json_encode($data);
-}else{
-    $data = array('status' => 'false',);
-    echo json_encode($data);
-} 
-
+$stmt->close();
 $con->close();
-?>

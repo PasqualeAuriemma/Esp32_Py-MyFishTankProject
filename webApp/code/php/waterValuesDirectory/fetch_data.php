@@ -1,75 +1,109 @@
 <?php
-
 session_start();
+
+header('Content-Type: application/json');
 include('../connection.php');
-include("../queryAndFunction.php");
+include('../queryAndFunction.php');
 
-$output= array();
-$sql = getFromTableQuery("watervalues");
+// ── Whitelist colonne per ORDER BY ────────────────────────────────────────────
+$allowed_columns = ['data', 'EC_PRE', 'EC_AFT', 'PH', 'no2', 'no3', 'gh', 'kh', 'po4'];
 
-$totalQuery = mysqli_query($con,$sql);
-$total_all_rows = mysqli_num_rows($totalQuery);
-
-if(isset($_POST['search']['value']))
-{
-	$search_value = $_POST['search']['value'];
-	$sql .= " WHERE data like '%".$search_value."%'";
-    $sql .= " OR EC_PRE like '%".$search_value."%'";
-	$sql .= " OR EC_AFT like '%".$search_value."%'";
-	$sql .= " OR PH like '%".$search_value."%'";
-	$sql .= " OR no2 like '%".$search_value."%'";
-	$sql .= " OR no3 like '%".$search_value."%'";
-	$sql .= " OR gh like '%".$search_value."%'";
-    $sql .= " OR kh like '%".$search_value."%'";
-    $sql .= " OR po4 like '%".$search_value."%'";
+$order_dir = 'DESC';
+if (isset($_POST['order'][0]['dir']) && strtoupper($_POST['order'][0]['dir']) === 'ASC') {
+    $order_dir = 'ASC';
 }
 
-if(isset($_POST['order']))
-{
-	$column_name = $_POST['order'][0]['column'];
-	$order = $_POST['order'][0]['dir'];
-	$sql .= " ORDER BY ".$column_name." ".$order."";
-}
-else
-{
-	$sql .= " ORDER BY id desc";
-}
-
-if($_POST['length'] != -1)
-{
-	$start = $_POST['start'];
-	$length = $_POST['length'];
-	$sql .= " LIMIT  ".$start.", ".$length;
-}	
-
-$query = mysqli_query($con,$sql);
-$count_rows = mysqli_num_rows($query);
-$data = array();
-while($row = mysqli_fetch_assoc($query))
-{
-	$sub_array = array();
-	//$sub_array[] = $row['id'];
-	$sub_array[] = date_format(date_create($row['data']),"d/m/Y");
-    $sub_array[] = $row['EC_PRE'];
-	$sub_array[] = $row['EC_AFT'];
-	$sub_array[] = $row['PH'];
-	$sub_array[] = $row['no2'];
-	$sub_array[] = $row['no3'];
-	$sub_array[] = $row['gh'];
-    $sub_array[] = $row['kh'];
-    $sub_array[] = $row['po4'];
-    if (!isset($_SESSION["email"]) || !isset($_SESSION["loggedIn"])){
-    	$sub_array[] = '';      
-    }else{
-        $sub_array[] = '<a href="javascript:void();" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" ><i class="mdi mdi-table-edit"></i></a>  <a href="javascript:void();" data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" ><i class="mdi mdi-table-row-remove"></i></a>';      
+$order_col = 'id';
+if (isset($_POST['order'][0]['column'])) {
+    $col_index = intval($_POST['order'][0]['column']);
+    if (isset($allowed_columns[$col_index])) {
+        $order_col = $allowed_columns[$col_index];
     }
-    $data[] = $sub_array;
 }
 
-$output = array(
-	'draw'=> intval($_POST['draw']),
-	'recordsTotal' =>$count_rows ,
-	'recordsFiltered'=>   $total_all_rows,
-	'data'=>$data,
-);
-echo  json_encode($output);
+$search_value = '';
+if (!empty($_POST['search']['value'])) {
+    $search_value = trim($_POST['search']['value']);
+}
+
+$start  = isset($_POST['start'])  ? intval($_POST['start'])  : 0;
+$length = isset($_POST['length']) ? intval($_POST['length']) : 10;
+$draw   = isset($_POST['draw'])   ? intval($_POST['draw'])   : 1;
+
+// ── Conteggio totale ───────────────────────────────────────────────────────────
+$total_result = $con->query("SELECT COUNT(*) as cnt FROM watervalues_table");
+$total_all    = intval($total_result->fetch_assoc()['cnt']);
+
+// ── Query principale ──────────────────────────────────────────────────────────
+$loggedIn = !empty($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === '1';
+
+if ($search_value !== '') {
+    $like = '%' . $search_value . '%';
+    $sql  = "SELECT id, data, EC_PRE, EC_AFT, PH, no2, no3, gh, kh, po4
+             FROM watervalues_table
+             WHERE CAST(data AS CHAR)   LIKE ?
+                OR CAST(EC_PRE AS CHAR) LIKE ?
+                OR CAST(EC_AFT AS CHAR) LIKE ?
+                OR CAST(PH AS CHAR)     LIKE ?
+                OR CAST(no2 AS CHAR)    LIKE ?
+                OR CAST(no3 AS CHAR)    LIKE ?
+                OR CAST(gh AS CHAR)     LIKE ?
+                OR CAST(kh AS CHAR)     LIKE ?
+                OR CAST(po4 AS CHAR)    LIKE ?
+             ORDER BY `{$order_col}` {$order_dir}
+             LIMIT ?, ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param(
+        "sssssssssii",
+        $like,$like,$like,$like,$like,$like,$like,$like,$like,
+        $start, $length
+    );
+} else {
+    $sql  = "SELECT id, data, EC_PRE, EC_AFT, PH, no2, no3, gh, kh, po4
+             FROM watervalues_table
+             ORDER BY `{$order_col}` {$order_dir}
+             LIMIT ?, ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("ii", $start, $length);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+
+$data = [];
+while ($row = $result->fetch_assoc()) {
+    $dt = date_create($row['data']);
+    $sub = [
+        $dt ? date_format($dt, 'd/m/Y') : $row['data'],
+        $row['EC_PRE'],
+        $row['EC_AFT'],
+        $row['PH'],
+        $row['no2'],
+        $row['no3'],
+        $row['gh'],
+        $row['kh'],
+        $row['po4'],
+    ];
+
+    if ($loggedIn) {
+        $sub[] = '<a href="javascript:void(0);" data-id="' . intval($row['id']) . '"'
+               . ' class="btn btn-info btn-sm editbtn"><i class="mdi mdi-table-edit"></i></a>'
+               . '  '
+               . '<a href="javascript:void(0);" data-id="' . intval($row['id']) . '"'
+               . ' class="btn btn-danger btn-sm deleteBtn"><i class="mdi mdi-table-row-remove"></i></a>';
+    } else {
+        $sub[] = '';
+    }
+
+    $data[] = $sub;
+}
+
+$stmt->close();
+$con->close();
+
+echo json_encode([
+    'draw'            => $draw,
+    'recordsTotal'    => $total_all,
+    'recordsFiltered' => $total_all,
+    'data'            => $data,
+]);

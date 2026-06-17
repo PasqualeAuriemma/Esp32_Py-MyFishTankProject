@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(isset($_POST['resetPassword'])){
+if (isset($_POST['resetPassword'])) {
     include("../connection.php");
     include("../queryAndFunction.php");
 
@@ -9,46 +9,54 @@ if(isset($_POST['resetPassword'])){
         die(json_encode(['status' => 'error', 'message' => 'Connection failed']));
     }
 
-    $token = $_POST["resetToken"];
-    $password = $_POST["newPassword"];
-    $password_confirm = $_POST["newPasswordConfirm"];
+    $token           = $_POST["resetToken"]        ?? '';
+    $password        = $_POST["newPassword"]        ?? '';
+    $password_confirm = $_POST["newPasswordConfirm"] ?? '';
 
-    // Validazione
-    if(empty($token) || empty($password) || empty($password_confirm)) {
+    // ── Validazione ────────────────────────────────────────────────────────────
+    if (empty($token) || empty($password) || empty($password_confirm)) {
         exit(json_encode(['status' => 'error', 'message' => 'All fields required']));
     }
 
-    if($password !== $password_confirm) {
+    if ($password !== $password_confirm) {
         exit(json_encode(['status' => 'error', 'message' => 'Passwords do not match']));
     }
 
-    if(strlen($password) < 6) {
-        exit(json_encode(['status' => 'error', 'message' => 'Password must be at least 6 characters']));
+    if (strlen($password) < 8) {
+        exit(json_encode(['status' => 'error', 'message' => 'Password must be at least 8 characters']));
     }
 
-    // Verifica token
+    // ── Punto 2: prepared statement per verifica token ────────────────────────
     $token_hash = hash('sha256', $token);
-    $now = date('Y-m-d H:i:s');
+    $now        = date('Y-m-d H:i:s');
 
-    $check = $con->query("SELECT id, email FROM `users` WHERE reset_token='$token_hash' AND reset_token_expiry > '$now'");
+    $check = $con->prepare(
+        "SELECT id FROM `users` WHERE reset_token = ? AND reset_token_expiry > ?"
+    );
+    $check->bind_param("ss", $token_hash, $now);
+    $check->execute();
+    $check->bind_result($user_id);
+    $found = $check->fetch();
+    $check->close();
 
-    if($check->num_rows === 0) {
+    if (!$found) {
         exit(json_encode(['status' => 'error', 'message' => 'Invalid or expired reset token']));
     }
 
-    $row = $check->fetch_assoc();
-    $user_id = $row['id'];
+    // ── Punto 1: bcrypt ───────────────────────────────────────────────────────
+    $password_hashed = password_hash($password, PASSWORD_BCRYPT);
 
-    // Hash nuova password
-    $password_hashed = md5($password);
+    // ── Punto 2: prepared statement per UPDATE ────────────────────────────────
+    $update = $con->prepare(
+        "UPDATE `users` SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?"
+    );
+    $update->bind_param("si", $password_hashed, $user_id);
 
-    // Aggiorna password e cancella token
-    $update = "UPDATE `users` SET password='$password_hashed', reset_token=NULL, reset_token_expiry=NULL WHERE id='$user_id'";
-
-    if($con->query($update) === TRUE) {
+    if ($update->execute()) {
+        $update->close();
         exit(json_encode(['status' => 'success', 'message' => 'Password reset successful. Please login with your new password']));
     } else {
+        $update->close();
         exit(json_encode(['status' => 'error', 'message' => 'Failed to reset password']));
     }
 }
-?>

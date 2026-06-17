@@ -1,36 +1,47 @@
-<?php 
+<?php
 session_start();
+
+if (empty($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== '1') {
+    http_response_code(401);
+    exit(json_encode(['status' => 'error', 'message' => 'Unauthorized']));
+}
+
+header('Content-Type: application/json');
 include('../connection.php');
-include("../queryAndFunction.php");
+include('../queryAndFunction.php');
 
-$ecP = $_POST['ecP'];
-$ecP = !empty($ecP) || $ecP=="0" ? "'$ecP'" : "NULL";
-$ecA = $_POST['ecA'];
-$ecA = !empty($ecA) || $ecA=="0" ? "'$ecA'" : "NULL";
-$ph = $_POST['ph'];
-$ph = !empty($ph) || $ph=="0" ? "'$ph'" : "NULL";
-$no2 = $_POST['no2'];
-$no2 = !empty($no2) || $no2=="0" ? "'$no2'" : "NULL";
-$no3 = $_POST['no3'];
-$no3 = !empty($no3) || $no3=="0" ? "'$no3'" : "NULL";
-$gh = $_POST['gh'];
-$gh = !empty($gh) || $gh=="0" ? "'$gh'" : "NULL";
-$kh = $_POST['kh'];
-$kh = !empty($kh) || $kh=="0" ? "'$kh'" : "NULL";
-$po4 = $_POST['po4'];
-$po4 = !empty($po4) || $po4=="0" ? "'$po4'" : "NULL";
-$id = $_POST['id'];
+function numOrNull($v) {
+    $v = trim($v ?? '');
+    return ($v !== '' && is_numeric($v)) ? floatval($v) : null;
+}
 
-$sql = getUpdateWaterValuesTableQuery($ecP, $ecA, $ph, $no2, $no3, $gh, $kh, $po4, $id);
+$id  = isset($_POST['id']) ? intval($_POST['id']) : 0;
+if ($id <= 0) {
+    exit(json_encode(['status' => 'false', 'message' => 'Invalid ID']));
+}
 
-$query= mysqli_query($con,$sql);
-$lastId = mysqli_insert_id($con);
-if($query ==true){
-    $data = array('status'=>'true',);
-    echo json_encode($data);
-}else{
-    $data = array('status'=>'false',);
-    echo json_encode($data);
-} 
-   $con->close();
-?>
+$ecP = numOrNull($_POST['ecP'] ?? '');
+$ecA = numOrNull($_POST['ecA'] ?? '');
+$ph  = numOrNull($_POST['ph']  ?? '');
+$no2 = numOrNull($_POST['no2'] ?? '');
+$no3 = numOrNull($_POST['no3'] ?? '');
+$gh  = numOrNull($_POST['gh']  ?? '');
+$kh  = numOrNull($_POST['kh']  ?? '');
+$po4 = numOrNull($_POST['po4'] ?? '');
+
+// ── Prepared statement per UPDATE ─────────────────────────────────────────────
+$stmt = $con->prepare(
+    "UPDATE watervalues_table
+     SET EC_PRE = ?, EC_AFT = ?, PH = ?, no2 = ?, no3 = ?, gh = ?, kh = ?, po4 = ?
+     WHERE id = ?"
+);
+$stmt->bind_param("ddddddddi", $ecP, $ecA, $ph, $no2, $no3, $gh, $kh, $po4, $id);
+
+if ($stmt->execute()) {
+    echo json_encode(['status' => 'true']);
+} else {
+    echo json_encode(['status' => 'false', 'message' => 'Update failed']);
+}
+
+$stmt->close();
+$con->close();

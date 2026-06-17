@@ -1,49 +1,55 @@
-    <?php
-        session_start();
-    	if(isset($_POST['login'])){        
-            include("../connection.php");
-            include("../queryAndFunction.php");
-            if ($con->connect_error) {
-              die("Connection failed: " . $con->connect_error);
-            }
-            $email = $con->real_escape_string($_POST["emailPHP"]);
-            $password = md5($con->real_escape_string($_POST["passwordPHP"]));
-            $data =  $con->query("SELECT id FROM `users` WHERE email='$email' AND password='$password'");
-            if($data->num_rows > 0){
-              $_SESSION["email"] = $email;
-              $_SESSION["loggedIn"] = '1';
-              
-              $params = session_get_cookie_params();
-              setcookie(session_name(), $_COOKIE[session_name()], time() + 60*60*24*30, $params["domain"], $params["secure"], $params["httponly"]);
-              
-              exit('success');
-            }else{
-               alert("wrong user or password");
-               exit('failed');
-            }
-        }
-        
-       
-    
+<?php
+session_start();
 
-//if (!empty($data)) {
-//   login($data); //memorizza in sessione i dati dell'utente
-//   echo "Benvenuto {$data[user]}"; //visualizza benvenuto
-//   header("Location: index.php"); //torna al form di autenticazione
-//} else {
-//   header("Location: index.php"); //torna al form di autenticazione
-//   exit;
+if (isset($_POST['login'])) {
+    include("../connection.php");
+    include("../queryAndFunction.php");
 
-//}
+    if ($con->connect_error) {
+        die('failed');
+    }
 
-/**
-* Tiene traccia nella sessione dei dati
-* @param array $info array con i dati estratti dal DB relative
-* all’utente loggato
-*/
-//function login($info){
-//$_SESSION['my_test_loggedin'] = $info;
-//}
+    $email    = trim($_POST["emailPHP"]    ?? '');
+    $password = $_POST["passwordPHP"] ?? '';
 
+    if (empty($email) || empty($password)) {
+        exit('failed');
+    }
 
-?>
+    // ── Punto 2: prepared statement ───────────────────────────────────────────
+    // Recupera l'hash bcrypt per email; il confronto avviene con password_verify
+    $stmt = $con->prepare("SELECT id, password FROM `users` WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->bind_result($userId, $passwordHash);
+    $found = $stmt->fetch();
+    $stmt->close();
+    $con->close();
+
+    // ── Punto 1: password_verify invece di MD5 ────────────────────────────────
+    if ($found && password_verify($password, $passwordHash)) {
+        session_regenerate_id(true); // previene session fixation
+
+        $_SESSION["email"]    = $email;
+        $_SESSION["loggedIn"] = '1';
+
+        // ── Punto 5: SameSite=Strict ──────────────────────────────────────────
+        $params = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            session_id(),
+            [
+                'expires'  => time() + 60 * 60 * 24 * 30,
+                'path'     => $params['path'],
+                'domain'   => $params['domain'],
+                'secure'   => $params['secure'],
+                'httponly' => true,
+                'samesite' => 'Strict',
+            ]
+        );
+
+        exit('success');
+    } else {
+        exit('failed');
+    }
+}

@@ -18,17 +18,19 @@ if ($d === 'noData') {
     $dataNow1 = date('Y-m-d');
 }
 
-$sql = getDailyDescPh($dataNow1);
+$sql = getDailyDescTemperature($dataNow1);
 
 $query = $con->query($sql);
 $count_rows = $query->num_rows;
 
 $data = [];
 while ($row = $query->fetch_assoc()) {
+    // Punto: il file originale leggeva $row['temp'] ma la query restituisce
+    // la colonna come "temp" tramite alias (t.temperature as temp) — verificato in queryAndFunction.php
     $data[] = [
         'id'   => $row['id'],
         'data' => gmdate('H:i:s', $row['data']),
-        'ph'   => $row['ph'],
+        't'    => $row['temp'],
     ];
 }
 

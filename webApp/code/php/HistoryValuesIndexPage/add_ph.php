@@ -1,22 +1,29 @@
-<?php 
-  // function used to add record with button inside ph_tab
-  include("../connection.php");
-  include("../queryAndFunction.php");
+<?php
+session_start();
 
-  if(!empty($_POST)){
-    $ph = $_POST["ph"];
-    $ph = !empty($ph) ? "'$ph'" : "NULL";
-    $dataSend = time();
-    
-    $sql = getPHInsertQuery($ph, $dataSend);
-    $query= mysqli_query($con, $sql);
-    if($query == true){
-      $data = array('status'=>'true', );
-      echo json_encode($data);
-    }else{
-      $data = array('status'=>'false',);
-      echo json_encode($data);
-    }   
-  }
-  $con->close();
-?>
+if (empty($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== '1') {
+    http_response_code(401);
+    exit(json_encode(['status' => 'error', 'message' => 'Unauthorized']));
+}
+
+header('Content-Type: application/json');
+include("../connection.php");
+include("../queryAndFunction.php");
+
+$ph = isset($_POST['ph']) ? trim($_POST['ph']) : '';
+
+if ($ph === '' || !is_numeric($ph)) {
+    exit(json_encode(['status' => 'false', 'message' => 'Invalid PH value']));
+}
+
+$ph       = round(floatval($ph), 2);
+$dataSend = time();
+
+$stmt = $con->prepare("INSERT INTO ph_tab (ph, data_send) VALUES (?, ?)");
+$stmt->bind_param("di", $ph, $dataSend);
+$ok = $stmt->execute();
+$stmt->close();
+
+echo json_encode(['status' => $ok ? 'true' : 'false']);
+
+$con->close();

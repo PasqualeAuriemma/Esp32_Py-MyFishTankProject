@@ -1,72 +1,45 @@
 <?php
-
-if (!empty($_POST)){
-  
-  $selector = $_POST["button"];
-  
-  $selector = !empty($selector) ? "$selector" : "1";      
-  
-} else{
-  $selector = "1"; 
-}
+// Rimosso il parametro $selector ($button POST) che veniva letto
+// ma poi ignorato completamente nel resto del file.
+// Se in futuro servirà per filtrare i dati, reintrodurlo qui con la logica relativa.
 
 header('Content-Type: application/json');
-
 include("../connection.php");
 include("../queryAndFunction.php");
 
 if ($con->connect_error) {
-  die("Connection failed: " . $con->connect_error);
+    http_response_code(500);
+    exit(json_encode(['status' => 'error', 'message' => 'Connection failed']));
 }
 
-   $dataNow1 = date('Y-m-d');
+$dataNow = date('Y-m-d');
 
-   $sqlPH = getDailyPH($dataNow1);
-   
-   $resultPH = $con->query($sqlPH);  
-   $ph_array = array();
-   if ($resultPH->num_rows > 0) {
-     // output data of each row
-     while($rowPH = $resultPH->fetch_assoc()) {
-       $ph_array[] = $rowPH["ph"];
-       $sendPH = $rowPH["send_p"];
-     }
-   } else {
-     $sendPH = "no data";
-   }
-  
-   $sqlEC = getDailyEC($dataNow1);
-   
-   $resultEC = $con->query($sqlEC); 
-   $ec_array = array();
-   if ($resultEC->num_rows > 0) {
-      // output data of each row
-      while($rowEC = $resultEC->fetch_assoc()) {
-        $ec_array[] = $rowEC["ec"];
-        $sendEC = $rowEC["send_e"];
-      }
-    } else {   
-      $sendEC = "no data";
-    }
+// PH
+$resultPH = $con->query(getDailyPH($dataNow));
+$ph_array = [];
+while ($row = $resultPH->fetch_assoc()) {
+    $ph_array[] = $row["ph"];
+}
 
-  $sqlT = getDailyTemperature($dataNow1);
-  
-  $resultT = $con->query($sqlT);
-  $t_array = array();
-  if ($resultT->num_rows > 0) {
-    // output data of each row
-    while($rowT = $resultT->fetch_assoc()) {
-      $t_array[] = $rowT["temperature"];
-      $sendT = $rowT["send_t"];
-    }
-  } else {
-    $sendT = "no data";
-  }
-  $value = array("ValuePH" => number_format(calculate_median($ph_array), 2),
-                 "ValueEC" => number_format(calculate_median($ec_array), 2),
-                 "ValueT" => number_format(calculate_average($t_array), 2)
-                 );
-  $con->close();
-    
-  echo json_encode($value);
-?>
+// EC
+$resultEC = $con->query(getDailyEC($dataNow));
+$ec_array = [];
+while ($row = $resultEC->fetch_assoc()) {
+    $ec_array[] = $row["ec"];
+}
+
+// Temperature
+$resultT  = $con->query(getDailyTemperature($dataNow));
+$t_array  = [];
+while ($row = $resultT->fetch_assoc()) {
+    $t_array[] = $row["temperature"];
+}
+
+$value = [
+    "ValuePH" => !empty($ph_array) ? number_format(calculate_median($ph_array), 2)  : "0",
+    "ValueEC" => !empty($ec_array) ? number_format(calculate_median($ec_array), 2)  : "0",
+    "ValueT"  => !empty($t_array)  ? number_format(calculate_average($t_array), 2)  : "0",
+];
+
+$con->close();
+echo json_encode($value);

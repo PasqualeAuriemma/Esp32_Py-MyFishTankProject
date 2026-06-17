@@ -1,37 +1,47 @@
 <?php
-
-if (!empty($_POST)){
-  $ec = $_POST["button"];
-  $ec = !empty($ec) ? "$ec" : "4";      
-}   
 header('Content-Type: application/json');
 include("../connection.php");
 include("../queryAndFunction.php");
 
 if ($con->connect_error) {
-  die("Connection failed: " . $con->connect_error);
+    http_response_code(500);
+    exit(json_encode(['status' => 'error', 'message' => 'Connection failed']));
 }
 
-if($ec == "4"){ 
-  $sqlEC_chart = getECChartQuery();
-}else if ($ec == "2"){
-  $dataNow = date('Y-m-d', strtotime("-2 month"));
-  $sqlEC_chart = getECChartQueryWithDate($dataNow);
-}else if ($ec == "7"){
-  $dataNow = date('Y-m-d', strtotime("-7 day"));
-  $sqlEC_chart = getECChartQueryWithDate($dataNow); 
-}else{
-  $dataNow = date('Y-m-d', strtotime("-1 month"));
-  $sqlEC_chart = getECChartQueryWithDate($dataNow);
+$allowed = ['2', '4', '7'];
+$ec = isset($_POST['button']) ? (string) $_POST['button'] : '1';
+if (!in_array($ec, $allowed, true)) {
+    $ec = '1';
 }
+
+switch ($ec) {
+    case '4':
+        $sqlEC_chart = getECChartQuery();
+        break;
+    case '2':
+        $dataNow = date('Y-m-d', strtotime('-2 month'));
+        $sqlEC_chart = getECChartQueryWithDate($dataNow);
+        break;
+    case '7':
+        $dataNow = date('Y-m-d', strtotime('-7 day'));
+        $sqlEC_chart = getECChartQueryWithDate($dataNow);
+        break;
+    default: // '1'
+        $dataNow = date('Y-m-d', strtotime('-1 month'));
+        $sqlEC_chart = getECChartQueryWithDate($dataNow);
+}
+
 $resultEC_chart = $con->query($sqlEC_chart);
-$data = array();
-foreach ($resultEC_chart as $row) {
-	$data[] = $row;
-}
-$data_final = array();
-$data_final['raw'] = $data;
-$data_final['median'] = get_median($data);
 
+$data = [];
+while ($row = $resultEC_chart->fetch_assoc()) {
+    $data[] = $row;
+}
+
+$data_final = [
+    'raw'    => $data,
+    'median' => get_median($data),
+];
+
+$con->close();
 echo json_encode($data_final);
-?>

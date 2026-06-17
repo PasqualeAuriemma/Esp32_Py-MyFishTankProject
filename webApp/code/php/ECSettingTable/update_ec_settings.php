@@ -1,25 +1,38 @@
-<?php 
+<?php
 session_start();
+
+if (empty($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== '1') {
+    http_response_code(401);
+    exit(json_encode(['status' => 'error', 'message' => 'Unauthorized']));
+}
+
+header('Content-Type: application/json');
 include('../connection.php');
-include("../queryAndFunction.php");
+include('../queryAndFunction.php');
 
-$id = $_POST['id'];
+$id   = isset($_POST['id'])        ? intval($_POST['id'])              : 0;
+$ec   = isset($_POST['ec'])        ? trim($_POST['ec'])                : '';
+$send = isset($_POST['data_send']) ? trim($_POST['data_send'])         : '';
 
-$ec = $_POST['ec'];
-$ec = !empty($ec) ? "'$ec'" : "NULL";
-$send = $_POST['data_send'];
-$send = !empty($send) ? "'$send'" : "NULL";
+if ($id <= 0) {
+    exit(json_encode(['status' => 'error', 'message' => 'Invalid ID']));
+}
+if (empty($ec) || empty($send)) {
+    exit(json_encode(['status' => 'error', 'message' => 'Missing fields']));
+}
+// Validazione data formato YYYY-MM-DD
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $send)) {
+    exit(json_encode(['status' => 'error', 'message' => 'Invalid date format']));
+}
 
+$stmt = $con->prepare("UPDATE ec_tab SET ec = ?, data_send = ? WHERE id = ?");
+$stmt->bind_param("ssi", $ec, $send, $id);
 
-$sql = getUpdateTableQuery($id, $ec, $send,"ec");
-$query= mysqli_query($con,$sql);
-$lastId = mysqli_insert_id($con);
-if($query ==true){
-    $data = array('status'=>'true',);
-    echo json_encode($data);
-}else{
-    $data = array('status'=>'false',);
-    echo json_encode($data);
-} 
-   $con->close();
-?>
+if ($stmt->execute()) {
+    echo json_encode(['status' => 'true']);
+} else {
+    echo json_encode(['status' => 'false', 'message' => 'Update failed']);
+}
+
+$stmt->close();
+$con->close();
