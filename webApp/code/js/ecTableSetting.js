@@ -49,7 +49,7 @@ $(document).on('click','.deleteBtnEcS',function(event){
       data:{id:id},
       type:"post",
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         status = json.status;
         if(status=='success'){
           //table.fnDeleteRow( table.$('#' + id)[0] );

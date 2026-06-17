@@ -51,9 +51,9 @@ $(document).on('submit','#addQuantities',function(e){
       type:"post",
       data:{potassio:k, magnesio:mg, ferro:fe, rinverdente:rinverdente, fosforo:p, azoto:n, npk:npk},
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
-        if(status=='true'){
+        if(status=='true' || status==true){
           var mytable =$('#fertilizationTable').DataTable();
           mytable.draw();
           $('#addFertilizationModal').modal('hide');
@@ -88,9 +88,9 @@ $(document).on('submit','#updateQuantities',function(e){
       type:"post",
       data:{potassio:k, magnesio:mg, ferro:fe, rinverdente:rinverdente, fosforo:p, azoto:n , npk:_npk, id:id},
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
-        if(status=='true'){
+        if(status=='true' || status==true){
           table =$('#fertilizationTable').DataTable();
           // table.cell(parseInt(trid) - 1,0).data(id);
           // table.cell(parseInt(trid) - 1,1).data(username);
@@ -137,7 +137,7 @@ $(document).on('click','.deleteBtnF',function(event){
       data:{id:id},
       type:"post",
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         status = json.status;
         if(status=='success'){
           //table.fnDeleteRow( table.$('#' + id)[0] );
@@ -172,9 +172,9 @@ $(document).on('click','.addFertilizationBtn',function(event){
       type:"post",
       data:{potassio:k, magnesio:mg, ferro:fe, rinverdente:rinv, fosforo:p, azoto:n, npk:_npk},
       success:function(data){       
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
-        if(status == 'true'){
+        if(status == 'true' || status == true){
           $('#addKeyQField').val("");
 		  $('#addKField').val("");
 		  $('#addMgField').val("");
@@ -210,7 +210,7 @@ $(document).on('click','.editbtnConfirmF',function(event){
       type:"post",
       data:{potassio:rowList[0], magnesio:rowList[1], ferro:rowList[2], rinverdente:rowList[3], fosforo:rowList[4], azoto:rowList[5] , npk:rowList[6], id:id},
       success:function(data){   
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
           //alert('Modified');
           //console.log(rowList);

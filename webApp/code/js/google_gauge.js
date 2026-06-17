@@ -59,8 +59,9 @@
                 ['pH', ph_value],
             ]);
             var optionsPH = {
-                yellowFrom: 6.0, yellowTo: 6.5,
-                redFrom:    0,   redTo:    6.0,
+                greenFrom:  6.5, greenTo:  7.9,
+                yellowFrom: 7.9, yellowTo: 14,
+                redFrom:    0,   redTo:    6.5,
                 min: 0, max: 14,
                 minorTicks: 5,
                 height: h, width: w,
@@ -70,7 +71,7 @@
         }
 
         // ── Gauge Temperatura ─────────────────────────────────────────────────
-        var containerT = document.getElementById('chart_t');
+        var containerT = document.getElementById('chart_temp');
         if (containerT) {
             var dataT = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],

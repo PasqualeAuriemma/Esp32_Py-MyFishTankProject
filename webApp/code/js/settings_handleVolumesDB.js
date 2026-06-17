@@ -26,9 +26,9 @@ $(document).ready(function () {
             type: 'post',
             data: { select: selectName, data: selected_date, vol: selected_field },
             success: function (data) {
-                var json   = JSON.parse(data);
+                var json   = data;
                 var status = json.status;
-                if (status === 'true') {
+                if (status === 'true' || status === true) {
                     // Sostituito setInterval con setTimeout: reload una volta sola
                     setTimeout(function () { location.reload(true); }, 800);
                 } else {

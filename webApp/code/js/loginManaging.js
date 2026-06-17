@@ -114,7 +114,7 @@ $(document).ready(function () {
             dataType: 'text',
             success: function (response) {
                 var result;
-                try { result = JSON.parse(response); }
+                try { result = response; }
                 catch (e) {
                     showMessage('signupForm', 'Unexpected server response.', 'danger');
                     $btn.prop('disabled', false).text('Register');
@@ -159,7 +159,7 @@ $(document).ready(function () {
             dataType: 'text',
             success: function (response) {
                 var result;
-                try { result = JSON.parse(response); }
+                try { result = response; }
                 catch (e) { showMessage('forgotPasswordForm', 'Unexpected server response.', 'danger'); return; }
 
                 if (result.status === 'success') {
@@ -206,7 +206,7 @@ $(document).ready(function () {
             dataType: 'text',
             success: function (response) {
                 var result;
-                try { result = JSON.parse(response); }
+                try { result = response; }
                 catch (e) { showMessage('resetForm', 'Unexpected server response.', 'danger'); return; }
 
                 if (result.status === 'success') {

@@ -1,15 +1,17 @@
 $(document).ready(function () {
 
     // ── Helper generico ───────────────────────────────────────────────────────
-    function addValue(url, data, errorMsg) {
+    function addValue(url, data, errorMsg, modalId, formId) {
         $.ajax({
-            url: url,
+            url:  url,
             type: 'post',
             data: data,
             success: function (response) {
-                var json = JSON.parse(response);
-                if (json.status === 'true') {
-                    // Sostituito setInterval con setTimeout: reload una volta sola
+                var json = response;
+                if (json.status === 'true' || response.status === true) {
+                    // Chiude il modal, resetta il form, poi ricarica
+                    $('#' + modalId).modal('hide');
+                    $('#' + formId)[0].reset();
                     setTimeout(function () { location.reload(true); }, 800);
                 } else {
                     alert(errorMsg);
@@ -22,22 +24,25 @@ $(document).ready(function () {
     $('#addTemperatureForm').on('submit', function (e) {
         e.preventDefault();
         addValue('php/HistoryValuesIndexPage/add_temperature.php',
-            { temp: $('#addTFieldP').val() },
-            'Temperature adding failed');
+                 { temp: $('#addTFieldP').val() },
+                 'Temperature adding failed',
+                 'addTemperatureModal', 'addTemperatureForm');
     });
 
     $('#addConductivityForm').on('submit', function (e) {
         e.preventDefault();
         addValue('php/HistoryValuesIndexPage/add_ec.php',
-            { ec: $('#addECFieldP').val() },
-            'Conductivity adding failed');
+                 { ec: $('#addECFieldP').val() },
+                 'Conductivity adding failed',
+                 'addConductivityModal', 'addConductivityForm');
     });
 
     $('#addPHForm').on('submit', function (e) {
         e.preventDefault();
         addValue('php/HistoryValuesIndexPage/add_ph.php',
-            { ph: $('#addPHFieldP').val() },
-            'Ph adding failed');
+                 { ph: $('#addPHFieldP').val() },
+                 'Ph adding failed',
+                 'addPHModal', 'addPHForm');
     });
 
 });

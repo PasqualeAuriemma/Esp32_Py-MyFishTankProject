@@ -6,7 +6,9 @@ $(document).ready(function () {
     $('#datepicker_t').datepicker();
 
     // ── Helper: crea/ricrea una DataTable con i parametri dati ───────────────
-    function buildTable(tableId, url, data, columns) {
+    // onDrawn: callback opzionale chiamato dopo il primo disegno della tabella
+    function buildTable(tableId, url, data, columns, onDrawn) {
+        var drawn = false;
         $(tableId).DataTable({
             destroy:        true,
             bProcessing:    true,
@@ -20,7 +22,14 @@ $(document).ready(function () {
             columnDefs: [
                 { targets: [0], visible: false, searchable: false, orderable: false },
                 { targets: '_all', orderable: false }
-            ]
+            ],
+            drawCallback: function () {
+                // Eseguito dopo ogni disegno — lo usiamo solo al primo
+                if (!drawn && typeof onDrawn === 'function') {
+                    drawn = true;
+                    onDrawn();
+                }
+            }
         });
     }
 
@@ -29,7 +38,7 @@ $(document).ready(function () {
     var colT    = [{ mData: 'id' }, { mData: 'data' }, { mData: 't'  }];
     var ecUrl   = 'php/HistoryValuesIndexPage/fetch_data_ec.php';
     var phUrl   = 'php/HistoryValuesIndexPage/fetch_data_ph.php';
-    var tUrl    = 'php/HistoryValuesIndexPage/fetch_data_t.php';
+    var tUrl    = 'php/HistoryValuesIndexPage/fetch_data_temperature.php';
 
     // ── Caricamento iniziale delle tre tabelle ────────────────────────────────
     buildTable('#table_id',           ecUrl, { d: 'noData' }, colEC);
@@ -60,14 +69,14 @@ $(document).ready(function () {
         $.ajax({
             url: url, type: 'post', data: data,
             success: function (response) {
-                var json = JSON.parse(response);
-                if (json.status === 'true') {
-                    $(fieldId).val('');
-                    buildTable(tableId, url.replace('add_', 'fetch_data_'), { d: 'noData' }, colDefs);
-                    // Sostituito setInterval con setTimeout: reload una volta sola
-                    setTimeout(function () { location.reload(true); }, 800);
+                var json = response;
+                if (json.status === 'true' || json.status === true) {
+                    // Svuota il campo solo dopo che DataTable ha ricostruito il DOM
+                    buildTable(tableId, url.replace('add_', 'fetch_data_'), { d: 'noData' }, colDefs, function () {
+                        $(fieldId).val('');
+                    });
                 } else {
-                    alert('Adding failed');
+                    alert('Adding failed: ' + (json.message || ''));
                 }
             },
             error: function () { alert('Network error. Please try again.'); }
@@ -76,22 +85,40 @@ $(document).ready(function () {
 
     $(document).on('click', '.addConductivity', function (e) {
         e.preventDefault();
+        var ec = $(this).closest('tr').find('input[type="number"]').val();
+        if (!ec || isNaN(parseFloat(ec))) {
+            alert('Please enter a valid EC value');
+            return;
+        }
         addValue('php/HistoryValuesIndexPage/add_ec.php',
-                 '#addECField', { ec: $('#addECField').val() },
+                 '#addECField',
+                 { ec: ec },
                  '#table_id', colEC);
     });
 
     $(document).on('click', '.addPH', function (e) {
         e.preventDefault();
+        var ph = $(this).closest('tr').find('input[type="number"]').val();
+        if (!ph || isNaN(parseFloat(ph))) {
+            alert('Please enter a valid pH value');
+            return;
+        }
         addValue('php/HistoryValuesIndexPage/add_ph.php',
-                 '#addPHFieldP', { ph: $('#addPHFieldP').val() },
+                 '#addPHFieldP',
+                 { ph: ph },
                  '#ph_history', colPH);
     });
 
     $(document).on('click', '.addTemperature', function (e) {
         e.preventDefault();
+        var temp = $(this).closest('tr').find('input[type="number"]').val();
+        if (!temp || isNaN(parseFloat(temp))) {
+            alert('Please enter a valid temperature value');
+            return;
+        }
         addValue('php/HistoryValuesIndexPage/add_temperature.php',
-                 '#addTField', { temp: $('#addTField').val() },
+                 '#addTField',
+                 { temp: temp },
                  '#temperature_history', colT);
     });
 

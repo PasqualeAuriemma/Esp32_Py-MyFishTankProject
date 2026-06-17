@@ -46,7 +46,7 @@ $(document).on('click','.deleteBtnPhS',function(event){
       data:{id:id},
       type:"post",
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         status = json.status;
         if(status=='success'){
           //table.fnDeleteRow( table.$('#' + id)[0] );
@@ -83,7 +83,7 @@ $(document).on('click','.editbtnConfirmPhS',function(event){
       type:"post",
       data:{ph:rowList[0], data_send:rowList[1], id:id},
       success:function(data){   
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
           //alert('Modified');
           console.log(rowList);

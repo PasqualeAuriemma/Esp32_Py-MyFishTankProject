@@ -50,9 +50,9 @@ $(document).on('submit','#addUser',function(e){
       type:"post",
       data:{ecP:ecP, ecA:ecA, ph:ph, no2:no2, no3:no3, gh:gh, kh:kh, po4:po4},
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
-        if(status=='true'){
+        if(status=='true' || status === true){
           mytable =$('#waterValuesTable').DataTable();
           mytable.draw();
           $('#addWVModal').modal('hide');
@@ -87,9 +87,9 @@ $(document).on('submit','#updateUser',function(e){
       type:"post",
       data:{ecP:ecP, ecA:ecA, ph:ph, no2:no2, no3:no3, gh:gh, kh:kh, po4:po4, id:id},
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
-        if(status=='true'){
+        if(status=='true' || status === true){
           table =$('#waterValuesTable').DataTable();
           // table.cell(parseInt(trid) - 1,0).data(id);
           // table.cell(parseInt(trid) - 1,1).data(username);
@@ -162,7 +162,7 @@ $(document).on('click','.deleteBtn',function(event){
       data:{id:id},
       type:"post",
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         status = json.status;
         if(status=='success'){
           //table.fnDeleteRow( table.$('#' + id)[0] );
@@ -198,7 +198,7 @@ $(document).on('click','.addBtn',function(event){
       type:"post",
       data:{ecP:ecP, ecA:ecA, ph:ph, no2:no2, no3:no3, gh:gh, kh:kh, po4:po4},
       success:function(data){
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
         if(status=='true'){
           $('#addecPField').val("");
@@ -251,7 +251,7 @@ $(document).on('click','.editbtnConfirm',function(event){
       type:"post",
       data:{ecP:rowList[0], ecA:rowList[1], ph:rowList[2], no2:rowList[3], no3:rowList[4], gh:rowList[5], kh:rowList[6], po4:rowList[7], id:id},
       success:function(data){   
-        var json = JSON.parse(data);
+        var json = data;
         var status = json.status;
           //alert('Modified');
           console.log(rowList);
