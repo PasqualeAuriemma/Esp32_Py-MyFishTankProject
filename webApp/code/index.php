@@ -436,10 +436,12 @@
                         <div class="col-sm-4 grid-margin">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5>EC</h5>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h5 class="mb-0">EC</h5>
+                                        <h6 class="text-muted mb-0"><?php echo $sendEC;?></h6>
+                                    </div>
                                     <div class="row">
                                         <div id="chart_ec" align='center'></div>
-                                        <h6 class="text-muted font-weight-normal"> <?php echo $sendEC;?></h6>
                                     </div>
                                 </div>
                             </div>
@@ -447,12 +449,12 @@
                         <div class="col-sm-4 grid-margin">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="row">
-                                      <h5>PH</h5> 
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h5 class="mb-0">PH</h5>
+                                        <h6 class="text-muted mb-0"><?php echo $sendPH;?></h6>
                                     </div>
                                     <div class="row">
                                         <div id="chart_ph" align='center'></div>
-                                        <h6 class="text-muted font-weight-normal"><?php echo $sendPH;?></h6>
                                     </div>
                                 </div>
                             </div>
@@ -460,10 +462,12 @@
                         <div class="col-sm-4 grid-margin">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5>Temperature</h5>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h5 class="mb-0">Temperature</h5>
+                                        <h6 class="text-muted mb-0"><?php echo $sendT;?></h6>
+                                    </div>
                                     <div class="row">
                                         <div id="chart_temp" align='center'></div>
-                                        <h6 class="text-muted font-weight-normal"><?php echo $sendT;?></h6>
                                     </div>
                                 </div>
                             </div>
@@ -513,7 +517,7 @@
                                             <tfoot>
                                                 <tr>
                                                     <th></th>
-                                                    <th><a href="#!" data-id="'.$row['id'].'" class="btn btn-primary addConductivity" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
+                                                    <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addConductivity" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
                                                     <th><input type="number" step="any" class="form-control text-center" id="addECField" name="po4"></th>
                                                 </tr>
                                             </tfoot>
@@ -563,7 +567,7 @@
                                             <tfoot>
                                                 <tr>
                                                     <th></th>
-                                                    <th><a href="#!" data-id="'.$row['id'].'" class="btn btn-primary addPH" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
+                                                    <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addPH" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
                                                     <th><input type="number" step="any" class="form-control text-center" id="addPHFieldP" name="addPHFieldP"></th>
                                                 </tr>
                                              </tfoot>
@@ -611,7 +615,7 @@
                                             <tfoot>
                                                 <tr>
                                                     <th></th>
-                                                    <th><a href="#!" data-id="'.$row['id'].'" class="btn btn-primary addTemperature" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
+                                                    <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addTemperature" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
                                                     <th><input type="number" step="any" class="form-control text-center" id="addTField" name="temperature"></th>
                                                 </tr>
                                             </tfoot>
@@ -838,12 +842,18 @@
 			  $("#dialog").dialog("open").dialog('option', 'position', 'center');
 			});
             $("#openFertilization").on("click", function() {
-			  $("#FertilizationT").dialog("open").dialog('option', 'position', 'center');
-			});
+			    setTimeout(function() {
+                    showVolumes();
+                    $("#FertilizationT").dialog("open").dialog('option', 'position', 'center');
+                }, 10);
+            }); 
             $("#openVolumes").on("click", function() {
-              showVolumes();
-			  $("#VolumesO").dialog("open").dialog('option', 'position', 'center');
-			});
+                // Il click finisce subito, l'operazione pesante viene rimandata di 10ms
+                setTimeout(function() {
+                    showVolumes();
+                    $("#VolumesO").dialog("open").dialog('option', 'position', 'center');
+                }, 10);
+            });
 		});
     </script>
     
@@ -986,7 +996,7 @@
                                     <th><input type="number" class="form-control text-center" id="addGHField" name="gh"></th>
                                     <th><input type="number" class="form-control text-center" id="addKHField" name="kh"></th>
                                     <th><input type="number" class="form-control text-center" id="addPo4Field" name="po4"></th>
-                                    <th><a href="#!" data-id="'.$row['id'].'" class="btn btn-primary addBtn" ><i class="mdi mdi-table-row-plus-after"></i></a></th>      
+                                    <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addBtn" ><i class="mdi mdi-table-row-plus-after"></i></a></th>      
                                 </tr>
                             </tfoot>
                           <?php } ?>
@@ -1028,7 +1038,7 @@
                                   <th><input type="text"  class="form-control text-center" id="addPField" name="fosforo"></th>
                                   <th><input type="text"  class="form-control text-center" id="addNField" name="azoto"></th>
                                   <th><input type="text"  class="form-control text-center" id="addNPKField" name="npk"></th>
-                                  <th><a href="#!" data-id="'.$row['id'].'" class="btn btn-primary addFertilizationBtn" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
+                                  <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addFertilizationBtn" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
                               </tr>
                             </tfoot>
                           <?php } ?>
