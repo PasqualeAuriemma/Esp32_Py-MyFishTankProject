@@ -28,9 +28,10 @@ $count_rows = $query->num_rows;
 
 $data = [];
 while ($row = $query->fetch_assoc()) {
+    // data_send è VARCHAR(10) contenente un Unix timestamp come stringa
     $data[] = [
         'id'   => $row['id'],
-        'data' => gmdate('H:i:s', $row['data']),
+        'data' => gmdate('H:i:s', intval($row['data'])),
         'ec'   => $row['ec'],
     ];
 }

@@ -43,7 +43,7 @@ $(document).ready(function () {
             dataType: 'text',
             success: function (response) {
                 if (response.trim() === 'success') {
-                    $('#loginModal').modal('hide');
+                    hideModal('loginModal');
                     location.reload(true);
                 } else {
                     showMessage('loginForm', 'Wrong email or password.', 'danger');
@@ -111,22 +111,16 @@ $(document).ready(function () {
                 passwordConfirmSignUp: passwordConfirm,
                 inviteCode:            inviteCode
             },
-            dataType: 'text',
-            success: function (response) {
-                var result;
-                try { result = response; }
-                catch (e) {
-                    showMessage('signupForm', 'Unexpected server response.', 'danger');
-                    $btn.prop('disabled', false).text('Register');
-                    return;
-                }
-
+            dataType: 'json',
+            success: function (result) {
                 if (result.status === 'success') {
-                    // Messaggio di benvenuto, poi chiude il modal e ricarica
+                    // Sessione già impostata lato server (sign_up_db.php).
+                    // Chiudiamo il modal e portiamo l'utente su index.php già loggato,
+                    // stesso comportamento del login.
                     showMessage('signupForm', '✓ Registration successful! Welcome aboard.', 'success');
                     setTimeout(function () {
-                        $('#signupModal').modal('hide');
-                        location.reload(true);
+                        hideModal('signupModal');
+                        window.location.href = 'index.php';
                     }, 1200);
                 } else {
                     showMessage('signupForm', result.message || 'Registration failed.', 'danger');
@@ -156,12 +150,8 @@ $(document).ready(function () {
             url: 'php/Login/forgot_password_db.php',
             method: 'POST',
             data: { forgotPassword: 1, emailForgot: email },
-            dataType: 'text',
-            success: function (response) {
-                var result;
-                try { result = response; }
-                catch (e) { showMessage('forgotPasswordForm', 'Unexpected server response.', 'danger'); return; }
-
+            dataType: 'json',
+            success: function (result) {
                 if (result.status === 'success') {
                     showMessage('forgotPasswordForm', 'If the email exists, a reset link has been sent.', 'success');
                     // Nota: result.link NON viene più mostrato/loggato
@@ -203,12 +193,8 @@ $(document).ready(function () {
                 newPassword:         password,
                 newPasswordConfirm:  passwordConfirm
             },
-            dataType: 'text',
-            success: function (response) {
-                var result;
-                try { result = response; }
-                catch (e) { showMessage('resetForm', 'Unexpected server response.', 'danger'); return; }
-
+            dataType: 'json',
+            success: function (result) {
                 if (result.status === 'success') {
                     showMessage('resetForm', '✓ Password changed! Redirecting to login…', 'success');
                     setTimeout(function () { window.location.href = 'index.php'; }, 1800);
@@ -227,29 +213,37 @@ $(document).ready(function () {
     $('#signupLink').on('click', function (e) {
         e.preventDefault();
         clearMessage('loginForm');
-        $('#loginModal').modal('hide');
-        $('#signupModal').modal('show');
+        hideModal('loginModal');
+        showModal('signupModal');
     });
 
     $('#forgotPasswordLink').on('click', function (e) {
         e.preventDefault();
         clearMessage('loginForm');
-        $('#loginModal').modal('hide');
-        $('#forgotPasswordModal').modal('show');
+        hideModal('loginModal');
+        showModal('forgotPasswordModal');
     });
 
     $('.backToLogin').on('click', function (e) {
         e.preventDefault();
         clearMessage('signupForm');
         clearMessage('forgotPasswordForm');
-        $('#signupModal').modal('hide');
-        $('#forgotPasswordModal').modal('hide');
-        $('#loginModal').modal('show');
+        hideModal('signupModal');
+        hideModal('forgotPasswordModal');
+        showModal('loginModal');
     });
 
     // Pulizia messaggi alla chiusura dei modali
-    $('#signupModal').on('hidden.bs.modal',        function () { clearMessage('signupForm'); });
-    $('#loginModal').on('hidden.bs.modal',          function () { clearMessage('loginForm'); });
-    $('#forgotPasswordModal').on('hidden.bs.modal', function () { clearMessage('forgotPasswordForm'); });
+    document.getElementById('signupModal')        ?.addEventListener('hidden.bs.modal', function () { clearMessage('signupForm'); });
+    document.getElementById('loginModal')         ?.addEventListener('hidden.bs.modal', function () { clearMessage('loginForm'); });
+    document.getElementById('forgotPasswordModal')?.addEventListener('hidden.bs.modal', function () { clearMessage('forgotPasswordForm'); });
+
+    // ── Bootstrap 5 Modal helpers (usati sopra) ───────────────────────────────
+    function getModal(id) {
+        var el = document.getElementById(id);
+        return el ? bootstrap.Modal.getOrCreateInstance(el) : null;
+    }
+    function showModal(id) { var m = getModal(id); if (m) m.show(); }
+    function hideModal(id) { var m = getModal(id); if (m) m.hide(); }
 
 });

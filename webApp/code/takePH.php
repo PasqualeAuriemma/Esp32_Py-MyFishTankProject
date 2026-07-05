@@ -4,16 +4,25 @@
 include("php/connection.php");
 include("php/queryAndFunction.php");
 
-// ── Verifica token ─────────────────────────────────────────────────────────────
-$token = $_POST["token"] ?? $_SERVER['HTTP_X_IOT_TOKEN'] ?? '';
-if (!defined('IOT_SECRET') || !hash_equals(IOT_SECRET, $token)) {
+// ── Lettura body JSON ─────────────────────────────────────────────────────────
+$raw_body = file_get_contents('php://input');
+$json_body = json_decode($raw_body, true);
+if (!is_array($json_body)) {
+    $json_body = [];
+}
+
+// ── Verifica token ────────────────────────────────────────────────────────────
+// Priorità: header X-IoT-Token (standard per device IoT), fallback su JSON body.
+$iot_secret = getenv('IOT_SECRET') ?: 'esp32-secret-token-changeme';
+$token = $_SERVER['HTTP_X_IOT_TOKEN'] ?? ($json_body['token'] ?? '');
+if (empty($token) || !hash_equals($iot_secret, $token)) {
     http_response_code(401);
     exit("Unauthorized");
 }
 
-if (!empty($_POST)) {
-    $ph       = isset($_POST["PH"])   ? $_POST["PH"]                      : null;
-    $dataSend = isset($_POST["Date"]) ? substr($_POST["Date"], 0, 10) : null;
+if (!empty($json_body)) {
+    $ph       = isset($json_body["PH"])   ? $json_body["PH"]   : null;
+    $dataSend = isset($json_body["Date"]) ? substr((string)$json_body["Date"], 0, 10) : null;
 
     if ($ph !== null && $dataSend !== null) {
         $ph = round(floatval($ph), 2);
@@ -33,5 +42,7 @@ if (!empty($_POST)) {
     } else {
         echo "Error: Missing parameters";
     }
+} else {
+    echo "Error: Empty or invalid JSON body";
 }
 $con->close();

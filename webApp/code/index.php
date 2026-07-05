@@ -90,6 +90,33 @@
        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
 	      float: right;
        }
+
+       /* Dropdown "AQUARIUM PIA12" - sfondo opaco bluetto */
+       .navbar-dropdown.dropdown-menu {
+           background-color: #0d2a3a !important;
+           border: 1px solid #1a4a62 !important;
+           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+           backdrop-filter: none !important;
+           -webkit-backdrop-filter: none !important;
+           opacity: 1 !important;
+       }
+
+       .navbar-dropdown.dropdown-menu h6 {
+           color: #7ecfea !important;
+       }
+
+       .navbar-dropdown.dropdown-menu .dropdown-item:hover,
+       .navbar-dropdown.dropdown-menu .dropdown-item:focus {
+           background-color: #1a4a62 !important;
+       }
+
+       .navbar-dropdown.dropdown-menu .dropdown-divider {
+           border-color: #1a4a62 !important;
+       }
+
+       .navbar-dropdown.dropdown-menu .preview-subject {
+           color: #c8e8f5 !important;
+       }
     </style>
     
     <?php
@@ -358,53 +385,304 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h1 class="card-title">MyFishTank</h1>
-                                    <!-- Modern Image Gallery -->
-                                    <div id="image-gallery" style="position: relative; width: 100%; overflow: hidden; border-radius: 12px;">
-                                        <img id="gallery-main" src="assets/images/dashboard/acquarium.jpg" alt="Aquarium Gallery" style="width: 100%; height: auto; display: block; transition: opacity 0.3s ease;">
-                                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/acquarium.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="0">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/acquarium1.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="1">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/acquarium2.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="2">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/acquarium4.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="3">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento0.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="4">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento2.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="5">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento3.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="6">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento4.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="7">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento5.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="8">
-                                            <img class="gallery-thumb" src="assets/images/dashboard/riallestimento6.jpg" alt="" style="width: 45px; height: 45px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; object-fit: cover;" data-index="9">
+
+                                    <!-- ── Aquarium Carousel ────────────────────────────── -->
+                                    <style>
+                                        #aqCarousel {
+                                            position: relative;
+                                            width: 100%;
+                                            border-radius: 14px;
+                                            overflow: hidden;
+                                            background: #000;
+                                            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+                                            user-select: none;
+                                        }
+
+                                        /* Main image area */
+                                        #aqCarousel .aq-stage {
+                                            position: relative;
+                                            width: 100%;
+                                            aspect-ratio: 16/9;
+                                            overflow: hidden;
+                                        }
+
+                                        #aqCarousel .aq-stage img {
+                                            position: absolute;
+                                            inset: 0;
+                                            width: 100%;
+                                            height: 100%;
+                                            object-fit: cover;
+                                            opacity: 0;
+                                            transition: opacity 0.6s ease;
+                                        }
+
+                                        #aqCarousel .aq-stage img.aq-active {
+                                            opacity: 1;
+                                            z-index: 1;
+                                        }
+
+                                        /* Arrow buttons */
+                                        #aqCarousel .aq-arrow {
+                                            position: absolute;
+                                            top: 50%;
+                                            transform: translateY(-50%);
+                                            z-index: 10;
+                                            background: rgba(0,0,0,0.45);
+                                            border: none;
+                                            color: #fff;
+                                            width: 36px;
+                                            height: 36px;
+                                            border-radius: 50%;
+                                            font-size: 18px;
+                                            line-height: 1;
+                                            cursor: pointer;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            transition: background 0.2s, transform 0.2s;
+                                            backdrop-filter: blur(4px);
+                                        }
+                                        #aqCarousel .aq-arrow:hover {
+                                            background: rgba(0,180,200,0.7);
+                                            transform: translateY(-50%) scale(1.12);
+                                        }
+                                        #aqCarousel .aq-prev { left: 10px; }
+                                        #aqCarousel .aq-next { right: 10px; }
+
+                                        /* Counter top-right */
+                                        #aqCarousel .aq-counter {
+                                            position: absolute;
+                                            top: 10px;
+                                            right: 12px;
+                                            z-index: 10;
+                                            background: rgba(0,0,0,0.5);
+                                            color: #fff;
+                                            font-size: 0.75rem;
+                                            padding: 2px 8px;
+                                            border-radius: 20px;
+                                            backdrop-filter: blur(4px);
+                                            letter-spacing: 0.04em;
+                                        }
+
+                                        /* Autoplay progress bar */
+                                        #aqCarousel .aq-progress {
+                                            position: absolute;
+                                            bottom: 0;
+                                            left: 0;
+                                            height: 3px;
+                                            width: 0%;
+                                            background: rgba(0,210,230,0.85);
+                                            z-index: 10;
+                                            transition: width linear;
+                                        }
+
+                                        /* Dot indicators */
+                                        #aqCarousel .aq-dots {
+                                            display: flex;
+                                            justify-content: center;
+                                            gap: 6px;
+                                            padding: 8px 0 4px;
+                                        }
+                                        #aqCarousel .aq-dot {
+                                            width: 7px;
+                                            height: 7px;
+                                            border-radius: 50%;
+                                            background: rgba(255,255,255,0.25);
+                                            cursor: pointer;
+                                            transition: background 0.25s, transform 0.25s;
+                                            border: none;
+                                            padding: 0;
+                                        }
+                                        #aqCarousel .aq-dot.aq-active {
+                                            background: rgba(0,210,230,0.9);
+                                            transform: scale(1.4);
+                                        }
+
+                                        /* Thumbnail strip */
+                                        #aqCarousel .aq-thumbs {
+                                            display: flex;
+                                            gap: 6px;
+                                            padding: 6px 8px 8px;
+                                            overflow-x: auto;
+                                            scrollbar-width: thin;
+                                            scrollbar-color: rgba(255,255,255,0.2) transparent;
+                                        }
+                                        #aqCarousel .aq-thumbs img {
+                                            width: 52px;
+                                            height: 38px;
+                                            object-fit: cover;
+                                            border-radius: 6px;
+                                            cursor: pointer;
+                                            border: 2px solid transparent;
+                                            transition: border-color 0.2s, transform 0.2s, opacity 0.2s;
+                                            opacity: 0.6;
+                                            flex-shrink: 0;
+                                        }
+                                        #aqCarousel .aq-thumbs img:hover {
+                                            opacity: 1;
+                                            transform: scale(1.07);
+                                        }
+                                        #aqCarousel .aq-thumbs img.aq-active {
+                                            border-color: rgba(0,210,230,0.9);
+                                            opacity: 1;
+                                        }
+                                    </style>
+
+                                    <div id="aqCarousel">
+                                        <div class="aq-stage">
+                                            <img src="assets/images/dashboard/acquarium.jpg"      class="aq-active" alt="Aquarium 1">
+                                            <img src="assets/images/dashboard/acquarium1.jpg"     alt="Aquarium 2">
+                                            <img src="assets/images/dashboard/acquarium2.jpg"     alt="Aquarium 3">
+                                            <img src="assets/images/dashboard/acquarium4.jpg"     alt="Aquarium 4">
+                                            <img src="assets/images/dashboard/riallestimento0.jpg" alt="Riallestimento 1">
+                                            <img src="assets/images/dashboard/riallestimento2.jpg" alt="Riallestimento 2">
+                                            <img src="assets/images/dashboard/riallestimento3.jpg" alt="Riallestimento 3">
+                                            <img src="assets/images/dashboard/riallestimento4.jpg" alt="Riallestimento 4">
+                                            <img src="assets/images/dashboard/riallestimento5.jpg" alt="Riallestimento 5">
+                                            <img src="assets/images/dashboard/riallestimento6.jpg" alt="Riallestimento 6">
+
+                                            <button type="button" class="aq-arrow aq-prev" aria-label="Previous">&#8249;</button>
+                                            <button type="button" class="aq-arrow aq-next" aria-label="Next">&#8250;</button>
+                                            <span class="aq-counter">1 / 10</span>
+                                            <div class="aq-progress" id="aqProgress"></div>
+                                        </div>
+
+                                        <div class="aq-dots" id="aqDots"></div>
+
+                                        <div class="aq-thumbs" id="aqThumbs">
+                                            <img src="assets/images/dashboard/acquarium.jpg"      class="aq-active" alt="1">
+                                            <img src="assets/images/dashboard/acquarium1.jpg"     alt="2">
+                                            <img src="assets/images/dashboard/acquarium2.jpg"     alt="3">
+                                            <img src="assets/images/dashboard/acquarium4.jpg"     alt="4">
+                                            <img src="assets/images/dashboard/riallestimento0.jpg" alt="5">
+                                            <img src="assets/images/dashboard/riallestimento2.jpg" alt="6">
+                                            <img src="assets/images/dashboard/riallestimento3.jpg" alt="7">
+                                            <img src="assets/images/dashboard/riallestimento4.jpg" alt="8">
+                                            <img src="assets/images/dashboard/riallestimento5.jpg" alt="9">
+                                            <img src="assets/images/dashboard/riallestimento6.jpg" alt="10">
                                         </div>
                                     </div>
+
                                     <script>
-                                        // Simple gallery functionality
-                                        const galleryImages = [
-                                            'assets/images/dashboard/acquarium.jpg',
-                                            'assets/images/dashboard/acquarium1.jpg',
-                                            'assets/images/dashboard/acquarium2.jpg',
-                                            'assets/images/dashboard/acquarium4.jpg',
-                                            'assets/images/dashboard/riallestimento0.jpg',
-                                            'assets/images/dashboard/riallestimento2.jpg',
-                                            'assets/images/dashboard/riallestimento3.jpg',
-                                            'assets/images/dashboard/riallestimento4.jpg',
-                                            'assets/images/dashboard/riallestimento5.jpg',
-                                            'assets/images/dashboard/riallestimento6.jpg'
-                                        ];
+                                    (function () {
+                                        const AUTOPLAY_MS  = 4000;
+                                        const slides       = document.querySelectorAll('#aqCarousel .aq-stage > img');
+                                        const thumbs       = document.querySelectorAll('#aqThumbs img');
+                                        const counter      = document.querySelector('#aqCarousel .aq-counter');
+                                        const progress     = document.getElementById('aqProgress');
+                                        const dotsWrap     = document.getElementById('aqDots');
+                                        const total        = slides.length;
+                                        let current        = 0;
+                                        let autoplayTimer  = null;
+                                        let progressTimer  = null;
 
-                                        document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-                                            thumb.addEventListener('click', function() {
-                                                const index = this.dataset.index;
-                                                document.getElementById('gallery-main').src = galleryImages[index];
+                                        // Build dots
+                                        for (let i = 0; i < total; i++) {
+                                            const d = document.createElement('button');
+                                            d.type = 'button'; // evita submit su form padre
+                                            d.className = 'aq-dot' + (i === 0 ? ' aq-active' : '');
+                                            d.setAttribute('aria-label', 'Slide ' + (i + 1));
+                                            d.addEventListener('click', () => goTo(i));
+                                            dotsWrap.appendChild(d);
+                                        }
+                                        const dots = dotsWrap.querySelectorAll('.aq-dot');
 
-                                                // Update highlight
-                                                document.querySelectorAll('.gallery-thumb').forEach(t => {
-                                                    t.style.borderColor = 'transparent';
-                                                });
-                                                this.style.borderColor = 'var(--primary-cyan)';
-                                            });
+                                        function goTo(idx) {
+                                            slides[current].classList.remove('aq-active');
+                                            thumbs[current].classList.remove('aq-active');
+                                            dots[current].classList.remove('aq-active');
+
+                                            current = (idx + total) % total;
+
+                                            slides[current].classList.add('aq-active');
+                                            thumbs[current].classList.add('aq-active');
+                                            dots[current].classList.add('aq-active');
+                                            counter.textContent = (current + 1) + ' / ' + total;
+
+                                            // Scroll thumb into view — solo orizzontalmente nel contenitore, senza muovere la pagina
+                                            const thumbsEl = document.getElementById('aqThumbs');
+                                            const th = thumbs[current];
+                                            const containerLeft = thumbsEl.scrollLeft;
+                                            const containerRight = containerLeft + thumbsEl.clientWidth;
+                                            const thumbLeft = th.offsetLeft;
+                                            const thumbRight = thumbLeft + th.offsetWidth;
+                                            if (thumbLeft < containerLeft) {
+                                                thumbsEl.scrollLeft = thumbLeft - 6;
+                                            } else if (thumbRight > containerRight) {
+                                                thumbsEl.scrollLeft = thumbRight - thumbsEl.clientWidth + 6;
+                                            }
+
+                                            resetProgress();
+                                        }
+
+                                        function resetProgress() {
+                                            clearTimeout(progressTimer);
+                                            progress.style.transition = 'none';
+                                            progress.style.width = '0%';
+                                            // Force reflow
+                                            progress.getBoundingClientRect();
+                                            progress.style.transition = 'width ' + AUTOPLAY_MS + 'ms linear';
+                                            progress.style.width = '100%';
+                                        }
+
+                                        function startAutoplay() {
+                                            clearInterval(autoplayTimer);
+                                            autoplayTimer = setInterval(() => goTo(current + 1), AUTOPLAY_MS);
+                                        }
+
+                                        // Arrow buttons
+                                        document.querySelector('#aqCarousel .aq-prev').addEventListener('click', () => {
+                                            goTo(current - 1);
+                                            startAutoplay();
+                                        });
+                                        document.querySelector('#aqCarousel .aq-next').addEventListener('click', () => {
+                                            goTo(current + 1);
+                                            startAutoplay();
                                         });
 
-                                        // Set initial highlight
-                                        document.querySelector('.gallery-thumb').style.borderColor = 'var(--primary-cyan)';
+                                        // Thumbnail clicks
+                                        thumbs.forEach((th, i) => th.addEventListener('click', () => {
+                                            goTo(i);
+                                            startAutoplay();
+                                        }));
+
+                                        // Pause on hover
+                                        document.getElementById('aqCarousel').addEventListener('mouseenter', () => {
+                                            clearInterval(autoplayTimer);
+                                            clearTimeout(progressTimer);
+                                            progress.style.transition = 'none';
+                                        });
+                                        document.getElementById('aqCarousel').addEventListener('mouseleave', () => {
+                                            resetProgress();
+                                            startAutoplay();
+                                        });
+
+                                        // Swipe support (touch)
+                                        let touchStartX = 0;
+                                        document.querySelector('#aqCarousel .aq-stage').addEventListener('touchstart', e => {
+                                            touchStartX = e.changedTouches[0].clientX;
+                                        }, { passive: true });
+                                        document.querySelector('#aqCarousel .aq-stage').addEventListener('touchend', e => {
+                                            const diff = touchStartX - e.changedTouches[0].clientX;
+                                            if (Math.abs(diff) > 40) {
+                                                goTo(diff > 0 ? current + 1 : current - 1);
+                                                startAutoplay();
+                                            }
+                                        }, { passive: true });
+
+                                        // Keyboard support
+                                        document.addEventListener('keydown', e => {
+                                            if (e.key === 'ArrowLeft')  { goTo(current - 1); startAutoplay(); }
+                                            if (e.key === 'ArrowRight') { goTo(current + 1); startAutoplay(); }
+                                        });
+
+                                        // Init
+                                        resetProgress();
+                                        startAutoplay();
+                                    })();
                                     </script>
+                                    <!-- ── End Aquarium Carousel ───────────────────────── -->
+
                                 </div>
                             </div>
                         </div>
@@ -639,7 +917,7 @@
                             </div>
                         </div>
                     </div>
-               <!--  -->
+                    <!--  -->
                     <div class="row">
                         <div class="col-md-4 grid-margin stretch-card">
                             <div class="card">
@@ -667,36 +945,36 @@
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
                 <footer class="footer">
-                  <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-sm-4 grid-margin">
-                        	<section>
-                                <h3 class="icon solid fa-comment">Social</h3>
-                                <center><p>
-                                  <a href="https://github.com/">Github</a><br />
-                                  <a href="https://www.linkedin.com/in/">LinkedIn</a><br />
-                                  <a href="https://it.altervista.org/">Altervista</a>
-                                </p></center>
-                        	</section>
-                        </div>
-                        <div class="col-sm-4 grid-margin">
-                        	<section>
-                            	<h3 class="icon solid fa-envelope">Email</h3>
-                                	<center>
-                                    	<p>
-                                            <a href="#">info@untitled.tld</a>
-                                        </p>
-                                    </center>
-                        	</section>
-                        </div>
-                        <div class="col-sm-4 grid-margin">
-                        	<div id="copyright">
-                            	<span class="text-muted d-block text-center text-sm-left d-sm-inline-block"> <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Licenza Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a></span>
-                            	<span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Quest'opera è distribuita con Licenza <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribuzione 4.0 Internazionale</a>.</span>
-                      		</div>
-                        </div>   
-                    </div>                     
-                  </div>  
+                    <div class="content-wrapper">
+                        <div class="row">
+                            <div class="col-sm-4 grid-margin">
+                                <section>
+                                    <h3 class="icon solid fa-comment">Social</h3>
+                                    <center><p>
+                                    <a href="https://github.com/">Github</a><br />
+                                    <a href="https://www.linkedin.com/in/">LinkedIn</a><br />
+                                    <a href="https://it.altervista.org/">Altervista</a>
+                                    </p></center>
+                                </section>
+                            </div>
+                            <div class="col-sm-4 grid-margin">
+                                <section>
+                                    <h3 class="icon solid fa-envelope">Email</h3>
+                                        <center>
+                                            <p>
+                                                <a href="#">info@untitled.tld</a>
+                                            </p>
+                                        </center>
+                                </section>
+                            </div>
+                            <div class="col-sm-4 grid-margin">
+                                <div id="copyright">
+                                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block"> <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Licenza Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a></span>
+                                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Quest'opera è distribuita con Licenza <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribuzione 4.0 Internazionale</a>.</span>
+                                </div>
+                            </div>   
+                        </div>                     
+                    </div>  
                 </footer>
                 <!-- partial -->
             </div>
@@ -705,32 +983,25 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
-
     <!-- plugins:js -->
     <script src="assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
-
-
     <script src="assets/vendors/chart.js/Chart.min.js"></script>
     <script src="assets/vendors/progressbar.js/progressbar.min.js"></script>
-
     <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
     <!--<script type="text/javascript" src="https://www.google.com/jsapi"></script>-->
     <!--<script src="assets/js/data-picker.js"></script>-->
     <!--<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
-   <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.0.js"></script> 
-  
-   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
- 
-   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-   <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-   <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-   <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.0.js"></script> 
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
     <!-- Google Charts loader, necessario per google_gauge.js
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -741,13 +1012,12 @@
     <!-- Highcharts (Opzione 5) — scegli UNA delle due righe:
     A) CDN diretto (richiede internet):  -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <!--  B) Locale (funziona anche offline — scarica i file e mettili in assets/vendors/highcharts/): -->
     <!--  <script src="assets/vendors/highcharts/highcharts.js"></script> -->
     <!--  <script src="assets/vendors/highcharts/highcharts-more.js"></script> -->
-
-
-
 
     <!-- End plugin js for this page -->
     <!-- inject:js -->
@@ -759,7 +1029,6 @@
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="assets/js/dashboard.js"></script>
-    
     <script src="js/ec_chart.js"></script>
     <script src="js/ph_chart.js"></script>
     <script src="js/t_chart.js"></script>
@@ -768,81 +1037,75 @@
     <!-- <script src="js/google_gauge.js"></script> -->
     <!-- <script src="js/echarts_gauge.js"></script> -->
     <script src="js/highcharts_gauge.js"></script>
-    
-    
     <script src="js/fertilizationTable.js"></script>
     <script src="js/waterValuesTable.js"></script>
     <script src="js/loginManaging.js"></script>
     <script src="assets/js/glassmorphism-enhancements.js"></script>
-
     <script type="text/javascript">
     </script>
-
     <script src="js/getFertilizationVolumes.js"></script>
-
-
     <script type="text/javascript">
         var windowWidth = $(window).width();
         var windowHeight = $(window).height();
         
-		$(document).ready( function() {
-			$( "#dialog" ).dialog({
-			  autoOpen: false,
-              position: { my: "center", at: "bottom" },
-              width: (windowWidth * 90 /100),
-              //modal: true,
-              title: "Water Values", 
-			  show: {
-				effect: "blind",
-				duration: 1000
-			  },
-			  hide: {
-				effect: "explode",
-				duration: 1000
-			  }
-			});
+        $(document).ready( function() {
+            $( "#dialog" ).dialog({
+            autoOpen: false,
+            position: { my: "center", at: "bottom" },
+            width: (windowWidth * 90 /100),
+            //modal: true,
+            title: "Water Values", 
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+            });
             
             $("#FertilizationT").dialog({
-              //modal: true,
-			  autoOpen: false,
-              width: (windowWidth * 90 /100),
-              position: { my: "center", at: "bottom" },
-              title: "Fertilization Diary", 
-              
-              show: {
-				effect: "blind",
-				duration: 1000
-			  },
-			  hide: {
-				effect: "explode",
-				duration: 1000
-			  }
-			});
+            //modal: true,
+            autoOpen: false,
+            width: (windowWidth * 90 /100),
+            position: { my: "center", at: "bottom" },
+            title: "Fertilization Diary", 
+            
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+            });
             
             $("#VolumesO").dialog({
-			  autoOpen: false,
-              //modal: true,
-              position: { my: "center", at: "center" },
-              //buttons: {  
-              //    X: function() {$(this).dialog("close");}  
-              // },  
-              title: "Products consumption",  
-              width: (windowWidth * 90 /100), 
-			  show: {
-				effect: "blind",
-				duration: 1000
-			  },
-			  hide: {
-				effect: "explode",
-				duration: 1000
-			  }
-			});
-		 
-			$("#opener").on("click", function() {
-			  $("#dialog").dialog("open").dialog('option', 'position', 'center');
-			});
+            autoOpen: false,
+            //modal: true,
+            position: { my: "center", at: "center" },
+            //buttons: {  
+            //    X: function() {$(this).dialog("close");}  
+            // },  
+            title: "Products consumption",  
+            width: (windowWidth * 90 /100), 
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+            });
+        
+            $("#opener").on("click", function() {
+            $("#dialog").dialog("open").dialog('option', 'position', 'center');
+            });
             $("#openFertilization").on("click", function() {
-			    setTimeout(function() {
+                setTimeout(function() {
                     showVolumes();
                     $("#FertilizationT").dialog("open").dialog('option', 'position', 'center');
                 }, 10);
@@ -854,212 +1117,209 @@
                     $("#VolumesO").dialog("open").dialog('option', 'position', 'center');
                 }, 10);
             });
-		});
+        });
     </script>
-    
-
-<!-- Login Modal -->    
+    <!-- Login Modal -->    
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-          	<div class="modal-header">
-                    <h3 class="card-title text-left mb-3">Login</h3>
-                    <button7 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button7>
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h3 class="card-title text-left mb-3">Login</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">         
+                    <form id="loginForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <input type="text" class="form-control p_input" placeholder="Username or email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control p_input" placeholder="Password" id="password" autocomplete="off" onkeydown = "if (event.keyCode == 13)
+                                document.getElementById('login').click()" required>
+                        </div>
+                        <div class="form-group d-flex align-items-center justify-content-between">
+                            <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input"> Remember me </label>
+                            </div>
+                            <a href="#" id="forgotPasswordLink" class="forgot-pass">Forgot password</a>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary btn-block enter-btn" id="login" >Log in</button>
+                        </div>
+                        <br />
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-facebook me-2 col">
+                            <i class="mdi mdi-facebook"></i> Facebook </button>
+                            <button type="button" class="btn btn-google col">
+                            <i class="mdi mdi-google-plus"></i> Google plus </button>
+                        </div>
+                        <div class="modal-footer">
+                            <p class="sign-up">Don't have an Account?<a href="#" id="signupLink"> Sign Up</a></p>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">         
-               <form action="index.php" method="post" id="loginForm">
-                 <div class="form-group">
-                    <input type="text" class="form-control p_input" placeholder="Username or email" id="email" required>
-                 </div>
-                 <div class="form-group">
-                    <input type="password" class="form-control p_input" placeholder="Password" id="password" autocomplete="off" onkeydown = "if (event.keyCode == 13)
-                        document.getElementById('login').click()" required>
-                 </div>
-                 <div class="form-group d-flex align-items-center justify-content-between">
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input type="submit" class="form-check-input"> Remember me </label>
-                    </div>
-                    <a href="#" id="forgotPasswordLink" class="forgot-pass">Forgot password</a>
-                 </div>
-                 <div class="text-center">
-                    <button class="btn btn-primary btn-block enter-btn" id="login" >Log in</button>
-                 </div>
-                 <br />
-                 <div class="d-flex">
-                    <button class="btn btn-facebook me-2 col">
-                      <i class="mdi mdi-facebook"></i> Facebook </button>
-                    <button class="btn btn-google col">
-                      <i class="mdi mdi-google-plus"></i> Google plus </button>
-                 </div>
-                 <div class="modal-footer">
-                	  <p class="sign-up">Don't have an Account?<a href="#" id="signupLink"> Sign Up</a></p>
-                 </div>
-               </form>
-            </div>
-          </div>
         </div>
     </div>
     <!-- Sign Up Modal -->
     <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-          	<div class="modal-header">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h3 class="card-title text-left mb-3">Sign Up</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control p_input" placeholder="First Name" id="firstNameSignUp" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control p_input" placeholder="Email" id="emailSignUp" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control p_input" placeholder="Password" id="passwordSignUp" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control p_input" placeholder="Confirm Password" id="passwordConfirmSignUp" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control p_input" placeholder="Invite Code" id="inviteCode" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary btn-block enter-btn" id="signupBtn">Register</button>
+                    </div>
+                    <div class="modal-footer">
+                        <p>Already have an Account?<a href="#" class="backToLogin"> Log In</a></p>
+                    </div>
+                </form>
             </div>
-            <div class="modal-body">
-               <form id="signupForm">
-                 <div class="form-group">
-                    <input type="text" class="form-control p_input" placeholder="First Name" id="firstNameSignUp" required>
-                 </div>
-                 <div class="form-group">
-                    <input type="email" class="form-control p_input" placeholder="Email" id="emailSignUp" required>
-                 </div>
-                 <div class="form-group">
-                    <input type="password" class="form-control p_input" placeholder="Password" id="passwordSignUp" required>
-                 </div>
-                 <div class="form-group">
-                    <input type="password" class="form-control p_input" placeholder="Confirm Password" id="passwordConfirmSignUp" required>
-                 </div>
-                 <div class="form-group">
-                    <input type="text" class="form-control p_input" placeholder="Invite Code" id="inviteCode" required>
-                 </div>
-                 <div class="text-center">
-                    <button type="button" class="btn btn-primary btn-block enter-btn" id="signupBtn">Register</button>
-                 </div>
-                 <div class="modal-footer">
-                	  <p>Already have an Account?<a href="#" class="backToLogin"> Log In</a></p>
-                 </div>
-               </form>
-            </div>
-          </div>
         </div>
     </div>
 
     <!-- Forgot Password Modal -->
     <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-          	<div class="modal-header">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h3 class="card-title text-left mb-3">Forgot Password</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="forgotPasswordForm">
+                        <p class="text-muted">Enter your email to receive a password reset link</p>
+                        <div class="form-group">
+                            <input type="email" class="form-control p_input" placeholder="Email" id="emailForgot" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary btn-block enter-btn" id="forgotPasswordBtn">Send Reset Link</button>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="backToLogin">Back to Login</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-               <form id="forgotPasswordForm">
-                 <p class="text-muted">Enter your email to receive a password reset link</p>
-                 <div class="form-group">
-                    <input type="email" class="form-control p_input" placeholder="Email" id="emailForgot" required>
-                 </div>
-                 <div class="text-center">
-                    <button type="button" class="btn btn-primary btn-block enter-btn" id="forgotPasswordBtn">Send Reset Link</button>
-                 </div>
-                 <div class="modal-footer">
-                	  <a href="#" class="backToLogin">Back to Login</a>
-                 </div>
-               </form>
-            </div>
-          </div>
         </div>
     </div>
-		<div id="dialog">
-            	<div class="card-body">
-                  <div class="table-responsive">
-                      <table id="waterValuesTable" class="table table-bordered" style="width:100%;">
-                          <thead>
-                              <tr>
-                                  <th><p>Data</p></th>
-                                  <th><p>EC_PRE</p></th>
-                                  <th><p>EC_AFT</p></th>
-                                  <th> <p>&nbsp  &nbsp &nbsp PH &nbsp &nbsp &nbsp</p></th>
-                                  <th><p>Nitriti mg/l</p></th>
-                                  <th><p>Nitrati mg/l</p></th>
-                                  <th><p>GH dGH</p></th>
-                                  <th><p>KH dKH</p></th>
-                                  <th><p>Fosfati mg/l</p></th>
-                                  <th><p>Options</p></th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                          </tbody>
-                          <?php if (!isset($_SESSION["email"]) || !isset($_SESSION["loggedIn"])) {?>
-
-                          <?php }else{ ?> 
-                            <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th><input type="number" class="form-control text-center" id="addecPField" name="ecP"></th>
-                                    <th><input type="number" class="form-control text-center" id="addecAField" name="ecA"></th>
-                                    <th><input type="number" class="form-control text-center" id="addphField" name="ph"></th>
-                                    <th><input type="number" class="form-control text-center" id="addNo2Field" name="no2"></th>
-                                    <th><input type="number" class="form-control text-center" id="addNo3Field" name="no3"></th>
-                                    <th><input type="number" class="form-control text-center" id="addGHField" name="gh"></th>
-                                    <th><input type="number" class="form-control text-center" id="addKHField" name="kh"></th>
-                                    <th><input type="number" class="form-control text-center" id="addPo4Field" name="po4"></th>
-                                    <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addBtn" ><i class="mdi mdi-table-row-plus-after"></i></a></th>      
-                                </tr>
-                            </tfoot>
-                          <?php } ?>
-                      </table>
-                  </div>
-        	    </div>
+    <div id="dialog">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="waterValuesTable" class="table table-bordered" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th><p>Data</p></th>
+                            <th><p>EC_PRE</p></th>
+                            <th><p>EC_AFT</p></th>
+                            <th> <p>&nbsp  &nbsp &nbsp PH &nbsp &nbsp &nbsp</p></th>
+                            <th><p>Nitriti mg/l</p></th>
+                            <th><p>Nitrati mg/l</p></th>
+                            <th><p>GH dGH</p></th>
+                            <th><p>KH dKH</p></th>
+                            <th><p>Fosfati mg/l</p></th>
+                            <th><p>Options</p></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <?php if (!isset($_SESSION["email"]) || !isset($_SESSION["loggedIn"])) {?>
+                    <?php }else{ ?> 
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th><input type="number" class="form-control text-center" id="addecPField" name="ecP"></th>
+                            <th><input type="number" class="form-control text-center" id="addecAField" name="ecA"></th>
+                            <th><input type="number" class="form-control text-center" id="addphField" name="ph"></th>
+                            <th><input type="number" class="form-control text-center" id="addNo2Field" name="no2"></th>
+                            <th><input type="number" class="form-control text-center" id="addNo3Field" name="no3"></th>
+                            <th><input type="number" class="form-control text-center" id="addGHField" name="gh"></th>
+                            <th><input type="number" class="form-control text-center" id="addKHField" name="kh"></th>
+                            <th><input type="number" class="form-control text-center" id="addPo4Field" name="po4"></th>
+                            <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addBtn" ><i class="mdi mdi-table-row-plus-after"></i></a></th>      
+                        </tr>
+                    </tfoot>
+                    <?php } ?>
+                </table>
             </div>
-	</div>    
+        </div>
+    </div>
+    </div>    
     <div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div id="FertilizationT">
-           		<div class="card-body">
-                  <div class="table-responsive">
-                      <table id="fertilizationTable" class="table table-bordered" style="width:100%;">
-                          <thead>
-                              <tr>
-                                  <th><p>Data</p></th>
-                                  <th><p>Potassio ml</p></th>
-                                  <th><p>Magnesio ml</p></th>
-                                  <th><p>Ferro ml</p></th>
-                                  <th><p>Rinverdente ml</p></th>
-                                  <th><p>Fosforo ml</p></th>
-                                  <th><p>Azoto ml</p></th>
-                                  <th><p>&nbsp NPK pz &nbsp</p></th>
-                                  <th><p>Options</p></th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                          </tbody>
-                          <?php if (!isset($_SESSION["email"]) || !isset($_SESSION["loggedIn"])) {?>
+        <div id="FertilizationT">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="fertilizationTable" class="table table-bordered" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th><p>Data</p></th>
+                                <th><p>Potassio ml</p></th>
+                                <th><p>Magnesio ml</p></th>
+                                <th><p>Ferro ml</p></th>
+                                <th><p>Rinverdente ml</p></th>
+                                <th><p>Fosforo ml</p></th>
+                                <th><p>Azoto ml</p></th>
+                                <th><p>&nbsp NPK pz &nbsp</p></th>
+                                <th><p>Options</p></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <?php if (!isset($_SESSION["email"]) || !isset($_SESSION["loggedIn"])) {?>
 
-                          <?php }else{ ?>
-                            <tfoot>
-                              <tr>
-                                  <th></th>
-                                  <th><input type="text"  class="form-control text-center" id="addKField" name="potassio"></th>
-                                  <th><input type="text"  class="form-control text-center" id="addMgField" name="magnesio"></th>
-                                  <th><input type="text"  class="form-control text-center" id="addFeField" name="ferro"></th>
-                                  <th><input type="text"  class="form-control text-center" id="addRinverdenteField" name="rinverdente"></th>
-                                  <th><input type="text"  class="form-control text-center" id="addPField" name="fosforo"></th>
-                                  <th><input type="text"  class="form-control text-center" id="addNField" name="azoto"></th>
-                                  <th><input type="text"  class="form-control text-center" id="addNPKField" name="npk"></th>
-                                  <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addFertilizationBtn" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
-                              </tr>
-                            </tfoot>
-                          <?php } ?>
-                      </table>
-                  </div>
-            	</div>
+                        <?php }else{ ?>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th><input type="text"  class="form-control text-center" id="addKField" name="potassio"></th>
+                                <th><input type="text"  class="form-control text-center" id="addMgField" name="magnesio"></th>
+                                <th><input type="text"  class="form-control text-center" id="addFeField" name="ferro"></th>
+                                <th><input type="text"  class="form-control text-center" id="addRinverdenteField" name="rinverdente"></th>
+                                <th><input type="text"  class="form-control text-center" id="addPField" name="fosforo"></th>
+                                <th><input type="text"  class="form-control text-center" id="addNField" name="azoto"></th>
+                                <th><input type="text"  class="form-control text-center" id="addNPKField" name="npk"></th>
+                                <th><a href="javascript:void(0);" data-id="'.$row['id'].'" class="btn btn-primary addFertilizationBtn" ><i class="mdi mdi-table-row-plus-after"></i></a></th>
+                            </tr>
+                        </tfoot>
+                        <?php } ?>
+                    </table>
+                </div>
             </div>
-		
-	</div>     
+        </div>	
+    </div>     
     <div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    	<div class="row ">
-        <div class="col-4 grid-margin">
-        <div class="card">
-        	<div class="card-body">
-        		<div id="VolumesO"  >
-					<div id="volumes">
+        <div class="row ">
+            <div class="col-4 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="VolumesO"  >
+                            <div id="volumes">
+                            </div>
+                        </div>
                     </div>
-		        </div>
+                </div>
             </div>
-        </div></div>
-</div>	</div>      
+        </div>	
+    </div>      
 </body>
 
 </html>

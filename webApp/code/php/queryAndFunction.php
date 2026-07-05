@@ -171,15 +171,15 @@ function getDailyPH($data){
 }
 
 function getDailyDescTDS_EC($data){
-	return "SELECT e.id as id, e.data_send as data, e.ec as ec FROM tds_tab t JOIN ec_tab e ON t.id = e.id WHERE FROM_UNIXTIME(e.data_send, '%Y-%m-%d') = '$data' ORDER BY e.data_send DESC";
+	return "SELECT e.id as id, e.data_send as data, e.ec as ec FROM tds_tab t JOIN ec_tab e ON t.id = e.id WHERE FROM_UNIXTIME(CAST(e.data_send AS UNSIGNED), '%Y-%m-%d') = '$data' ORDER BY CAST(e.data_send AS UNSIGNED) DESC";
 }          
 
 function getDailyDescPh($data){
-	return "SELECT p.id as id, p.data_send as data, p.ph as ph FROM ph_tab p WHERE FROM_UNIXTIME(p.data_send, '%Y-%m-%d') = '$data' ORDER BY p.data_send DESC";
+	return "SELECT p.id as id, p.data_send as data, p.ph as ph FROM ph_tab p WHERE FROM_UNIXTIME(CAST(p.data_send AS UNSIGNED), '%Y-%m-%d') = '$data' ORDER BY CAST(p.data_send AS UNSIGNED) DESC";
 }
 
 function getDailyDescTemperature($data){
-	return "SELECT t.id as id, t.data_send as data, t.temperature as temp FROM temp_tab t WHERE FROM_UNIXTIME(t.data_send, '%Y-%m-%d') = '$data' ORDER BY t.data_send DESC";
+	return "SELECT t.id as id, t.data_send as data, t.temperature as temp FROM temp_tab t WHERE FROM_UNIXTIME(CAST(t.data_send AS UNSIGNED), '%Y-%m-%d') = '$data' ORDER BY CAST(t.data_send AS UNSIGNED) DESC";
 }
 
 function getFertilizationSum($element){
@@ -323,7 +323,3 @@ function denormalize($normalized, $min, $max) {
 	$denormalized = ($normalized * ($max - $min) + $min);
 	return $denormalized;
 }
-          
-
-
-?>   

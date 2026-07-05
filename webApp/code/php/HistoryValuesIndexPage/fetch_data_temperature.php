@@ -25,11 +25,10 @@ $count_rows = $query->num_rows;
 
 $data = [];
 while ($row = $query->fetch_assoc()) {
-    // Punto: il file originale leggeva $row['temp'] ma la query restituisce
-    // la colonna come "temp" tramite alias (t.temperature as temp) — verificato in queryAndFunction.php
+    // data_send è VARCHAR(10) contenente un Unix timestamp come stringa
     $data[] = [
         'id'   => $row['id'],
-        'data' => gmdate('H:i:s', $row['data']),
+        'data' => gmdate('H:i:s', intval($row['data'])),
         't'    => $row['temp'],
     ];
 }
