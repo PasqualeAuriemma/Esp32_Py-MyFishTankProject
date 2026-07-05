@@ -1,0 +1,1786 @@
+{
+  "communities": {
+    "0": [
+      "helper_singleton",
+      "helper_singleton_rationale_26",
+      "helper_singleton_rationale_32",
+      "helper_singleton_singleton",
+      "helper_singleton_singleton_get_instance",
+      "helper_singleton_singleton_new",
+      "helper_singleton_singleton_reset_instance",
+      "i2c",
+      "main",
+      "main_main",
+      "main_sensor_loop",
+      "main_wifi_sending_loop",
+      "manager_sdcardmanager",
+      "manager_sdcardmanager_rationale_1",
+      "manager_sdcardmanager_rationale_114",
+      "manager_sdcardmanager_rationale_34",
+      "manager_sdcardmanager_rationale_71",
+      "manager_sdcardmanager_rationale_85",
+      "manager_sdcardmanager_rationale_93",
+      "manager_sdcardmanager_sdcardmanager",
+      "manager_sdcardmanager_sdcardmanager_get_configuration",
+      "manager_sdcardmanager_sdcardmanager_if_exist_configuration",
+      "manager_sdcardmanager_sdcardmanager_init",
+      "manager_sdcardmanager_sdcardmanager_init_spi",
+      "manager_sdcardmanager_sdcardmanager_mount_do",
+      "manager_sdcardmanager_sdcardmanager_set_configuration",
+      "manager_viewer_rationale_73",
+      "manager_viewer_viewer_init",
+      "manager_wificonnection",
+      "menu_menubuilder_build_menu",
+      "menu_menubuilder_rationale_34",
+      "modules_keyboard",
+      "modules_keyboard_keyboard",
+      "modules_keyboard_keyboard_get_digit_keyboard",
+      "modules_keyboard_keyboard_init",
+      "modules_keyboard_rationale_36",
+      "modules_keyboard_rationale_54",
+      "modules_keyboard_rationale_68",
+      "modules_keyboard_rationale_8",
+      "modules_ph_sensor",
+      "modules_relays",
+      "modules_relays_rationale_15",
+      "modules_relays_rationale_6",
+      "modules_relays_relays",
+      "modules_relays_relays_get_feeder_rele",
+      "modules_relays_relays_get_filter_rele",
+      "modules_relays_relays_get_heater_rele",
+      "modules_relays_relays_get_light_rele",
+      "modules_relays_relays_init",
+      "modules_relays_relays_init_relays_status",
+      "resource_board_pins",
+      "resource_board_pins_boardpins",
+      "resource_board_pins_rationale_34",
+      "resource_config",
+      "resource_config_rationale_1"
+    ],
+    "1": [
+      "tests_test_suite_fakewlan",
+      "tests_test_suite_fakewlan_active",
+      "tests_test_suite_fakewlan_connect",
+      "tests_test_suite_fakewlan_disconnect",
+      "tests_test_suite_fakewlan_ifconfig",
+      "tests_test_suite_fakewlan_init",
+      "tests_test_suite_fakewlan_isconnected",
+      "tests_test_suite_fakewlan_status",
+      "tests_test_suite_mockrtc",
+      "tests_test_suite_mockrtc_datetime",
+      "tests_test_suite_mockrtc_init",
+      "tests_test_suite_mockrtc_osf",
+      "tests_test_suite_mockrtc_unix_epoch_time",
+      "tests_test_suite_mockwifi",
+      "tests_test_suite_mockwifi_connect",
+      "tests_test_suite_mockwifi_connection_status",
+      "tests_test_suite_mockwifi_disconnect",
+      "tests_test_suite_mockwifi_get_ip_address",
+      "tests_test_suite_mockwifi_host",
+      "tests_test_suite_mockwifi_init",
+      "tests_test_suite_mockwifi_is_connected",
+      "tests_test_suite_mockwifi_send_value_to_web",
+      "tests_test_suite_rationale_1020",
+      "tests_test_suite_rationale_338",
+      "tests_test_suite_rationale_530",
+      "tests_test_suite_rationale_575",
+      "tests_test_suite_rationale_586",
+      "tests_test_suite_rationale_664",
+      "tests_test_suite_rationale_685",
+      "tests_test_suite_rationale_979",
+      "tests_test_suite_rationale_993",
+      "tests_test_suite_testmain_test_rtc_osf_triggers_ntp_sync",
+      "tests_test_suite_testmain_test_send_fails_gracefully",
+      "tests_test_suite_testmain_test_send_temperature_to_web",
+      "tests_test_suite_testntpmanager",
+      "tests_test_suite_testntpmanager_setup",
+      "tests_test_suite_testntpmanager_test_sync_disconnects_after",
+      "tests_test_suite_testntpmanager_test_sync_fails_if_wifi_fails",
+      "tests_test_suite_testntpmanager_test_sync_success",
+      "tests_test_suite_testntpmanager_test_sync_updates_rtc",
+      "tests_test_suite_testwificonnection",
+      "tests_test_suite_testwificonnection_setup",
+      "tests_test_suite_testwificonnection_test_connect_activates_wlan",
+      "tests_test_suite_testwificonnection_test_connect_returns_true_on_success",
+      "tests_test_suite_testwificonnection_test_connect_sets_connected",
+      "tests_test_suite_testwificonnection_test_connection_status_connected",
+      "tests_test_suite_testwificonnection_test_connection_status_idle",
+      "tests_test_suite_testwificonnection_test_disconnect_deactivates",
+      "tests_test_suite_testwificonnection_test_host_property",
+      "tests_test_suite_testwificonnection_test_initial_not_connected",
+      "tests_test_suite_testwificonnection_test_send_value_queues_correctly",
+      "tests_test_suite_testwificonnection_test_send_value_sync_connects_if_needed",
+      "tests_test_suite_testwificonnection_test_send_value_sync_no_host_returns_false",
+      "tests_test_suite_testwificonnection_test_singleton_returns_same_instance"
+    ],
+    "2": [
+      "tests_test_suite_mockdisplay",
+      "tests_test_suite_mockdisplay_blit",
+      "tests_test_suite_mockdisplay_call_count",
+      "tests_test_suite_mockdisplay_char_dimension",
+      "tests_test_suite_mockdisplay_fill",
+      "tests_test_suite_mockdisplay_fill_rect",
+      "tests_test_suite_mockdisplay_hline",
+      "tests_test_suite_mockdisplay_init",
+      "tests_test_suite_mockdisplay_invert",
+      "tests_test_suite_mockdisplay_line",
+      "tests_test_suite_mockdisplay_pixel",
+      "tests_test_suite_mockdisplay_poweroff",
+      "tests_test_suite_mockdisplay_poweron",
+      "tests_test_suite_mockdisplay_rec",
+      "tests_test_suite_mockdisplay_rect",
+      "tests_test_suite_mockdisplay_reset",
+      "tests_test_suite_mockdisplay_scroll",
+      "tests_test_suite_mockdisplay_show",
+      "tests_test_suite_mockdisplay_show_blank_button_with_text",
+      "tests_test_suite_mockdisplay_show_custom_char",
+      "tests_test_suite_mockdisplay_show_fill_button_with_text",
+      "tests_test_suite_mockdisplay_show_image",
+      "tests_test_suite_mockdisplay_text",
+      "tests_test_suite_mockdisplay_vline",
+      "tests_test_suite_mockdisplay_was_called",
+      "tests_test_suite_rationale_220",
+      "tests_test_suite_rationale_255",
+      "tests_test_suite_rationale_700",
+      "tests_test_suite_rationale_706",
+      "tests_test_suite_rationale_791",
+      "tests_test_suite_rationale_800",
+      "tests_test_suite_rationale_814",
+      "tests_test_suite_testviewer",
+      "tests_test_suite_testviewer_make_viewer",
+      "tests_test_suite_testviewer_test_run_draws_main_screen_on_exit_menu",
+      "tests_test_suite_testviewer_test_run_draws_menu_on_menu_enabled",
+      "tests_test_suite_testviewer_test_set_temperature",
+      "tests_test_suite_testviewer_test_show_rele_symbol_calls_display",
+      "tests_test_suite_testviewer_test_toggle_feeder",
+      "tests_test_suite_testviewer_test_toggle_filter",
+      "tests_test_suite_testviewer_test_toggle_heater",
+      "tests_test_suite_testviewer_test_toggle_light_turns_on",
+      "tests_test_suite_testviewer_test_toggle_light_twice_turns_off",
+      "tests_test_suite_testviewer_test_viewer_relay_initial_state_off",
+      "tests_test_suite_testviewer_test_viewer_starts_with_menu_disabled"
+    ],
+    "3": [
+      "tests_test_suite_mockds18b20_read_temperature",
+      "tests_test_suite_mocksdcard",
+      "tests_test_suite_mocksdcard_bool",
+      "tests_test_suite_mocksdcard_get_configuration",
+      "tests_test_suite_mocksdcard_if_exist_configuration",
+      "tests_test_suite_mocksdcard_init",
+      "tests_test_suite_mocksdcard_set_configuration",
+      "tests_test_suite_rationale_1006",
+      "tests_test_suite_rationale_1039",
+      "tests_test_suite_rationale_1059",
+      "tests_test_suite_rationale_1080",
+      "tests_test_suite_rationale_319",
+      "tests_test_suite_rationale_608",
+      "tests_test_suite_rationale_628",
+      "tests_test_suite_rationale_829",
+      "tests_test_suite_rationale_847",
+      "tests_test_suite_rationale_902",
+      "tests_test_suite_rationale_907",
+      "tests_test_suite_rationale_914",
+      "tests_test_suite_rationale_923",
+      "tests_test_suite_rationale_936",
+      "tests_test_suite_rationale_945",
+      "tests_test_suite_rationale_959",
+      "tests_test_suite_testmain",
+      "tests_test_suite_testmain_boot_sequence",
+      "tests_test_suite_testmain_setup",
+      "tests_test_suite_testmain_test_boot_completes_without_error",
+      "tests_test_suite_testmain_test_boot_loads_config_from_sd",
+      "tests_test_suite_testmain_test_boot_relays_off_by_default",
+      "tests_test_suite_testmain_test_loop_gc_runs_every_500_iterations",
+      "tests_test_suite_testmain_test_loop_menu_activation_on_ok",
+      "tests_test_suite_testmain_test_loop_menu_countdown_resets",
+      "tests_test_suite_testmain_test_save_config_to_sd_on_menu_close",
+      "tests_test_suite_testmain_test_single_loop_iteration_temperature",
+      "tests_test_suite_testmain_test_use_case_auto_mode_restores_all",
+      "tests_test_suite_testmain_test_use_case_maintenance_mode_disables_all",
+      "tests_test_suite_testmain_test_use_case_toggle_light_from_menu",
+      "tests_test_suite_testsdcardlogic",
+      "tests_test_suite_testsdcardlogic_setup",
+      "tests_test_suite_testsdcardlogic_test_config_roundtrip_json",
+      "tests_test_suite_testsdcardlogic_test_no_config_initially",
+      "tests_test_suite_testsdcardlogic_test_overwrite_config",
+      "tests_test_suite_testsdcardlogic_test_set_and_read_config",
+      "tests_test_suite_testsdcardlogic_test_unavailable_returns_false"
+    ],
+    "4": [
+      "modules_ssd1306",
+      "modules_ssd1306_rationale_117",
+      "modules_ssd1306_rationale_146",
+      "modules_ssd1306_rationale_215",
+      "modules_ssd1306_rationale_247",
+      "modules_ssd1306_rationale_261",
+      "modules_ssd1306_rationale_284",
+      "modules_ssd1306_rationale_297",
+      "modules_ssd1306_rationale_312",
+      "modules_ssd1306_ssd1306",
+      "modules_ssd1306_ssd1306_char_dimension",
+      "modules_ssd1306_ssd1306_clear_portion",
+      "modules_ssd1306_ssd1306_contrast",
+      "modules_ssd1306_ssd1306_foo",
+      "modules_ssd1306_ssd1306_head",
+      "modules_ssd1306_ssd1306_i2c",
+      "modules_ssd1306_ssd1306_i2c_init",
+      "modules_ssd1306_ssd1306_i2c_poweron",
+      "modules_ssd1306_ssd1306_i2c_write_cmd",
+      "modules_ssd1306_ssd1306_i2c_write_data",
+      "modules_ssd1306_ssd1306_i2c_write_framebuf",
+      "modules_ssd1306_ssd1306_init",
+      "modules_ssd1306_ssd1306_init_display",
+      "modules_ssd1306_ssd1306_invert",
+      "modules_ssd1306_ssd1306_poweroff",
+      "modules_ssd1306_ssd1306_poweron",
+      "modules_ssd1306_ssd1306_scroll_in_screen_v",
+      "modules_ssd1306_ssd1306_scroll_out_screen",
+      "modules_ssd1306_ssd1306_scroll_out_screen_v",
+      "modules_ssd1306_ssd1306_scroll_portion",
+      "modules_ssd1306_ssd1306_scroll_screen_in_out",
+      "modules_ssd1306_ssd1306_scroll_screen_in_out_v",
+      "modules_ssd1306_ssd1306_show",
+      "modules_ssd1306_ssd1306_show_blank_button_with_text",
+      "modules_ssd1306_ssd1306_show_custom_char",
+      "modules_ssd1306_ssd1306_show_fill_button_with_text",
+      "modules_ssd1306_ssd1306_show_image",
+      "modules_ssd1306_ssd1306_spi",
+      "modules_ssd1306_ssd1306_spi_init",
+      "modules_ssd1306_ssd1306_spi_poweron",
+      "modules_ssd1306_ssd1306_spi_write_cmd",
+      "modules_ssd1306_ssd1306_spi_write_framebuf",
+      "modules_ssd1306_ssd1306_write_text"
+    ],
+    "5": [
+      "php_queryandfunction",
+      "php_queryandfunction_adddatetofertilizationquery",
+      "php_queryandfunction_calculate_average",
+      "php_queryandfunction_calculate_median",
+      "php_queryandfunction_denormalize",
+      "php_queryandfunction_get_median",
+      "php_queryandfunction_get_median_ph",
+      "php_queryandfunction_get_median_temperature",
+      "php_queryandfunction_getallfertilizationsum",
+      "php_queryandfunction_getdailydescph",
+      "php_queryandfunction_getdailydesctds_ec",
+      "php_queryandfunction_getdailydesctemperature",
+      "php_queryandfunction_getdailyec",
+      "php_queryandfunction_getdailyph",
+      "php_queryandfunction_getdailytemperature",
+      "php_queryandfunction_getdeletefromtablequery",
+      "php_queryandfunction_getecchartquery",
+      "php_queryandfunction_getecchartquerywithdate",
+      "php_queryandfunction_getecinsertquery",
+      "php_queryandfunction_getfertilizationinsertquery",
+      "php_queryandfunction_getfertilizationsum",
+      "php_queryandfunction_getfertilizationvalues",
+      "php_queryandfunction_getfertilizationvolumes",
+      "php_queryandfunction_getfromtablequery",
+      "php_queryandfunction_getlimitfromtablequery",
+      "php_queryandfunction_getorderfromtablequery",
+      "php_queryandfunction_getphchartquery",
+      "php_queryandfunction_getphchartquerywithdate",
+      "php_queryandfunction_getphinsertquery",
+      "php_queryandfunction_getseachfromfertilizationtablequery",
+      "php_queryandfunction_getseachfromtablequery",
+      "php_queryandfunction_getsigleelemfromtablequery",
+      "php_queryandfunction_gettdsinsertquery",
+      "php_queryandfunction_gettemperaturechartquery",
+      "php_queryandfunction_gettemperaturechartquerywithdate",
+      "php_queryandfunction_gettempinsertquery",
+      "php_queryandfunction_getupdatefertilizationtablequery",
+      "php_queryandfunction_getupdatefertilizationvolumequery",
+      "php_queryandfunction_getupdatetablequery",
+      "php_queryandfunction_getupdatewatervaluestablequery",
+      "php_queryandfunction_getwatervaluesinsertquery",
+      "php_queryandfunction_normalize"
+    ],
+    "6": [
+      "modules_ph_sensor_phsensor",
+      "modules_ph_sensor_phsensor_calibrate_midpoint",
+      "modules_ph_sensor_phsensor_calibrate_slope",
+      "modules_ph_sensor_phsensor_get_calibration",
+      "modules_ph_sensor_phsensor_init",
+      "modules_ph_sensor_phsensor_is_valid",
+      "modules_ph_sensor_phsensor_log",
+      "modules_ph_sensor_phsensor_offset",
+      "modules_ph_sensor_phsensor_raw_to_voltage",
+      "modules_ph_sensor_phsensor_read_all",
+      "modules_ph_sensor_phsensor_read_ph",
+      "modules_ph_sensor_phsensor_read_raw_average",
+      "modules_ph_sensor_phsensor_read_voltage",
+      "modules_ph_sensor_phsensor_repr",
+      "modules_ph_sensor_phsensor_set_temperature",
+      "modules_ph_sensor_phsensor_slope",
+      "modules_ph_sensor_phsensor_slope_at_temperature",
+      "modules_ph_sensor_phsensor_switch_off",
+      "modules_ph_sensor_phsensor_switch_on",
+      "modules_ph_sensor_phsensor_temperature",
+      "modules_ph_sensor_phsensor_voltage_to_ph",
+      "modules_ph_sensor_rationale_201",
+      "modules_ph_sensor_rationale_219",
+      "modules_ph_sensor_rationale_256",
+      "modules_ph_sensor_rationale_269",
+      "modules_ph_sensor_rationale_280",
+      "modules_ph_sensor_rationale_291",
+      "modules_ph_sensor_rationale_311",
+      "modules_ph_sensor_rationale_343",
+      "modules_ph_sensor_rationale_371",
+      "modules_ph_sensor_rationale_402",
+      "modules_ph_sensor_rationale_446",
+      "modules_ph_sensor_rationale_459",
+      "modules_ph_sensor_rationale_464",
+      "modules_ph_sensor_rationale_469",
+      "modules_ph_sensor_rationale_474",
+      "modules_ph_sensor_rationale_98"
+    ],
+    "7": [
+      "modules_tds_sensor",
+      "modules_tds_sensor_rationale_182",
+      "modules_tds_sensor_rationale_200",
+      "modules_tds_sensor_rationale_231",
+      "modules_tds_sensor_rationale_237",
+      "modules_tds_sensor_rationale_246",
+      "modules_tds_sensor_rationale_259",
+      "modules_tds_sensor_rationale_270",
+      "modules_tds_sensor_rationale_284",
+      "modules_tds_sensor_rationale_305",
+      "modules_tds_sensor_rationale_335",
+      "modules_tds_sensor_rationale_351",
+      "modules_tds_sensor_rationale_384",
+      "modules_tds_sensor_rationale_389",
+      "modules_tds_sensor_rationale_394",
+      "modules_tds_sensor_rationale_88",
+      "modules_tds_sensor_tdssensor",
+      "modules_tds_sensor_tdssensor_compensate_temperature",
+      "modules_tds_sensor_tdssensor_init",
+      "modules_tds_sensor_tdssensor_is_valid",
+      "modules_tds_sensor_tdssensor_k_value",
+      "modules_tds_sensor_tdssensor_log",
+      "modules_tds_sensor_tdssensor_raw_to_voltage",
+      "modules_tds_sensor_tdssensor_read_all",
+      "modules_tds_sensor_tdssensor_read_ec",
+      "modules_tds_sensor_tdssensor_read_raw_average",
+      "modules_tds_sensor_tdssensor_read_tds",
+      "modules_tds_sensor_tdssensor_read_voltage",
+      "modules_tds_sensor_tdssensor_repr",
+      "modules_tds_sensor_tdssensor_set_k_value",
+      "modules_tds_sensor_tdssensor_set_temperature",
+      "modules_tds_sensor_tdssensor_switch_off",
+      "modules_tds_sensor_tdssensor_switch_on",
+      "modules_tds_sensor_tdssensor_temperature",
+      "modules_tds_sensor_tdssensor_voltage_to_ec_raw"
+    ],
+    "8": [
+      "resource_config_config",
+      "resource_config_config_active_temperature_monitoring",
+      "resource_config_config_end_minutes",
+      "resource_config_config_get_freq_filter",
+      "resource_config_config_get_freq_update_web_ec",
+      "resource_config_config_get_freq_update_web_ph",
+      "resource_config_config_get_freq_update_web_temperature",
+      "resource_config_config_get_on_off_ec",
+      "resource_config_config_get_on_off_feeder",
+      "resource_config_config_get_on_off_filter",
+      "resource_config_config_get_on_off_filter_auto",
+      "resource_config_config_get_on_off_heater",
+      "resource_config_config_get_on_off_heater_auto",
+      "resource_config_config_get_on_off_light_auto",
+      "resource_config_config_get_on_off_ph",
+      "resource_config_config_get_on_off_temperature",
+      "resource_config_config_get_timer_time",
+      "resource_config_config_relay1",
+      "resource_config_config_set_auto_heater",
+      "resource_config_config_stand_by",
+      "resource_config_config_stand_by_process",
+      "resource_config_config_start_minutes",
+      "resource_config_config_temperature",
+      "resource_config_rationale_177",
+      "resource_config_rationale_186",
+      "resource_config_rationale_282",
+      "resource_config_rationale_286",
+      "resource_config_rationale_29",
+      "resource_config_rationale_402",
+      "resource_config_rationale_456",
+      "resource_config_rationale_632",
+      "resource_config_rationale_659"
+    ],
+    "9": [
+      "manager_wificonnection_rationale_11",
+      "manager_wificonnection_rationale_132",
+      "manager_wificonnection_rationale_160",
+      "manager_wificonnection_rationale_164",
+      "manager_wificonnection_rationale_168",
+      "manager_wificonnection_rationale_179",
+      "manager_wificonnection_rationale_186",
+      "manager_wificonnection_rationale_193",
+      "manager_wificonnection_rationale_232",
+      "manager_wificonnection_rationale_37",
+      "manager_wificonnection_rationale_67",
+      "manager_wificonnection_rationale_71",
+      "manager_wificonnection_rationale_79",
+      "manager_wificonnection_rationale_87",
+      "manager_wificonnection_wificonnection",
+      "manager_wificonnection_wificonnection_connect",
+      "manager_wificonnection_wificonnection_connection_status",
+      "manager_wificonnection_wificonnection_disconnect",
+      "manager_wificonnection_wificonnection_feed_wdt",
+      "manager_wificonnection_wificonnection_get_ip_address",
+      "manager_wificonnection_wificonnection_has_queued_items",
+      "manager_wificonnection_wificonnection_host",
+      "manager_wificonnection_wificonnection_init",
+      "manager_wificonnection_wificonnection_is_connected",
+      "manager_wificonnection_wificonnection_log_message",
+      "manager_wificonnection_wificonnection_password",
+      "manager_wificonnection_wificonnection_pop_queue",
+      "manager_wificonnection_wificonnection_post_https_request",
+      "manager_wificonnection_wificonnection_send_value_to_web",
+      "manager_wificonnection_wificonnection_send_value_to_web_sync",
+      "manager_wificonnection_wificonnection_ssid"
+    ],
+    "10": [
+      "tests_test_suite_rationale_393",
+      "tests_test_suite_rationale_403",
+      "tests_test_suite_rationale_417",
+      "tests_test_suite_rationale_424",
+      "tests_test_suite_rationale_430",
+      "tests_test_suite_rationale_461",
+      "tests_test_suite_rationale_474",
+      "tests_test_suite_rationale_483",
+      "tests_test_suite_rationale_508",
+      "tests_test_suite_reset_singleton",
+      "tests_test_suite_testconfig",
+      "tests_test_suite_testconfig_setup",
+      "tests_test_suite_testconfig_teardown",
+      "tests_test_suite_testconfig_test_defaults_all_relays_off",
+      "tests_test_suite_testconfig_test_defaults_sending_off",
+      "tests_test_suite_testconfig_test_defaults_sensors_off",
+      "tests_test_suite_testconfig_test_from_json_roundtrip",
+      "tests_test_suite_testconfig_test_get_rele_list_reflects_relay_state",
+      "tests_test_suite_testconfig_test_mode_auto_restores_state",
+      "tests_test_suite_testconfig_test_mode_maintenance_disables_automation",
+      "tests_test_suite_testconfig_test_sending_requires_reading_enabled",
+      "tests_test_suite_testconfig_test_sending_true_when_both_enabled",
+      "tests_test_suite_testconfig_test_set_auto_heater",
+      "tests_test_suite_testconfig_test_set_timer_none_resets_to_zero",
+      "tests_test_suite_testconfig_test_set_timer_time",
+      "tests_test_suite_testconfig_test_singleton_same_instance",
+      "tests_test_suite_testconfig_test_to_dict_contains_required_keys",
+      "tests_test_suite_testmain_teardown",
+      "tests_test_suite_testviewer_setup",
+      "tests_test_suite_testviewer_teardown",
+      "tests_test_suite_testwificonnection_teardown"
+    ],
+    "11": [
+      "modules_ds18b20",
+      "modules_ds18b20_ds18b20",
+      "modules_ds18b20_ds18b20_convert",
+      "modules_ds18b20_ds18b20_init",
+      "modules_ds18b20_ds18b20_is_valid",
+      "modules_ds18b20_ds18b20_log",
+      "modules_ds18b20_ds18b20_read_all",
+      "modules_ds18b20_ds18b20_read_temperature",
+      "modules_ds18b20_ds18b20_read_temperature_cached",
+      "modules_ds18b20_ds18b20_repr",
+      "modules_ds18b20_ds18b20_rescan",
+      "modules_ds18b20_ds18b20_resolution",
+      "modules_ds18b20_ds18b20_rom_to_str",
+      "modules_ds18b20_ds18b20_roms",
+      "modules_ds18b20_ds18b20_scan",
+      "modules_ds18b20_ds18b20_sensor_count",
+      "modules_ds18b20_rationale_126",
+      "modules_ds18b20_rationale_133",
+      "modules_ds18b20_rationale_146",
+      "modules_ds18b20_rationale_156",
+      "modules_ds18b20_rationale_161",
+      "modules_ds18b20_rationale_166",
+      "modules_ds18b20_rationale_171",
+      "modules_ds18b20_rationale_184",
+      "modules_ds18b20_rationale_192",
+      "modules_ds18b20_rationale_239",
+      "modules_ds18b20_rationale_277",
+      "modules_ds18b20_rationale_292",
+      "modules_ds18b20_rationale_296",
+      "modules_ds18b20_rationale_67"
+    ],
+    "12": [
+      "menu_pymenu_backitem_init",
+      "menu_pymenu_buttonitem",
+      "menu_pymenu_buttonitem_click",
+      "menu_pymenu_buttonitem_init",
+      "menu_pymenu_confirmitem",
+      "menu_pymenu_confirmitem_init",
+      "menu_pymenu_enumitem",
+      "menu_pymenu_enumitem_click",
+      "menu_pymenu_enumitem_init",
+      "menu_pymenu_menu_init",
+      "menu_pymenu_menuconfirm_add",
+      "menu_pymenu_menuconfirm_add_items",
+      "menu_pymenu_menuconfirm_init",
+      "menu_pymenu_menuenum_add_items",
+      "menu_pymenu_menuenum_init",
+      "menu_pymenu_menuheatermanage_select",
+      "menu_pymenu_menulist_init",
+      "menu_pymenu_menurow",
+      "menu_pymenu_menurow_init",
+      "menu_pymenu_menurow_upd_decorator",
+      "menu_pymenu_menusettimer_init",
+      "menu_pymenu_rationale_1317",
+      "menu_pymenu_rationale_227",
+      "menu_pymenu_rationale_543",
+      "menu_pymenu_rationale_582"
+    ],
+    "13": [
+      "menu_pymenu_menulist",
+      "menu_pymenu_menulist_click",
+      "menu_pymenu_menulist_count",
+      "menu_pymenu_menulist_down",
+      "menu_pymenu_menulist_draw",
+      "menu_pymenu_menulist_enter",
+      "menu_pymenu_menulist_get",
+      "menu_pymenu_menulist_get_visible_item",
+      "menu_pymenu_menulist_items",
+      "menu_pymenu_menulist_menu_header",
+      "menu_pymenu_menulist_reset",
+      "menu_pymenu_menulist_select",
+      "menu_pymenu_menulist_set_built",
+      "menu_pymenu_menulist_up",
+      "menu_pymenu_rationale_324",
+      "menu_pymenu_rationale_328",
+      "menu_pymenu_rationale_342",
+      "menu_pymenu_rationale_347",
+      "menu_pymenu_rationale_359",
+      "menu_pymenu_rationale_375",
+      "menu_pymenu_rationale_381",
+      "menu_pymenu_rationale_389",
+      "menu_pymenu_rationale_395",
+      "menu_pymenu_rationale_401",
+      "menu_pymenu_rationale_427"
+    ],
+    "14": [
+      "menu_pymenu_backitem_click",
+      "menu_pymenu_confirmitem_click",
+      "menu_pymenu_menu_draw",
+      "menu_pymenu_menu_move",
+      "menu_pymenu_menu_reset",
+      "menu_pymenu_menu_shift",
+      "menu_pymenu_menuheatermanage",
+      "menu_pymenu_menuheatermanage_click",
+      "menu_pymenu_menuheatermanage_down",
+      "menu_pymenu_menuheatermanage_draw",
+      "menu_pymenu_menuheatermanage_init",
+      "menu_pymenu_menuheatermanage_left",
+      "menu_pymenu_menuheatermanage_max_temperature",
+      "menu_pymenu_menuheatermanage_min_temperature",
+      "menu_pymenu_menuheatermanage_right",
+      "menu_pymenu_menuheatermanage_up",
+      "menu_pymenu_menusetdatetime_click",
+      "menu_pymenu_menusettimer_click",
+      "menu_pymenu_rationale_1213",
+      "menu_pymenu_rationale_1448",
+      "menu_pymenu_rationale_1456",
+      "menu_pymenu_rationale_1470",
+      "menu_pymenu_rationale_485",
+      "menu_pymenu_rationale_562"
+    ],
+    "15": [
+      "menu_pymenu_listitem_upd_decorator",
+      "menu_pymenu_listitem_visible",
+      "menu_pymenu_menucallback",
+      "menu_pymenu_menucallback_call_callable",
+      "menu_pymenu_menucallback_callback",
+      "menu_pymenu_menucallback_check_callable",
+      "menu_pymenu_menucallback_decorator",
+      "menu_pymenu_menucallback_init",
+      "menu_pymenu_menucallback_is_active",
+      "menu_pymenu_menucallback_visible",
+      "menu_pymenu_menulist_set_visible_cache_valid",
+      "menu_pymenu_menurow_draw",
+      "menu_pymenu_rationale_177",
+      "menu_pymenu_rationale_197",
+      "menu_pymenu_rationale_238",
+      "menu_pymenu_rationale_385",
+      "menu_pymenu_rationale_455",
+      "menu_pymenu_rationale_459",
+      "menu_pymenu_rationale_465",
+      "menu_pymenu_rationale_526",
+      "menu_pymenu_toggleitem_check_status",
+      "menu_pymenu_toggleitem_click",
+      "menu_pymenu_toggleitem_init",
+      "menu_pymenu_toggleitem_upd_decorator"
+    ],
+    "16": [
+      "menu_pymenu_menuerror",
+      "menu_pymenu_menuerror_centered_text",
+      "menu_pymenu_menuerror_click",
+      "menu_pymenu_menuerror_count_error_row",
+      "menu_pymenu_menuerror_draw",
+      "menu_pymenu_menuerror_init",
+      "menu_pymenu_menumonitoringsensor",
+      "menu_pymenu_menumonitoringsensor_centered_text",
+      "menu_pymenu_menumonitoringsensor_click",
+      "menu_pymenu_menumonitoringsensor_draw",
+      "menu_pymenu_menumonitoringsensor_init",
+      "menu_pymenu_menumonitoringsensor_select",
+      "menu_pymenu_menumonitoringsensor_switch",
+      "menu_pymenu_menumonitoringsensor_updatingvalues",
+      "menu_pymenu_menuwifiinfo_centered_text",
+      "menu_pymenu_rationale_1332",
+      "menu_pymenu_rationale_1373",
+      "menu_pymenu_rationale_1378",
+      "menu_pymenu_rationale_728",
+      "menu_pymenu_rationale_735",
+      "menu_pymenu_rationale_740",
+      "menu_pymenu_rationale_750",
+      "menu_pymenu_rationale_756"
+    ],
+    "17": [
+      "esp32_sim_simulator",
+      "esp32_sim_simulator_background_sender",
+      "esp32_sim_simulator_main",
+      "esp32_sim_simulator_rationale_1",
+      "esp32_sim_simulator_rationale_108",
+      "esp32_sim_simulator_rationale_134",
+      "esp32_sim_simulator_rationale_178",
+      "esp32_sim_simulator_rationale_41",
+      "esp32_sim_simulator_rationale_53",
+      "esp32_sim_simulator_rationale_68",
+      "esp32_sim_simulator_rationale_93",
+      "esp32_sim_simulator_sensorsimulator",
+      "esp32_sim_simulator_sensorsimulator_init",
+      "esp32_sim_simulator_sensorsimulator_read_all",
+      "esp32_sim_simulator_wificonnectionsim",
+      "esp32_sim_simulator_wificonnectionsim_flush_queue",
+      "esp32_sim_simulator_wificonnectionsim_has_queued_items",
+      "esp32_sim_simulator_wificonnectionsim_init",
+      "esp32_sim_simulator_wificonnectionsim_pop_queue",
+      "esp32_sim_simulator_wificonnectionsim_post_request",
+      "esp32_sim_simulator_wificonnectionsim_send_value_to_web",
+      "esp32_sim_simulator_wificonnectionsim_send_value_to_web_sync"
+    ],
+    "18": [
+      "resource_config_config_from_json",
+      "resource_config_config_off_automatic_process",
+      "resource_config_config_on_automatic_process",
+      "resource_config_config_set_mode",
+      "resource_config_config_set_on_off_ec",
+      "resource_config_config_set_on_off_ec_sending",
+      "resource_config_config_set_on_off_feeder",
+      "resource_config_config_set_on_off_filter",
+      "resource_config_config_set_on_off_filter_auto",
+      "resource_config_config_set_on_off_heater",
+      "resource_config_config_set_on_off_heater_auto",
+      "resource_config_config_set_on_off_light_auto",
+      "resource_config_config_set_on_off_ph",
+      "resource_config_config_set_on_off_ph_sending",
+      "resource_config_config_set_on_off_temperature",
+      "resource_config_config_set_on_off_temperature_sending",
+      "resource_config_rationale_233",
+      "resource_config_rationale_261",
+      "resource_config_rationale_351",
+      "resource_config_rationale_473"
+    ],
+    "19": [
+      "menu_menubuilder",
+      "menu_menubuilder_build_ec",
+      "menu_menubuilder_build_filter_auto",
+      "menu_menubuilder_build_heater_auto",
+      "menu_menubuilder_build_ph",
+      "menu_menubuilder_build_relays",
+      "menu_menubuilder_build_root",
+      "menu_menubuilder_build_sensors",
+      "menu_menubuilder_build_settings",
+      "menu_menubuilder_build_temperature",
+      "menu_menubuilder_build_wifi",
+      "menu_pymenu",
+      "menu_pymenu_backitem",
+      "menu_pymenu_menuconfirm",
+      "menu_pymenu_menuenum",
+      "menu_pymenu_menuenum_add",
+      "menu_pymenu_menuenum_decorator",
+      "menu_pymenu_rationale_1",
+      "menu_pymenu_toggleitem"
+    ],
+    "20": [
+      "menu_pymenu_menusetdatetime",
+      "menu_pymenu_menusetdatetime_down",
+      "menu_pymenu_menusetdatetime_draw",
+      "menu_pymenu_menusetdatetime_gg",
+      "menu_pymenu_menusetdatetime_hh",
+      "menu_pymenu_menusetdatetime_init",
+      "menu_pymenu_menusetdatetime_left",
+      "menu_pymenu_menusetdatetime_m",
+      "menu_pymenu_menusetdatetime_max_day_month",
+      "menu_pymenu_menusetdatetime_mm",
+      "menu_pymenu_menusetdatetime_right",
+      "menu_pymenu_menusetdatetime_select",
+      "menu_pymenu_menusetdatetime_up",
+      "menu_pymenu_menusetdatetime_yy",
+      "menu_pymenu_rationale_763",
+      "menu_pymenu_rationale_874",
+      "menu_pymenu_rationale_928"
+    ],
+    "21": [
+      "menu_pymenu_menuitem",
+      "menu_pymenu_menuitem_click",
+      "menu_pymenu_menuitem_display",
+      "menu_pymenu_menuitem_draw",
+      "menu_pymenu_menuitem_init",
+      "menu_pymenu_menuitem_parent",
+      "menu_pymenu_menuitem_visible",
+      "menu_pymenu_menuview",
+      "menu_pymenu_menuview_down",
+      "menu_pymenu_menuview_init",
+      "menu_pymenu_menuview_left",
+      "menu_pymenu_menuview_menu_header",
+      "menu_pymenu_menuview_reset",
+      "menu_pymenu_menuview_right",
+      "menu_pymenu_menuview_select",
+      "menu_pymenu_menuview_up"
+    ],
+    "22": [
+      "modules_sdcard_crc7",
+      "modules_sdcard_py_modules_sdcard",
+      "modules_sdcard_py_modules_sdcard_rationale_1",
+      "modules_sdcard_py_modules_sdcard_sdcard",
+      "modules_sdcard_py_modules_sdcard_sdcard_init",
+      "modules_sdcard_py_modules_sdcard_sdcard_ioctl",
+      "modules_sdcard_py_modules_sdcard_sdcard_readblocks",
+      "modules_sdcard_py_modules_sdcard_sdcard_writeblocks",
+      "modules_sdcard_sdcard_cmd",
+      "modules_sdcard_sdcard_init_card",
+      "modules_sdcard_sdcard_init_card_v1",
+      "modules_sdcard_sdcard_init_card_v2",
+      "modules_sdcard_sdcard_init_spi",
+      "modules_sdcard_sdcard_readinto",
+      "modules_sdcard_sdcard_write",
+      "modules_sdcard_sdcard_write_token"
+    ],
+    "23": [
+      "menu_pymenu_menusettimer",
+      "menu_pymenu_menusettimer_down",
+      "menu_pymenu_menusettimer_draw",
+      "menu_pymenu_menusettimer_get_value",
+      "menu_pymenu_menusettimer_hh_end",
+      "menu_pymenu_menusettimer_hh_start",
+      "menu_pymenu_menusettimer_left",
+      "menu_pymenu_menusettimer_min_end",
+      "menu_pymenu_menusettimer_min_start",
+      "menu_pymenu_menusettimer_right",
+      "menu_pymenu_menusettimer_select",
+      "menu_pymenu_menusettimer_up",
+      "menu_pymenu_rationale_1033",
+      "menu_pymenu_rationale_1102",
+      "menu_pymenu_rationale_976"
+    ],
+    "24": [
+      "tests_test_suite",
+      "tests_test_suite_fakeresponse",
+      "tests_test_suite_fakeresponse_close",
+      "tests_test_suite_fakewdt",
+      "tests_test_suite_fakewdt_feed",
+      "tests_test_suite_fakewdt_init",
+      "tests_test_suite_mockds18b20",
+      "tests_test_suite_mockds18b20_init",
+      "tests_test_suite_mockds18b20_is_valid",
+      "tests_test_suite_mockds18b20_sensor_count",
+      "tests_test_suite_mount",
+      "tests_test_suite_rationale_1102",
+      "tests_test_suite_rationale_377",
+      "tests_test_suite_run_tests",
+      "tests_test_suite_umount"
+    ],
+    "25": [
+      "manager_viewer",
+      "manager_viewer_rationale_1",
+      "modules_ds3231",
+      "modules_ds3231_ds3231_rtc",
+      "modules_ds3231_ds3231_rtc_init",
+      "modules_ds3231_ds3231_rtc_month",
+      "modules_ds3231_ds3231_rtc_time",
+      "modules_ds3231_ds3231_rtc_unix_epoch_time",
+      "modules_ds3231_ds3231_rtc_weekday",
+      "modules_ds3231_rationale_113",
+      "modules_ds3231_rationale_246",
+      "modules_ds3231_rationale_296",
+      "modules_ds3231_rationale_42",
+      "modules_ds3231_rationale_66"
+    ],
+    "26": [
+      "menu_pymenu_menuwifiinfo",
+      "menu_pymenu_menuwifiinfo_activate",
+      "menu_pymenu_menuwifiinfo_click",
+      "menu_pymenu_menuwifiinfo_draw",
+      "menu_pymenu_menuwifiinfo_get_status",
+      "menu_pymenu_menuwifiinfo_init",
+      "menu_pymenu_menuwifiinfo_select",
+      "menu_pymenu_rationale_1144",
+      "menu_pymenu_rationale_1179",
+      "menu_pymenu_rationale_1183",
+      "menu_pymenu_rationale_1188",
+      "menu_pymenu_rationale_1198",
+      "menu_pymenu_rationale_1202"
+    ],
+    "27": [
+      "tests_test_suite_mockrelay",
+      "tests_test_suite_mockrelay_init",
+      "tests_test_suite_mockrelay_state",
+      "tests_test_suite_mockrelay_value",
+      "tests_test_suite_mockrelays",
+      "tests_test_suite_mockrelays_get_feeder_rele",
+      "tests_test_suite_mockrelays_get_filter_rele",
+      "tests_test_suite_mockrelays_get_heater_rele",
+      "tests_test_suite_mockrelays_get_light_rele",
+      "tests_test_suite_mockrelays_init",
+      "tests_test_suite_mockrelays_init_relays_status",
+      "tests_test_suite_rationale_285",
+      "tests_test_suite_rationale_299"
+    ],
+    "28": [
+      "manager_ntpmanager",
+      "manager_ntpmanager_ntp",
+      "manager_ntpmanager_ntp_init",
+      "manager_ntpmanager_ntp_sync",
+      "manager_ntpmanager_rationale_14",
+      "manager_ntpmanager_rationale_23",
+      "manager_ntpmanager_rationale_6",
+      "tests_test_suite_fakeconst",
+      "tests_test_suite_fakeconst_const",
+      "tests_test_suite_fakeframebuffer",
+      "tests_test_suite_fakeframebuffer_init",
+      "tests_test_suite_rationale_59"
+    ],
+    "29": [
+      "menu_pymenu_listitem",
+      "menu_pymenu_listitem_click",
+      "menu_pymenu_listitem_get_after_check_decorator",
+      "menu_pymenu_listitem_init",
+      "menu_pymenu_menu_click",
+      "menu_pymenu_menuerror_select",
+      "menu_pymenu_menulist_add",
+      "menu_pymenu_rationale_1369",
+      "menu_pymenu_rationale_1464",
+      "menu_pymenu_rationale_306",
+      "menu_pymenu_rationale_522",
+      "menu_pymenu_rationale_530"
+    ],
+    "30": [
+      "exception",
+      "menu_pymenu_menu",
+      "menu_pymenu_menu_set_main_screen",
+      "menu_pymenu_rationale_1424",
+      "menu_pymenu_rationale_1441",
+      "tests_test_suite_fakeds18x20",
+      "tests_test_suite_fakeds18x20_convert_temp",
+      "tests_test_suite_fakeds18x20_init",
+      "tests_test_suite_fakeds18x20_read_temp",
+      "tests_test_suite_fakeds18x20_scan",
+      "tests_test_suite_onewireerror"
+    ],
+    "31": [
+      "manager_viewer_rationale_192",
+      "manager_viewer_rationale_216",
+      "manager_viewer_rationale_291",
+      "manager_viewer_rationale_32",
+      "manager_viewer_viewer",
+      "manager_viewer_viewer_get_temperature",
+      "manager_viewer_viewer_toggle_on_off_ec_sending",
+      "manager_viewer_viewer_toggle_on_off_filter_auto",
+      "manager_viewer_viewer_toggle_on_off_ph_sending",
+      "manager_viewer_viewer_toggle_on_off_temperature_sending"
+    ],
+    "32": [
+      "modules_ds3231_ds3231_rtc_alarm1",
+      "modules_ds3231_ds3231_rtc_alarm2",
+      "modules_ds3231_ds3231_rtc_alarm_int",
+      "modules_ds3231_ds3231_rtc_check_alarm",
+      "modules_ds3231_ds3231_rtc_dec_to_bcd",
+      "modules_ds3231_rationale_384",
+      "modules_ds3231_rationale_428",
+      "modules_ds3231_rationale_470",
+      "modules_ds3231_rationale_501",
+      "modules_ds3231_rationale_540"
+    ],
+    "33": [
+      "resource_config_config_freq_index",
+      "resource_config_config_set_freq_filter",
+      "resource_config_config_set_freq_update_web_ec",
+      "resource_config_config_set_freq_update_web_ph",
+      "resource_config_config_set_freq_update_web_temperature",
+      "resource_config_rationale_341",
+      "resource_config_rationale_559",
+      "resource_config_rationale_571",
+      "resource_config_rationale_583",
+      "resource_config_rationale_595"
+    ],
+    "34": [
+      "modules_ds3231_ds3231_rtc_bcd_to_dec",
+      "modules_ds3231_ds3231_rtc_datetime",
+      "modules_ds3231_ds3231_rtc_osf",
+      "modules_ds3231_ds3231_rtc_osf_reset",
+      "modules_ds3231_rationale_122",
+      "modules_ds3231_rationale_197",
+      "modules_ds3231_rationale_522",
+      "modules_ds3231_rationale_531",
+      "modules_ds3231_rationale_552"
+    ],
+    "35": [
+      "manager_viewer_rationale_234",
+      "manager_viewer_rationale_264",
+      "manager_viewer_rationale_287",
+      "manager_viewer_rationale_304",
+      "manager_viewer_viewer_send_ec",
+      "manager_viewer_viewer_send_ph",
+      "manager_viewer_viewer_send_temperature",
+      "manager_viewer_viewer_time"
+    ],
+    "36": [
+      "manager_viewer_rationale_363",
+      "manager_viewer_rationale_399",
+      "manager_viewer_rationale_426",
+      "manager_viewer_rationale_436",
+      "manager_viewer_viewer_draw",
+      "manager_viewer_viewer_run",
+      "manager_viewer_viewer_show_main_screen",
+      "manager_viewer_viewer_show_rele_symbol"
+    ],
+    "37": [
+      "tests_test_suite_fakei2c",
+      "tests_test_suite_fakei2c_init",
+      "tests_test_suite_fakei2c_readfrom_mem",
+      "tests_test_suite_fakei2c_readfrom_mem_into",
+      "tests_test_suite_fakei2c_scan",
+      "tests_test_suite_fakei2c_writeto",
+      "tests_test_suite_fakei2c_writeto_mem",
+      "tests_test_suite_fakei2c_writevto"
+    ],
+    "38": [
+      "firmware_dryrun_stubs_override_modules_sdcard_py_modules_sdcard",
+      "firmware_dryrun_stubs_override_modules_sdcard_py_modules_sdcard_rationale_1",
+      "firmware_dryrun_stubs_override_modules_sdcard_py_modules_sdcard_sdcard",
+      "firmware_dryrun_stubs_override_modules_sdcard_py_modules_sdcard_sdcard_init",
+      "firmware_dryrun_stubs_override_modules_sdcard_py_modules_sdcard_sdcard_ioctl",
+      "firmware_dryrun_stubs_override_modules_sdcard_py_modules_sdcard_sdcard_readblocks",
+      "firmware_dryrun_stubs_override_modules_sdcard_py_modules_sdcard_sdcard_writeblocks"
+    ],
+    "39": [
+      "tests_test_suite_fakepin",
+      "tests_test_suite_fakepin_call",
+      "tests_test_suite_fakepin_high",
+      "tests_test_suite_fakepin_init",
+      "tests_test_suite_fakepin_low",
+      "tests_test_suite_fakepin_value"
+    ],
+    "40": [
+      "js_getfertilizationvolumes",
+      "js_getfertilizationvolumes_bandcolor",
+      "js_getfertilizationvolumes_rendervolumegauge",
+      "js_getfertilizationvolumes_showvolumes"
+    ],
+    "41": [
+      "modules_ds3231_ds3231_rtc_day_of_year",
+      "modules_ds3231_ds3231_rtc_is_leap_year",
+      "modules_ds3231_rationale_346",
+      "modules_ds3231_rationale_372"
+    ],
+    "42": [
+      "tests_test_suite_fakeadc",
+      "tests_test_suite_fakeadc_atten",
+      "tests_test_suite_fakeadc_init",
+      "tests_test_suite_fakeadc_read"
+    ],
+    "43": [
+      "js_dayhistoryvaluestablemanaging",
+      "js_dayhistoryvaluestablemanaging_addvalue",
+      "js_dayhistoryvaluestablemanaging_buildtable"
+    ],
+    "44": [
+      "js_ec_ph_temperature_join_chart",
+      "js_ec_ph_temperature_join_chart_loadjoinchart",
+      "js_ec_ph_temperature_join_chart_normalize"
+    ],
+    "45": [
+      "js_echarts_gauge",
+      "js_echarts_gauge_loadgauges",
+      "js_echarts_gauge_rendergauge"
+    ],
+    "46": [
+      "js_google_gauge",
+      "js_google_gauge_drawcharts",
+      "js_google_gauge_showecgauge"
+    ],
+    "47": [
+      "js_highcharts_gauge",
+      "js_highcharts_gauge_loadgauges",
+      "js_highcharts_gauge_rendergauge"
+    ],
+    "48": [
+      "js_loginmanaging",
+      "js_loginmanaging_clearmessage",
+      "js_loginmanaging_showmessage"
+    ],
+    "49": [
+      "manager_viewer_rationale_469",
+      "manager_viewer_rationale_474",
+      "manager_viewer_viewer_is_enabled_menu"
+    ],
+    "50": [
+      "modules_ds3231_ds3231_rtc_weekday_start",
+      "modules_ds3231_rationale_85",
+      "modules_ds3231_rationale_95"
+    ],
+    "51": [
+      "resource_config_config_active_ec_monitoring",
+      "resource_config_config_active_ph_monitoring",
+      "resource_config_rationale_291"
+    ],
+    "52": [
+      "resource_config_config_get_on_off_ec_sending",
+      "resource_config_config_get_on_off_ph_sending",
+      "resource_config_rationale_530"
+    ],
+    "53": [
+      "resource_config_config_get_send_action_ec",
+      "resource_config_config_get_send_action_ph",
+      "resource_config_rationale_205"
+    ],
+    "54": [
+      "resource_config_config_ph_offset",
+      "resource_config_rationale_138",
+      "resource_config_rationale_148"
+    ],
+    "55": [
+      "resource_config_config_ph_slope",
+      "resource_config_rationale_143",
+      "resource_config_rationale_153"
+    ],
+    "56": [
+      "resource_config_config_set_send_action_ec",
+      "resource_config_config_set_send_action_ph",
+      "resource_config_rationale_209"
+    ],
+    "57": [
+      "firmware_dryrun_entrypoint",
+      "firmware_dryrun_entrypoint_rationale_1"
+    ],
+    "58": [
+      "js_ec_chart",
+      "js_ec_chart_loadecchart"
+    ],
+    "59": [
+      "js_ph_chart",
+      "js_ph_chart_loadphchart"
+    ],
+    "60": [
+      "js_settings_handlevolumesdb",
+      "js_settings_handlevolumesdb_submitvolume"
+    ],
+    "61": [
+      "js_settingsvaluesadding",
+      "js_settingsvaluesadding_addvalue"
+    ],
+    "62": [
+      "js_t_chart",
+      "js_t_chart_loadtchart"
+    ],
+    "63": [
+      "manager_viewer_rationale_133",
+      "manager_viewer_viewer_set_ntp"
+    ],
+    "64": [
+      "manager_viewer_rationale_150",
+      "manager_viewer_viewer_toggle_on_off_light_auto"
+    ],
+    "65": [
+      "manager_viewer_rationale_162",
+      "manager_viewer_viewer_toggle_on_off_filter"
+    ],
+    "66": [
+      "manager_viewer_rationale_170",
+      "manager_viewer_viewer_toggle_on_off_heater"
+    ],
+    "67": [
+      "manager_viewer_rationale_178",
+      "manager_viewer_viewer_toggle_on_off_feeder"
+    ],
+    "68": [
+      "manager_viewer_rationale_186",
+      "manager_viewer_viewer_toggle_on_off_heater_auto"
+    ],
+    "69": [
+      "manager_viewer_rationale_198",
+      "manager_viewer_viewer_toggle_on_off_temperature"
+    ],
+    "70": [
+      "manager_viewer_rationale_204",
+      "manager_viewer_viewer_toggle_on_off_ph"
+    ],
+    "71": [
+      "manager_viewer_rationale_210",
+      "manager_viewer_viewer_toggle_on_off_ec"
+    ],
+    "72": [
+      "manager_viewer_rationale_278",
+      "manager_viewer_viewer_exit_menu"
+    ],
+    "73": [
+      "manager_viewer_rationale_295",
+      "manager_viewer_viewer_get_ec"
+    ],
+    "74": [
+      "manager_viewer_rationale_299",
+      "manager_viewer_viewer_get_ph"
+    ],
+    "75": [
+      "manager_viewer_rationale_308",
+      "manager_viewer_viewer_set_temperature"
+    ],
+    "76": [
+      "manager_viewer_rationale_312",
+      "manager_viewer_viewer_set_ec"
+    ],
+    "77": [
+      "manager_viewer_rationale_316",
+      "manager_viewer_viewer_set_ph"
+    ],
+    "78": [
+      "manager_viewer_rationale_320",
+      "manager_viewer_viewer_init_screen"
+    ],
+    "79": [
+      "modules_ds3231_ds3231_rtc_addr",
+      "modules_ds3231_rationale_103"
+    ],
+    "80": [
+      "modules_ds3231_ds3231_rtc_day",
+      "modules_ds3231_rationale_256"
+    ],
+    "81": [
+      "modules_ds3231_ds3231_rtc_hour",
+      "modules_ds3231_rationale_266"
+    ],
+    "82": [
+      "modules_ds3231_ds3231_rtc_is_busy",
+      "modules_ds3231_rationale_536"
+    ],
+    "83": [
+      "modules_ds3231_ds3231_rtc_minute",
+      "modules_ds3231_rationale_276"
+    ],
+    "84": [
+      "modules_ds3231_ds3231_rtc_output_32khz",
+      "modules_ds3231_rationale_512"
+    ],
+    "85": [
+      "modules_ds3231_ds3231_rtc_second",
+      "modules_ds3231_rationale_286"
+    ],
+    "86": [
+      "modules_ds3231_ds3231_rtc_square_wave",
+      "modules_ds3231_rationale_316"
+    ],
+    "87": [
+      "modules_ds3231_ds3231_rtc_year",
+      "modules_ds3231_rationale_236"
+    ],
+    "88": [
+      "modules_ds3231_ds3231_rtc_yearday",
+      "modules_ds3231_rationale_307"
+    ],
+    "89": [
+      "resource_config_config_auto_enabled",
+      "resource_config_rationale_447"
+    ],
+    "90": [
+      "resource_config_config_ec",
+      "resource_config_rationale_668"
+    ],
+    "91": [
+      "resource_config_config_end_hour",
+      "resource_config_rationale_411"
+    ],
+    "92": [
+      "resource_config_config_freq",
+      "resource_config_rationale_159"
+    ],
+    "93": [
+      "resource_config_config_get_auto_heater",
+      "resource_config_rationale_193"
+    ],
+    "94": [
+      "resource_config_config_get_connection_action",
+      "resource_config_rationale_197"
+    ],
+    "95": [
+      "resource_config_config_get_on_off_recovery",
+      "resource_config_rationale_225"
+    ],
+    "96": [
+      "resource_config_config_get_on_off_temperature_sending",
+      "resource_config_rationale_523"
+    ],
+    "97": [
+      "resource_config_config_get_rele_list",
+      "resource_config_rationale_229"
+    ],
+    "98": [
+      "resource_config_config_hour_loading",
+      "resource_config_rationale_605"
+    ],
+    "99": [
+      "resource_config_config_init",
+      "resource_config_rationale_88"
+    ],
+    "100": [
+      "resource_config_config_maintain_enabled",
+      "resource_config_rationale_465"
+    ],
+    "101": [
+      "resource_config_config_min_loading",
+      "resource_config_rationale_614"
+    ],
+    "102": [
+      "resource_config_config_mode_list",
+      "resource_config_rationale_164"
+    ],
+    "103": [
+      "resource_config_config_ph",
+      "resource_config_rationale_677"
+    ],
+    "104": [
+      "resource_config_config_relay0",
+      "resource_config_rationale_623"
+    ],
+    "105": [
+      "resource_config_config_relay2",
+      "resource_config_rationale_641"
+    ],
+    "106": [
+      "resource_config_config_relay3",
+      "resource_config_rationale_650"
+    ],
+    "107": [
+      "resource_config_config_set_connection_action",
+      "resource_config_rationale_201"
+    ],
+    "108": [
+      "resource_config_config_set_on_off_recovery",
+      "resource_config_rationale_221"
+    ],
+    "109": [
+      "resource_config_config_set_timer_time",
+      "resource_config_rationale_168"
+    ],
+    "110": [
+      "resource_config_config_start_hour",
+      "resource_config_rationale_393"
+    ],
+    "111": [
+      "resource_config_config_temp_max",
+      "resource_config_rationale_429"
+    ],
+    "112": [
+      "resource_config_config_temp_min",
+      "resource_config_rationale_438"
+    ],
+    "113": [
+      "resource_config_config_to_dict",
+      "resource_config_rationale_301"
+    ],
+    "114": [
+      "watervaluesdirectory_add_user",
+      "watervaluesdirectory_add_user_numornull"
+    ],
+    "115": [
+      "watervaluesdirectory_update_user",
+      "watervaluesdirectory_update_user_numornull"
+    ],
+    "116": [
+      "boot"
+    ],
+    "117": [
+      "chart_ec_data_chart"
+    ],
+    "118": [
+      "chart_ec_ph_temp_data_chart"
+    ],
+    "119": [
+      "chart_ph_data_chart"
+    ],
+    "120": [
+      "chart_t_data_chart"
+    ],
+    "121": [
+      "code_cert"
+    ],
+    "122": [
+      "code_diary"
+    ],
+    "123": [
+      "code_gulpfile"
+    ],
+    "124": [
+      "code_index"
+    ],
+    "125": [
+      "code_settings"
+    ],
+    "126": [
+      "code_takeec"
+    ],
+    "127": [
+      "code_takeph"
+    ],
+    "128": [
+      "code_taketemp"
+    ],
+    "129": [
+      "ecsettingtable_delete_ec_settings"
+    ],
+    "130": [
+      "ecsettingtable_fetch_ec_settings"
+    ],
+    "131": [
+      "ecsettingtable_get_single_ec_settings"
+    ],
+    "132": [
+      "ecsettingtable_update_ec_settings"
+    ],
+    "133": [
+      "fertilization_add_quantities"
+    ],
+    "134": [
+      "fertilization_delete_quantities"
+    ],
+    "135": [
+      "fertilization_fetch_quantities"
+    ],
+    "136": [
+      "fertilization_get_single_quantity"
+    ],
+    "137": [
+      "fertilization_update_quantities"
+    ],
+    "138": [
+      "fertilizationvolumes_getfertilizationvolumes"
+    ],
+    "139": [
+      "fertilizationvolumes_getfertilizationvolumes_1"
+    ],
+    "140": [
+      "gauges_get_gauge_value"
+    ],
+    "141": [
+      "historyvaluesindexpage_add_ec"
+    ],
+    "142": [
+      "historyvaluesindexpage_add_ph"
+    ],
+    "143": [
+      "historyvaluesindexpage_add_temperature"
+    ],
+    "144": [
+      "historyvaluesindexpage_fetch_data_ec"
+    ],
+    "145": [
+      "historyvaluesindexpage_fetch_data_ph"
+    ],
+    "146": [
+      "historyvaluesindexpage_fetch_data_temperature"
+    ],
+    "147": [
+      "icons_images_repo"
+    ],
+    "148": [
+      "icons_sfondi"
+    ],
+    "149": [
+      "icons_symbols"
+    ],
+    "150": [
+      "js_ectablesetting"
+    ],
+    "151": [
+      "js_fertilizationtable"
+    ],
+    "152": [
+      "js_phtablesetting"
+    ],
+    "153": [
+      "js_tdstablesetting"
+    ],
+    "154": [
+      "js_temptablesetting"
+    ],
+    "155": [
+      "js_watervaluestable"
+    ],
+    "156": [
+      "login_forgot_password_db"
+    ],
+    "157": [
+      "login_login_db"
+    ],
+    "158": [
+      "login_logout_db"
+    ],
+    "159": [
+      "login_reset_password_db"
+    ],
+    "160": [
+      "login_sign_up_db"
+    ],
+    "161": [
+      "modules_init"
+    ],
+    "162": [
+      "php_connection"
+    ],
+    "163": [
+      "phsettingtable_delete_ph_settings"
+    ],
+    "164": [
+      "phsettingtable_fetch_ph_settings"
+    ],
+    "165": [
+      "phsettingtable_get_single_ph_settings"
+    ],
+    "166": [
+      "phsettingtable_update_ph_settings"
+    ],
+    "167": [
+      "tdssettingtable_delete_tds_settings"
+    ],
+    "168": [
+      "tdssettingtable_fetch_tds_settings"
+    ],
+    "169": [
+      "tdssettingtable_get_single_tds_settings"
+    ],
+    "170": [
+      "tdssettingtable_update_tds_settings"
+    ],
+    "171": [
+      "tempsettingtable_delete_temp_settings"
+    ],
+    "172": [
+      "tempsettingtable_fetch_temp_settings"
+    ],
+    "173": [
+      "tempsettingtable_get_single_temp_settings"
+    ],
+    "174": [
+      "tempsettingtable_update_temp_settings"
+    ],
+    "175": [
+      "volumes_add_volumes"
+    ],
+    "176": [
+      "volumes_fetchsettingfertilizationvolumes"
+    ],
+    "177": [
+      "watervaluesdirectory_delete_user"
+    ],
+    "178": [
+      "watervaluesdirectory_fetch_data"
+    ],
+    "179": [
+      "watervaluesdirectory_get_single_data"
+    ]
+  },
+  "cohesion": {
+    "0": 0.05117845117845118,
+    "1": 0.055904961565338925,
+    "2": 0.07777777777777778,
+    "3": 0.06976744186046512,
+    "4": 0.07198228128460686,
+    "5": 0.05110336817653891,
+    "6": 0.0960960960960961,
+    "7": 0.0907563025210084,
+    "8": 0.06451612903225806,
+    "9": 0.08817204301075268,
+    "10": 0.06881720430107527,
+    "11": 0.08735632183908046,
+    "12": 0.1,
+    "13": 0.11666666666666667,
+    "14": 0.10144927536231885,
+    "15": 0.10144927536231885,
+    "16": 0.09881422924901186,
+    "17": 0.12987012987012986,
+    "18": 0.2,
+    "19": 0.3333333333333333,
+    "20": 0.1323529411764706,
+    "21": 0.125,
+    "22": 0.2916666666666667,
+    "23": 0.17142857142857143,
+    "24": 0.13333333333333333,
+    "25": 0.15384615384615385,
+    "26": 0.1794871794871795,
+    "27": 0.16666666666666666,
+    "28": 0.16666666666666666,
+    "29": 0.18181818181818182,
+    "30": 0.18181818181818182,
+    "31": 0.24444444444444444,
+    "32": 0.24444444444444444,
+    "33": 0.2,
+    "34": 0.2222222222222222,
+    "35": 0.2857142857142857,
+    "36": 0.25,
+    "37": 0.25,
+    "38": 0.2857142857142857,
+    "39": 0.3333333333333333,
+    "40": 0.8333333333333334,
+    "41": 0.5,
+    "42": 0.5,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 0.6666666666666666,
+    "49": 0.6666666666666666,
+    "50": 0.6666666666666666,
+    "51": 0.6666666666666666,
+    "52": 0.6666666666666666,
+    "53": 0.6666666666666666,
+    "54": 0.6666666666666666,
+    "55": 0.6666666666666666,
+    "56": 0.6666666666666666,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0,
+    "73": 1.0,
+    "74": 1.0,
+    "75": 1.0,
+    "76": 1.0,
+    "77": 1.0,
+    "78": 1.0,
+    "79": 1.0,
+    "80": 1.0,
+    "81": 1.0,
+    "82": 1.0,
+    "83": 1.0,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0,
+    "87": 1.0,
+    "88": 1.0,
+    "89": 1.0,
+    "90": 1.0,
+    "91": 1.0,
+    "92": 1.0,
+    "93": 1.0,
+    "94": 1.0,
+    "95": 1.0,
+    "96": 1.0,
+    "97": 1.0,
+    "98": 1.0,
+    "99": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "102": 1.0,
+    "103": 1.0,
+    "104": 1.0,
+    "105": 1.0,
+    "106": 1.0,
+    "107": 1.0,
+    "108": 1.0,
+    "109": 1.0,
+    "110": 1.0,
+    "111": 1.0,
+    "112": 1.0,
+    "113": 1.0,
+    "114": 1.0,
+    "115": 1.0,
+    "116": 1.0,
+    "117": 1.0,
+    "118": 1.0,
+    "119": 1.0,
+    "120": 1.0,
+    "121": 1.0,
+    "122": 1.0,
+    "123": 1.0,
+    "124": 1.0,
+    "125": 1.0,
+    "126": 1.0,
+    "127": 1.0,
+    "128": 1.0,
+    "129": 1.0,
+    "130": 1.0,
+    "131": 1.0,
+    "132": 1.0,
+    "133": 1.0,
+    "134": 1.0,
+    "135": 1.0,
+    "136": 1.0,
+    "137": 1.0,
+    "138": 1.0,
+    "139": 1.0,
+    "140": 1.0,
+    "141": 1.0,
+    "142": 1.0,
+    "143": 1.0,
+    "144": 1.0,
+    "145": 1.0,
+    "146": 1.0,
+    "147": 1.0,
+    "148": 1.0,
+    "149": 1.0,
+    "150": 1.0,
+    "151": 1.0,
+    "152": 1.0,
+    "153": 1.0,
+    "154": 1.0,
+    "155": 1.0,
+    "156": 1.0,
+    "157": 1.0,
+    "158": 1.0,
+    "159": 1.0,
+    "160": 1.0,
+    "161": 1.0,
+    "162": 1.0,
+    "163": 1.0,
+    "164": 1.0,
+    "165": 1.0,
+    "166": 1.0,
+    "167": 1.0,
+    "168": 1.0,
+    "169": 1.0,
+    "170": 1.0,
+    "171": 1.0,
+    "172": 1.0,
+    "173": 1.0,
+    "174": 1.0,
+    "175": 1.0,
+    "176": 1.0,
+    "177": 1.0,
+    "178": 1.0,
+    "179": 1.0
+  },
+  "gods": [
+    {
+      "id": "resource_config_config",
+      "label": "Config",
+      "degree": 113
+    },
+    {
+      "id": "manager_viewer_viewer",
+      "label": "Viewer",
+      "degree": 66
+    },
+    {
+      "id": "manager_wificonnection_wificonnection",
+      "label": "WifiConnection",
+      "degree": 50
+    },
+    {
+      "id": "menu_pymenu_menulist",
+      "label": "MenuList",
+      "degree": 49
+    },
+    {
+      "id": "menu_pymenu_menu",
+      "label": "Menu",
+      "degree": 36
+    },
+    {
+      "id": "modules_ds3231_ds3231_rtc",
+      "label": "DS3231_RTC",
+      "degree": 34
+    },
+    {
+      "id": "tests_test_suite_mockdisplay",
+      "label": "MockDisplay",
+      "degree": 34
+    },
+    {
+      "id": "manager_ntpmanager_ntp",
+      "label": "NTP",
+      "degree": 31
+    },
+    {
+      "id": "modules_ssd1306_ssd1306",
+      "label": "SSD1306",
+      "degree": 25
+    },
+    {
+      "id": "tests_test_suite_testmain",
+      "label": "TestMain",
+      "degree": 25
+    }
+  ],
+  "surprises": [
+    {
+      "source": "WifiConnection",
+      "target": "Singleton",
+      "source_files": [
+        "Manager/wifiConnection.py",
+        "Helper/Singleton.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "Config",
+      "target": "Singleton",
+      "source_files": [
+        "Resource/Config.py",
+        "Helper/Singleton.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "_FakeADC",
+      "target": "NTP",
+      "source_files": [
+        "tests/test_suite.py",
+        "Manager/ntpManager.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "_FakeDS18X20",
+      "target": "NTP",
+      "source_files": [
+        "tests/test_suite.py",
+        "Manager/ntpManager.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "_FakeI2C",
+      "target": "NTP",
+      "source_files": [
+        "tests/test_suite.py",
+        "Manager/ntpManager.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}

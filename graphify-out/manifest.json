@@ -1,0 +1,527 @@
+{
+  ".claude/settings.json": {
+    "mtime": 1782550729.7262893,
+    "ast_hash": "7bf81dca0376bde3a32244b82bc7cbc0",
+    "semantic_hash": "7bf81dca0376bde3a32244b82bc7cbc0"
+  },
+  ".gemini/settings.json": {
+    "mtime": 1782550942.7604303,
+    "ast_hash": "ddc6069a85a1acc06096e06bcd8087ac",
+    "semantic_hash": "ddc6069a85a1acc06096e06bcd8087ac"
+  },
+  "Helper/Singleton.py": {
+    "mtime": 1774095269.9701116,
+    "ast_hash": "36f4a8aa21b982ae1ea3517827ebc649",
+    "semantic_hash": "36f4a8aa21b982ae1ea3517827ebc649"
+  },
+  "Icons/images_repo.py": {
+    "mtime": 1774095269.971635,
+    "ast_hash": "f42d5da5da4d4f7930ab93b0b21f46b1",
+    "semantic_hash": "f42d5da5da4d4f7930ab93b0b21f46b1"
+  },
+  "Icons/sfondi.py": {
+    "mtime": 1774095269.972648,
+    "ast_hash": "9d22eeb25d029d1c6c8bdc228cee9fa9",
+    "semantic_hash": "9d22eeb25d029d1c6c8bdc228cee9fa9"
+  },
+  "Icons/symbols.py": {
+    "mtime": 1774095269.972648,
+    "ast_hash": "b0c90225a53c3377e8a39accfa5ae4d4",
+    "semantic_hash": "b0c90225a53c3377e8a39accfa5ae4d4"
+  },
+  "Manager/ntpManager.py": {
+    "mtime": 1775472014.5700586,
+    "ast_hash": "c7da1ce11920516510aa744f4295117a",
+    "semantic_hash": "c7da1ce11920516510aa744f4295117a"
+  },
+  "Manager/sdCardManager.py": {
+    "mtime": 1775468173.810261,
+    "ast_hash": "1fa830d13dfc0862d9e883392a1c4ab2",
+    "semantic_hash": "1fa830d13dfc0862d9e883392a1c4ab2"
+  },
+  "Manager/viewer.py": {
+    "mtime": 1775685216.1555882,
+    "ast_hash": "ef98b221ba865c29de73cb8cf7a8dcc8",
+    "semantic_hash": "ef98b221ba865c29de73cb8cf7a8dcc8"
+  },
+  "Manager/wifiConnection.py": {
+    "mtime": 1781958808.4806566,
+    "ast_hash": "073d53aa96849475a87aa0116204666b",
+    "semantic_hash": "073d53aa96849475a87aa0116204666b"
+  },
+  "Menu/menuBuilder.py": {
+    "mtime": 1775474152.92088,
+    "ast_hash": "3d81048487213b41d6dc0288581bc03f",
+    "semantic_hash": "3d81048487213b41d6dc0288581bc03f"
+  },
+  "Menu/pymenu.py": {
+    "mtime": 1775509241.5390165,
+    "ast_hash": "af99128c8a366f559e83241a46fb9cd1",
+    "semantic_hash": "af99128c8a366f559e83241a46fb9cd1"
+  },
+  "Modules/ds18b20.py": {
+    "mtime": 1775683789.4773445,
+    "ast_hash": "1da37aa15f5f1a71b2b56c69340128b5",
+    "semantic_hash": "1da37aa15f5f1a71b2b56c69340128b5"
+  },
+  "Modules/ds3231.py": {
+    "mtime": 1775471760.059888,
+    "ast_hash": "9386e76df728c7e25c56f8d394ede368",
+    "semantic_hash": "9386e76df728c7e25c56f8d394ede368"
+  },
+  "Modules/keyboard.py": {
+    "mtime": 1775471760.059888,
+    "ast_hash": "62f0a8a3de441fd96f4a1e6af444b693",
+    "semantic_hash": "62f0a8a3de441fd96f4a1e6af444b693"
+  },
+  "Modules/ph_sensor.py": {
+    "mtime": 1775651561.2060509,
+    "ast_hash": "e22b228e79e45c469a98af240ce9be6f",
+    "semantic_hash": "e22b228e79e45c469a98af240ce9be6f"
+  },
+  "Modules/relays.py": {
+    "mtime": 1775681825.9370518,
+    "ast_hash": "05b8b80b2f22be6912516c6f3b9c9c3e",
+    "semantic_hash": "05b8b80b2f22be6912516c6f3b9c9c3e"
+  },
+  "Modules/sdcard.py": {
+    "mtime": 1775471760.061908,
+    "ast_hash": "98f4dcd9c1cf9eb84a0400c0354a0fb2",
+    "semantic_hash": "98f4dcd9c1cf9eb84a0400c0354a0fb2"
+  },
+  "Modules/ssd1306.py": {
+    "mtime": 1775474743.9825752,
+    "ast_hash": "a3d2b9efef45db05d9838052240bcc8a",
+    "semantic_hash": "a3d2b9efef45db05d9838052240bcc8a"
+  },
+  "Modules/tds_sensor.py": {
+    "mtime": 1775599467.0524304,
+    "ast_hash": "13919b279309e578e2f895acd65fccb0",
+    "semantic_hash": "13919b279309e578e2f895acd65fccb0"
+  },
+  "Resource/Config.py": {
+    "mtime": 1782247019.2033322,
+    "ast_hash": "0dcdf3fe426876c87c904bf99a0d4945",
+    "semantic_hash": "0dcdf3fe426876c87c904bf99a0d4945"
+  },
+  "Resource/board_pins.py": {
+    "mtime": 1775651561.2060509,
+    "ast_hash": "36f13eab5115b63f064f87bc1afb030a",
+    "semantic_hash": "36f13eab5115b63f064f87bc1afb030a"
+  },
+  "boot.py": {
+    "mtime": 1775376222.7669983,
+    "ast_hash": "8d5fc8a69c2c217a3c2929320174ee73",
+    "semantic_hash": "8d5fc8a69c2c217a3c2929320174ee73"
+  },
+  "esp32-sim/simulator.py": {
+    "mtime": 1781960111.2406747,
+    "ast_hash": "24f873c942d56d0ca1b6f87110a15af7",
+    "semantic_hash": "24f873c942d56d0ca1b6f87110a15af7"
+  },
+  "firmware-dryrun/entrypoint.py": {
+    "mtime": 1782163086.6780534,
+    "ast_hash": "d08869402e6c90331f22d184ba86f74f",
+    "semantic_hash": "d08869402e6c90331f22d184ba86f74f"
+  },
+  "firmware-dryrun/stubs_override/Modules/__init__.py": {
+    "mtime": 1782246228.9305408,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "firmware-dryrun/stubs_override/Modules/sdcard.py": {
+    "mtime": 1782244675.6378913,
+    "ast_hash": "e17a8fcd047aecb3c918d7b0c9867530",
+    "semantic_hash": "e17a8fcd047aecb3c918d7b0c9867530"
+  },
+  "main.py": {
+    "mtime": 1782248025.5095408,
+    "ast_hash": "4be437b79f6652825686c93343e71061",
+    "semantic_hash": "4be437b79f6652825686c93343e71061"
+  },
+  "tests/test_suite.py": {
+    "mtime": 1780156273.970611,
+    "ast_hash": "ae484aaae26980a50603be11e704d9b1",
+    "semantic_hash": "ae484aaae26980a50603be11e704d9b1"
+  },
+  "webApp/DB/localhost.sql": {
+    "mtime": 1781357477.8666732,
+    "ast_hash": "2f3201393afb46000a43e69660e96107",
+    "semantic_hash": "2f3201393afb46000a43e69660e96107"
+  },
+  "webApp/code/cert.php": {
+    "mtime": 1781251215.5922766,
+    "ast_hash": "1671eb2c0b2a44556873b51993250f93",
+    "semantic_hash": "1671eb2c0b2a44556873b51993250f93"
+  },
+  "webApp/code/diary.php": {
+    "mtime": 1781251215.6662745,
+    "ast_hash": "4173d8c8b097ac0b6e0631e04bce4870",
+    "semantic_hash": "4173d8c8b097ac0b6e0631e04bce4870"
+  },
+  "webApp/code/gulpfile.js": {
+    "mtime": 1780154980.4467237,
+    "ast_hash": "1985600a7193d8475f1307e4a96afcf6",
+    "semantic_hash": "1985600a7193d8475f1307e4a96afcf6"
+  },
+  "webApp/code/index.php": {
+    "mtime": 1782664988.0746393,
+    "ast_hash": "c398442f5a9d8c9d6baab4d90fddbb2e",
+    "semantic_hash": ""
+  },
+  "webApp/code/js/dayHistoryValuesTableManaging.js": {
+    "mtime": 1781723776.7219336,
+    "ast_hash": "616660d412bdbb042bc98ad006b9a677",
+    "semantic_hash": "616660d412bdbb042bc98ad006b9a677"
+  },
+  "webApp/code/js/ecTableSetting.js": {
+    "mtime": 1781722372.4648006,
+    "ast_hash": "420f56987f6e5c2144a36da3e834d8c3",
+    "semantic_hash": "420f56987f6e5c2144a36da3e834d8c3"
+  },
+  "webApp/code/js/ec_chart.js": {
+    "mtime": 1781252701.8326907,
+    "ast_hash": "eceefe621bdf7b114efddbd7c422895d",
+    "semantic_hash": "eceefe621bdf7b114efddbd7c422895d"
+  },
+  "webApp/code/js/ec_ph_temperature_join_chart.js": {
+    "mtime": 1781252701.8807385,
+    "ast_hash": "17fc0e8f0391031388fc115d79639a9e",
+    "semantic_hash": "17fc0e8f0391031388fc115d79639a9e"
+  },
+  "webApp/code/js/echarts_gauge.js": {
+    "mtime": 1781377197.4366527,
+    "ast_hash": "aecf2c53cd62e88153bc14e73c7115c9",
+    "semantic_hash": "aecf2c53cd62e88153bc14e73c7115c9"
+  },
+  "webApp/code/js/fertilizationTable.js": {
+    "mtime": 1781725969.525348,
+    "ast_hash": "58a7739ddb2a8bc38276fb3fcf3852ea",
+    "semantic_hash": "58a7739ddb2a8bc38276fb3fcf3852ea"
+  },
+  "webApp/code/js/getFertilizationVolumes.js": {
+    "mtime": 1781474553.2040706,
+    "ast_hash": "819dacddcf4667a2ce3229e30004b1f8",
+    "semantic_hash": "819dacddcf4667a2ce3229e30004b1f8"
+  },
+  "webApp/code/js/google_gauge.js": {
+    "mtime": 1781360587.8187692,
+    "ast_hash": "c2b1be85d7117df45d9c91666a8f05db",
+    "semantic_hash": "c2b1be85d7117df45d9c91666a8f05db"
+  },
+  "webApp/code/js/highcharts_gauge.js": {
+    "mtime": 1781447935.030629,
+    "ast_hash": "35d11c968954914c6f937da072b750e3",
+    "semantic_hash": "35d11c968954914c6f937da072b750e3"
+  },
+  "webApp/code/js/loginManaging.js": {
+    "mtime": 1782664987.7026665,
+    "ast_hash": "e05f2e3acede5b6092f50c00d228fd8c",
+    "semantic_hash": ""
+  },
+  "webApp/code/js/phTableSetting.js": {
+    "mtime": 1781722633.7897482,
+    "ast_hash": "397c02b4c2268e06b61ad5d6b726b343",
+    "semantic_hash": "397c02b4c2268e06b61ad5d6b726b343"
+  },
+  "webApp/code/js/ph_chart.js": {
+    "mtime": 1781252701.9280915,
+    "ast_hash": "472dc9689d0a8e388888163e9599e382",
+    "semantic_hash": "472dc9689d0a8e388888163e9599e382"
+  },
+  "webApp/code/js/settingsValuesAdding.js": {
+    "mtime": 1781722375.1257808,
+    "ast_hash": "268da197027cc934518324b4eb7bd4b2",
+    "semantic_hash": "268da197027cc934518324b4eb7bd4b2"
+  },
+  "webApp/code/js/settings_handleVolumesDB.js": {
+    "mtime": 1781722378.096436,
+    "ast_hash": "45abebca88836fd6c4303de81eac2f22",
+    "semantic_hash": "45abebca88836fd6c4303de81eac2f22"
+  },
+  "webApp/code/js/t_chart.js": {
+    "mtime": 1781252701.975835,
+    "ast_hash": "9bc92186f177973404cbccd0dc86d510",
+    "semantic_hash": "9bc92186f177973404cbccd0dc86d510"
+  },
+  "webApp/code/js/tdsTableSetting.js": {
+    "mtime": 1781722629.72681,
+    "ast_hash": "51029de6d8596980e380c03d1f1d63a0",
+    "semantic_hash": "51029de6d8596980e380c03d1f1d63a0"
+  },
+  "webApp/code/js/tempTableSetting.js": {
+    "mtime": 1781722627.0111187,
+    "ast_hash": "bf340b84346127ccc18a8094c551b9e5",
+    "semantic_hash": "bf340b84346127ccc18a8094c551b9e5"
+  },
+  "webApp/code/js/waterValuesTable.js": {
+    "mtime": 1781722622.9837093,
+    "ast_hash": "004d053d62d4c62b657ee023b2c5e21d",
+    "semantic_hash": "004d053d62d4c62b657ee023b2c5e21d"
+  },
+  "webApp/code/php/Chart/ec_data_chart.php": {
+    "mtime": 1781252871.0816362,
+    "ast_hash": "3406867d09c6033a4c2ee552c71363a9",
+    "semantic_hash": "3406867d09c6033a4c2ee552c71363a9"
+  },
+  "webApp/code/php/Chart/ec_ph_temp_data_chart.php": {
+    "mtime": 1781252871.140457,
+    "ast_hash": "96b74a7344663b6b925642dc3a64ece4",
+    "semantic_hash": "96b74a7344663b6b925642dc3a64ece4"
+  },
+  "webApp/code/php/Chart/ph_data_chart.php": {
+    "mtime": 1781252871.1896327,
+    "ast_hash": "793ff06276653f6bb8093b5197cc84b4",
+    "semantic_hash": "793ff06276653f6bb8093b5197cc84b4"
+  },
+  "webApp/code/php/Chart/t_data_chart.php": {
+    "mtime": 1781252871.2386487,
+    "ast_hash": "246741ebff858a1f1dfd9b82986e11c3",
+    "semantic_hash": "246741ebff858a1f1dfd9b82986e11c3"
+  },
+  "webApp/code/php/ECSettingTable/delete_ec_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "130a931259d4d7fe54a95b271cdcf9ff",
+    "semantic_hash": "130a931259d4d7fe54a95b271cdcf9ff"
+  },
+  "webApp/code/php/ECSettingTable/fetch_ec_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "29c9416be02bfa956a206cb457b43a33",
+    "semantic_hash": "29c9416be02bfa956a206cb457b43a33"
+  },
+  "webApp/code/php/ECSettingTable/get_single_ec_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "29f0f69c6ed04b285d77c8b3a2097da5",
+    "semantic_hash": "29f0f69c6ed04b285d77c8b3a2097da5"
+  },
+  "webApp/code/php/ECSettingTable/update_ec_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "f2c22699888ccc43866fc732350f1b84",
+    "semantic_hash": "f2c22699888ccc43866fc732350f1b84"
+  },
+  "webApp/code/php/FertilizationVolumes/getFertilizationVolumes.php": {
+    "mtime": 1781473329.193083,
+    "ast_hash": "197d7c58518d355fd65f3b2f564cfcaf",
+    "semantic_hash": "197d7c58518d355fd65f3b2f564cfcaf"
+  },
+  "webApp/code/php/FertilizationVolumes/getFertilizationVolumes_1.php": {
+    "mtime": 1781293061.338586,
+    "ast_hash": "3def9d07f951b551cfdad6e2eaf9f88f",
+    "semantic_hash": "3def9d07f951b551cfdad6e2eaf9f88f"
+  },
+  "webApp/code/php/Fertilization/add_quantities.php": {
+    "mtime": 1781252871.5762916,
+    "ast_hash": "c18b68de376b52d574ea5a4a7125f59c",
+    "semantic_hash": "c18b68de376b52d574ea5a4a7125f59c"
+  },
+  "webApp/code/php/Fertilization/delete_quantities.php": {
+    "mtime": 1781252871.6242914,
+    "ast_hash": "7b03898083ab91e9f33ff9ddd0ed70f8",
+    "semantic_hash": "7b03898083ab91e9f33ff9ddd0ed70f8"
+  },
+  "webApp/code/php/Fertilization/fetch_quantities.php": {
+    "mtime": 1781252871.677674,
+    "ast_hash": "c2072d69bc5a1599975bb5f7d1e36bb2",
+    "semantic_hash": "c2072d69bc5a1599975bb5f7d1e36bb2"
+  },
+  "webApp/code/php/Fertilization/get_single_quantity.php": {
+    "mtime": 1781252871.7256782,
+    "ast_hash": "ae719eada70b6acaab8b164604bf195c",
+    "semantic_hash": "ae719eada70b6acaab8b164604bf195c"
+  },
+  "webApp/code/php/Fertilization/update_quantities.php": {
+    "mtime": 1781252871.7692664,
+    "ast_hash": "e3019cfbb712cba1ccad19fb3c0b6590",
+    "semantic_hash": "e3019cfbb712cba1ccad19fb3c0b6590"
+  },
+  "webApp/code/php/Gauges/get_gauge_value.php": {
+    "mtime": 1781292838.192719,
+    "ast_hash": "6ab7bb6b1d55fb5f8567be5ee23ee754",
+    "semantic_hash": "6ab7bb6b1d55fb5f8567be5ee23ee754"
+  },
+  "webApp/code/php/HistoryValuesIndexPage/add_ec.php": {
+    "mtime": 1781252871.2908127,
+    "ast_hash": "9e126c0ab44fbb6670f919e355395372",
+    "semantic_hash": "9e126c0ab44fbb6670f919e355395372"
+  },
+  "webApp/code/php/HistoryValuesIndexPage/add_ph.php": {
+    "mtime": 1781252871.339015,
+    "ast_hash": "35fe89b7cb1b81b1d97fad924d4035a3",
+    "semantic_hash": "35fe89b7cb1b81b1d97fad924d4035a3"
+  },
+  "webApp/code/php/HistoryValuesIndexPage/add_temperature.php": {
+    "mtime": 1781252871.3858101,
+    "ast_hash": "02f92b58ae9892888976f6f7f7c6a46c",
+    "semantic_hash": "02f92b58ae9892888976f6f7f7c6a46c"
+  },
+  "webApp/code/php/HistoryValuesIndexPage/fetch_data_ec.php": {
+    "mtime": 1781885702.085825,
+    "ast_hash": "ffa74d3081a92cfee36cabab69615d94",
+    "semantic_hash": "ffa74d3081a92cfee36cabab69615d94"
+  },
+  "webApp/code/php/HistoryValuesIndexPage/fetch_data_ph.php": {
+    "mtime": 1781885716.8984485,
+    "ast_hash": "a1d48fd74fc92f0e2dd7f06a1d05f111",
+    "semantic_hash": "a1d48fd74fc92f0e2dd7f06a1d05f111"
+  },
+  "webApp/code/php/HistoryValuesIndexPage/fetch_data_temperature.php": {
+    "mtime": 1781885687.4583955,
+    "ast_hash": "841290e227fdfb279adf153a081a5a20",
+    "semantic_hash": "841290e227fdfb279adf153a081a5a20"
+  },
+  "webApp/code/php/Login/forgot_password_db.php": {
+    "mtime": 1781342287.9243298,
+    "ast_hash": "8c13907ea374ec0ddbda61ff4df9565b",
+    "semantic_hash": "8c13907ea374ec0ddbda61ff4df9565b"
+  },
+  "webApp/code/php/Login/login_db.php": {
+    "mtime": 1781217633.4889405,
+    "ast_hash": "1b08e8e830f217c0c1471e78c553472e",
+    "semantic_hash": "1b08e8e830f217c0c1471e78c553472e"
+  },
+  "webApp/code/php/Login/logout_db.php": {
+    "mtime": 1781342079.4429326,
+    "ast_hash": "cf841aa9479ab13ea36037f4b6efc817",
+    "semantic_hash": "cf841aa9479ab13ea36037f4b6efc817"
+  },
+  "webApp/code/php/Login/reset_password_db.php": {
+    "mtime": 1781217633.6731415,
+    "ast_hash": "316916e28b54f8537e84bbe3143ed33b",
+    "semantic_hash": "316916e28b54f8537e84bbe3143ed33b"
+  },
+  "webApp/code/php/Login/sign_up_db.php": {
+    "mtime": 1781993400.4787805,
+    "ast_hash": "c4c3e8b43b063a28931d3a53ff0f6a79",
+    "semantic_hash": "c4c3e8b43b063a28931d3a53ff0f6a79"
+  },
+  "webApp/code/php/PHSettingTable/delete_ph_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "070debd48a4781bbd1e6adae72ecd70a",
+    "semantic_hash": "070debd48a4781bbd1e6adae72ecd70a"
+  },
+  "webApp/code/php/PHSettingTable/fetch_ph_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "b869fc9bf61687bb86d44361871f8c99",
+    "semantic_hash": "b869fc9bf61687bb86d44361871f8c99"
+  },
+  "webApp/code/php/PHSettingTable/get_single_ph_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "31232280c47b91f24e7f59a2f00eb45f",
+    "semantic_hash": "31232280c47b91f24e7f59a2f00eb45f"
+  },
+  "webApp/code/php/PHSettingTable/update_ph_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "597169edf604b780624f1f25cc6cfe96",
+    "semantic_hash": "597169edf604b780624f1f25cc6cfe96"
+  },
+  "webApp/code/php/TDSSettingTable/delete_tds_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "d4abfdee3fb2407cd4a4689f9d8c694e",
+    "semantic_hash": "d4abfdee3fb2407cd4a4689f9d8c694e"
+  },
+  "webApp/code/php/TDSSettingTable/fetch_tds_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "ebc791af2155df04d88119f33c870c10",
+    "semantic_hash": "ebc791af2155df04d88119f33c870c10"
+  },
+  "webApp/code/php/TDSSettingTable/get_single_tds_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "30c27bd1d550851c0460c502d823e30a",
+    "semantic_hash": "30c27bd1d550851c0460c502d823e30a"
+  },
+  "webApp/code/php/TDSSettingTable/update_tds_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "1d08ad440587e57b5107c24eda18fb1f",
+    "semantic_hash": "1d08ad440587e57b5107c24eda18fb1f"
+  },
+  "webApp/code/php/TEMPSettingTable/delete_temp_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "ae5ea1384ec6960b970ada54f2933ed0",
+    "semantic_hash": "ae5ea1384ec6960b970ada54f2933ed0"
+  },
+  "webApp/code/php/TEMPSettingTable/fetch_temp_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "d0df19b76cb8f99305cb2f630d9e26ea",
+    "semantic_hash": "d0df19b76cb8f99305cb2f630d9e26ea"
+  },
+  "webApp/code/php/TEMPSettingTable/get_single_temp_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "b2b67187637bb5c09ab7dccc6459f8e9",
+    "semantic_hash": "b2b67187637bb5c09ab7dccc6459f8e9"
+  },
+  "webApp/code/php/TEMPSettingTable/update_temp_settings.php": {
+    "mtime": 1781210598.0,
+    "ast_hash": "95d5eb465fb3235c33f8c90be8fbd473",
+    "semantic_hash": "95d5eb465fb3235c33f8c90be8fbd473"
+  },
+  "webApp/code/php/Volumes/add_volumes.php": {
+    "mtime": 1781719725.3524516,
+    "ast_hash": "c6f5a4e6ce5899cf41e3013434f4ba59",
+    "semantic_hash": "c6f5a4e6ce5899cf41e3013434f4ba59"
+  },
+  "webApp/code/php/Volumes/fetchSettingFertilizationVolumes.php": {
+    "mtime": 1781719725.6857343,
+    "ast_hash": "74d35cfbd24a51e026404f98b15807d8",
+    "semantic_hash": "74d35cfbd24a51e026404f98b15807d8"
+  },
+  "webApp/code/php/connection.php": {
+    "mtime": 1781251215.4776533,
+    "ast_hash": "a12b5a97e4621803b69d0d7ae9dc622e",
+    "semantic_hash": "a12b5a97e4621803b69d0d7ae9dc622e"
+  },
+  "webApp/code/php/queryAndFunction.php": {
+    "mtime": 1781885649.036324,
+    "ast_hash": "19f5ca8e56d39c203c6d92815e0e08e2",
+    "semantic_hash": "19f5ca8e56d39c203c6d92815e0e08e2"
+  },
+  "webApp/code/php/waterValuesDirectory/add_user.php": {
+    "mtime": 1781719725.4179873,
+    "ast_hash": "356d3f4a66c60cda4541ecca00fb1a46",
+    "semantic_hash": "356d3f4a66c60cda4541ecca00fb1a46"
+  },
+  "webApp/code/php/waterValuesDirectory/delete_user.php": {
+    "mtime": 1781719725.5346458,
+    "ast_hash": "3765155787351ac0e6ff7b0b3e58cba4",
+    "semantic_hash": "3765155787351ac0e6ff7b0b3e58cba4"
+  },
+  "webApp/code/php/waterValuesDirectory/fetch_data.php": {
+    "mtime": 1781719725.5871968,
+    "ast_hash": "e04d9e0438464ab2259414e9ee074280",
+    "semantic_hash": "e04d9e0438464ab2259414e9ee074280"
+  },
+  "webApp/code/php/waterValuesDirectory/get_single_data.php": {
+    "mtime": 1781719725.63571,
+    "ast_hash": "797a71be23c4957f0892ad34d45e65e7",
+    "semantic_hash": "797a71be23c4957f0892ad34d45e65e7"
+  },
+  "webApp/code/php/waterValuesDirectory/update_user.php": {
+    "mtime": 1781719725.485721,
+    "ast_hash": "21101dae7f4850928578c081725850aa",
+    "semantic_hash": "21101dae7f4850928578c081725850aa"
+  },
+  "webApp/code/settings.php": {
+    "mtime": 1781119730.701334,
+    "ast_hash": "9c6ee874716843cbda9afd34b7034e5d",
+    "semantic_hash": "9c6ee874716843cbda9afd34b7034e5d"
+  },
+  "webApp/code/takeEc.php": {
+    "mtime": 1781954054.1156628,
+    "ast_hash": "e842b619d13788e857aa42a0e90acbe1",
+    "semantic_hash": "e842b619d13788e857aa42a0e90acbe1"
+  },
+  "webApp/code/takePH.php": {
+    "mtime": 1781954077.9815013,
+    "ast_hash": "301b274317f68bf67b8cdcfc22afb723",
+    "semantic_hash": "301b274317f68bf67b8cdcfc22afb723"
+  },
+  "webApp/code/takeTemp.php": {
+    "mtime": 1781954029.0167708,
+    "ast_hash": "1792942e8de9a441b4c19e7f4b040159",
+    "semantic_hash": "1792942e8de9a441b4c19e7f4b040159"
+  },
+  "webApp/code/index1.php": {
+    "mtime": 1781854367.028481,
+    "ast_hash": "8d7df3ed56c0d4d283fef3644eb11e5d",
+    "semantic_hash": ""
+  }
+}
