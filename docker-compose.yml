@@ -1,6 +1,11 @@
 version: '3.8'
 
+# ─── Variabili condivise ──────────────────────────────────────────────────────
+x-iot-token: &iot-token "esp32-secret-token-changeme"
+# ↑ Cambia questo valore! Usalo anche nel PHP lato webapp.
+
 services:
+  # ── Database MySQL ───────────────────────────────────────────────────────────
   db:
     image: mysql:8.0
     container_name: fishtank_db
@@ -13,7 +18,13 @@ services:
     volumes:
       - ./webApp/DB/localhost.sql:/docker-entrypoint-initdb.d/init.sql
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # ── Web App PHP ──────────────────────────────────────────────────────────────
   web:
     build: .
     container_name: fishtank_web
@@ -25,10 +36,51 @@ services:
       DB_USER: root
       DB_PASS: ""
       DB_NAME: my_myfishtank
+      IOT_TOKEN: *iot-token        # letto dal PHP per validare le richieste ESP32
     volumes:
       - ./webApp/code:/var/www/html
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
+  # ── Simulatore ESP32 MicroPython ─────────────────────────────────────────────
+  esp32-sim:
+    build:
+      context: ./esp32-sim         # cartella con Dockerfile + simulator.py
+    container_name: fishtank_esp32_sim
+    restart: on-failure
+    environment:
+      WEBAPP_HOST:      web         # nome del service Docker (risolto internamente)
+      WEBAPP_PORT:      80          # porta interna del container web
+      WEBAPP_PROTOCOL:  http        # http dentro Docker, https verso il mondo esterno
+      IOT_TOKEN:        *iot-token  # stesso token della webapp
+      SEND_INTERVAL_SEC: 120        # secondi tra un ciclo di lettura e il successivo
+      STARTUP_WAIT_SEC:  20         # attende che la webapp sia pronta prima di iniziare
+      MAX_RETRIES:       3
+    depends_on:
+      web:
+        condition: service_started
+    # Nessuna porta esposta: comunica solo internamente via Docker network
+  firmware-dryrun:
+    build:
+      context: ./firmware-dryrun     # contiene Dockerfile, stubs/, stubs_override/, entrypoint.py
+    container_name: fishtank_firmware_dryrun
+    volumes:
+      # ── Stub hardware (montati come volume per modifiche senza rebuild) ───────
+      - ./firmware-dryrun/stubs:/firmware/stubs:ro
+      - ./firmware-dryrun/stubs_override/Modules/sdcard.py:/firmware/Modules/sdcard.py:ro
+      # ── Firmware reale ────────────────────────────────────────────────────────
+      - ./Helper:/firmware/Helper:ro
+      - ./Icons:/firmware/Icons:ro
+      - ./Manager:/firmware/Manager:ro
+      - ./Menu:/firmware/Menu:ro
+      - ./Modules:/firmware/Modules:ro
+      - ./Resource:/firmware/Resource:ro
+      - ./main.py:/firmware/main.py:ro
+      - ./boot.py:/firmware/boot.py:ro
+      - ./firmware-dryrun/secret_dryrun.py:/firmware/secret.py:ro
+    stdin_open: true
+    tty: true
 
 volumes:
   db_data:

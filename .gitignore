@@ -11,7 +11,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
-stubs/
+
 downloads/
 eggs/
 .eggs/
@@ -232,5 +232,5 @@ CLAUDE.md
 .gemini/
 
 
-
+graphify-out/cache/
 
