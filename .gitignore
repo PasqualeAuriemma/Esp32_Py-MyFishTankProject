@@ -216,4 +216,21 @@ __marimo__/
 .secrets.py
 secrets.py
 
+.secret.py
+secret.py
+
+gemini.md
+
 .vscode/
+vscode/
+
+.graphifyignore
+
+CLAUDE.md
+.claude/
+
+.gemini/
+
+
+
+
