@@ -1,25 +1,8 @@
-# manager/wifiConnection.py
-#
-# Modifiche rispetto alla versione precedente:
-#
-#   1. NON importa urequests a livello di modulo.
-#      urequests viene importato in modo lazy dentro _post_https_request(),
-#      solo nel momento in cui serve davvero, e poi rimosso dalla heap.
-#      Questo risparmia ~15-20 KB che prima venivano allocati subito.
-#
-#   2. Accetta un oggetto network.WLAN già costruito da main.py.
-#      In questo modo il driver WiFi viene inizializzato PRIMA di qualsiasi
-#      altro import pesante, quando la heap è ancora libera e contigua.
-#      Se non viene passato, lo crea internamente (compatibilità).
-#
-#   3. Il blocco connect() ora gestisce correttamente il caso in cui
-#      il driver sia rimasto in stato corrotto da un crash precedente
-#      (active=True ma non connesso): lo spegne, aspetta, lo riaccende.
-
 import network  # type: ignore[import-untyped]
 import time
 import json
 import gc
+from secret import IOT_TOKEN  # type: ignore[import]
 
 from Helper.Singleton import Singleton
 
@@ -35,6 +18,10 @@ class WifiConnection(Singleton):
         "_singleton_initialized",
         "_queue",
         "_queue_lock",
+        "_token",
+        "_wdt",
+        "_debug_mode",
+        "_has_connection_attempt",
     )
 
     # Mappa stati WiFi → stringa leggibile: allocata UNA VOLTA al caricamento del modulo.
@@ -47,17 +34,13 @@ class WifiConnection(Singleton):
         network.STAT_GOT_IP: "CONNESSO",
     }
 
-    def __init__(self, wlan_driver, ssid, password, host=None):
-        """Initializes the WifiConnection (only on first instantiation).
-
-        Args:
-            ssid (str): The SSID of the WiFi network.
-            password (str): The password for the WiFi network.
-        """
+    def __init__(self, wlan_driver, ssid, password, token, host=None, wdt=None, debug_mode=False):
+        """Initializes the WifiConnection (only on first instantiation)."""
         if getattr(self, "_singleton_initialized", True):
             return
         self._ssid = ssid
         self._password = password
+        self._token = token
         self._host = host
         # Initialize the interface, but don't activate it immediately
         self._wlan = wlan_driver
@@ -65,6 +48,10 @@ class WifiConnection(Singleton):
         import _thread
         self._queue_lock = _thread.allocate_lock()
         self._singleton_initialized = True
+        self._wdt = wdt
+        self._debug_mode = debug_mode  # Configurazione del logger (Punto 4)
+        self._has_connection_attempt = False
+        
 
     @property
     def host(self):
@@ -83,8 +70,20 @@ class WifiConnection(Singleton):
         return self._wlan.isconnected()
 
     def log_message(self, message, end="\n"):
-        """Funzione di logging."""
-        print(message, end=end)
+        """
+        Funzione di logging disaccoppiata.
+        Se _debug_mode è False, non alloca stringhe sulla heap né impegna la CPU con la seriale.
+        """
+        if self._debug_mode:
+            print(message, end=end)
+
+    def _feed_wdt(self):
+        """Nutre il watchdog se configurato. No-op altrimenti."""
+        if self._wdt is not None:
+            try:
+                self._wdt.feed()
+            except Exception:
+                pass
 
     def connect(self):
         """
@@ -92,19 +91,17 @@ class WifiConnection(Singleton):
         Handles internal errors by resetting the interface.
         """
         try:
-            # Ensure the interface is active. If not, activate it.
             if not self._wlan.active():
                 self.log_message("Activating WiFi interface...")
                 self._wlan.active(True)
 
-            # If already connected, no need to do anything else.
             if self.is_connected():
+                self._has_connection_attempt = True
                 return True
 
             self.log_message("Connecting to network '{}'...".format(self._ssid))
             self._wlan.connect(self._ssid, self._password)
 
-            # Wait for connection with a timeout
             max_wait = 15
             while max_wait > 0:
                 if self._wlan.isconnected():
@@ -113,12 +110,12 @@ class WifiConnection(Singleton):
                 max_wait -= 1
                 time.sleep(1)
 
-            # Check final connection status
             if self.is_connected():
                 self.log_message("\nWiFi connected successfully!")
                 self.log_message(
                     "Network configuration: {}".format(self._wlan.ifconfig())
                 )
+                self._has_connection_attempt = True
                 return True
             else:
                 self.log_message(
@@ -126,27 +123,27 @@ class WifiConnection(Singleton):
                 )
                 self.log_message("Deactivating WiFi interface to reset state.")
                 self._wlan.active(False)
+                self._has_connection_attempt = True
                 return False
 
         except OSError as e:
             self.log_message(
                 "Caught an OSError: {}. Deactivating WiFi to reset state.".format(e)
             )
-            # On internal state error, force deactivation to allow for recovery
             self._wlan.active(False)
+            self._has_connection_attempt = True
             return False
 
     def disconnect(self):
         """Disconnects from the WiFi network and deactivates the interface."""
         try:
-            # If the interface is already inactive, there's nothing to do.
             if not self._wlan.active():
                 self.log_message(
                     "WiFi interface already inactive; nothing to disconnect."
                 )
+                self._has_connection_attempt = True
                 return True
 
-            # If connected, request a disconnect and wait briefly for it to complete.
             if self.is_connected():
                 self.log_message("Disconnecting from WiFi network...")
                 self._wlan.disconnect()
@@ -156,16 +153,16 @@ class WifiConnection(Singleton):
                     time.sleep(1)
                     max_wait -= 1
 
-            # At this point we are either disconnected or were never connected;
-            # deactivate the interface to fully reset the state.
             self.log_message("Deactivating WiFi interface to reset state.")
             self._wlan.active(False)
             self.log_message("WiFi disconnected successfully!")
+            self._has_connection_attempt = True
             return True
         except OSError as e:
             self.log_message(
                 "Caught an OSError: {}. Failed to disconnect from WiFi.".format(e)
             )
+            self._has_connection_attempt = True
             return False
 
     def connection_status(self):
@@ -179,8 +176,13 @@ class WifiConnection(Singleton):
     def send_value_to_web(self, value, key, timestamp):
         """
         Accoda un valore per l'invio asincrono in background.
-        Ritorna sempre True indicando che il dato è stato accodato.
+        Restituisce False se il WiFi non ha mai stabilito una connessione valida,
+        così il ciclo principale può gestire il fallimento senza considerarlo come successo.
         """
+        if not self._has_connection_attempt:
+            self.log_message("[wifi] Connessione WiFi non ancora verificata. Invio non eseguito.")
+            return False
+
         self.log_message("[wifi] Accodato dato per l'invio: {} = {}".format(key, value))
         self._queue_lock.acquire()
         self._queue.append((value, key, timestamp))
@@ -252,11 +254,11 @@ class WifiConnection(Singleton):
         gc.collect()
 
         headers = {
+            "X-IoT-Token": self._token,
             "Content-Type": "application/json",
-            "Connection": "close",  # IMPORTANTE: evita keep-alive]
+            "Connection": "close",
         }
 
-        # Serializza i dati una sola volta per ridurre le allocazioni.
         try:
             json_payload = json.dumps(data)
         except Exception as e:
@@ -266,22 +268,31 @@ class WifiConnection(Singleton):
             gc.collect()
             return None
         finally:
-            # Libera il dizionario il prima possibile.
             try:
                 del data
             except NameError:
                 pass
 
-        # Import LAZY di urequests
-        # urequests occupa ~15-20 KB. Lo importiamo solo adesso che
-        # ne abbiamo bisogno, e lo cancelliamo subito dopo.
         try:
-            import urequests  # type: ignore[import-untyped]
+            import urequests
         except ImportError as e:
             self.log_message("[wifi] urequests non disponibile: {}".format(e))
             del json_payload
             gc.collect()
             return None
+
+        # ── Timeout esplicito sul socket ──────────────────────────────────────
+        # Copre la fase di DNS lookup/connessione TCP, la causa più comune di
+        # blocco prolungato in rete instabile. NON copre un eventuale hang
+        # post-handshake TLS (limite noto di urequests+ssl) — per quello
+        # serve il WDT (vedi sotto e commento in testa al file).
+        try:
+            import socket
+            socket.setdefaulttimeout(15)
+        except Exception:
+            pass
+
+        self._feed_wdt()  # checkpoint: stiamo per iniziare, siamo vivi
 
         response_text = None
         try:
@@ -294,8 +305,10 @@ class WifiConnection(Singleton):
                         )
                     )
                     gc.collect()
+                    self._feed_wdt()  # checkpoint pre-richiesta
                     # In MicroPython è preferibile passare esplicitamente i parametri.
                     response = urequests.post(url, data=json_payload, headers=headers)
+                    self._feed_wdt()  # checkpoint: la richiesta è tornata (non si è bloccata)
 
                     status = response.status_code
                     if 200 <= status < 300:
@@ -320,7 +333,13 @@ class WifiConnection(Singleton):
                     )
                     if attempt < max_retries:
                         # Backoff esponenziale semplice.
-                        time.sleep(retry_delay * (2 ** (attempt - 1)))
+                        # Nutriamo il WDT a metà attesa: l'attesa è voluta,
+                        # non un hang, quindi il WDT non deve scattare qui.
+                        wait_time = retry_delay * (2 ** (attempt - 1))
+                        half = wait_time / 2
+                        time.sleep(half)
+                        self._feed_wdt()
+                        time.sleep(wait_time - half)
                         continue
                     else:
                         self.log_message("[wifi] Tutti i tentativi sono falliti.")

@@ -129,7 +129,7 @@ class Config(Singleton):
         self._singleton_initialized = True
         self._saved_state = None
         self._ph_offset = 0.0
-        self._ph_slope = 0.0
+        self._ph_slope = -0.18
         gc.collect()
 
 

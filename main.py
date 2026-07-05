@@ -13,7 +13,7 @@ from Modules.ds3231         import DS3231_RTC
 from Modules.relays         import Relays
 from Manager.sdCardManager  import SDCardManager
 from Manager.wifiConnection import WifiConnection
-from secrets import WIFI_SSID, WIFI_PASSWORD # type: ignore[import]
+from secret import WIFI_SSID, WIFI_PASSWORD, IOT_TOKEN # type: ignore[import]
 from Modules.ds18b20 import DS18B20
 gc.collect()
 from Modules.tds_sensor import TDSSensor
@@ -117,7 +117,7 @@ def wifi_sending_loop(wifi, cfg, rtc, sensor_values, lock):
 
 
 def main():
-    wifi = WifiConnection(WLAN_INSTANCE, WIFI_SSID, WIFI_PASSWORD, SERVER_HOST)
+    wifi = WifiConnection(WLAN_INSTANCE, WIFI_SSID, WIFI_PASSWORD, IOT_TOKEN, SERVER_HOST)
     gc.collect()
 
     # Watchdog: resetta l'ESP32 se il loop non risponde entro 30 secondi.

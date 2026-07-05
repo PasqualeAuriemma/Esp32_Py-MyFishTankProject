@@ -534,7 +534,7 @@ class TestWifiConnection(unittest.TestCase):
         _reset_singleton(WifiConnection)
         self.WC = WifiConnection
         self.wlan = _FakeWLAN()
-        self.wifi = WifiConnection(self.wlan, "TestSSID", "TestPass", "host.test")
+        self.wifi = WifiConnection(self.wlan, "TestSSID", "TestPass", "IOT_TOKEN", "host.test")
 
     def tearDown(self):
         _reset_singleton(self.WC)
@@ -578,7 +578,7 @@ class TestWifiConnection(unittest.TestCase):
 
     def test_send_value_sync_no_host_returns_false(self):
         _reset_singleton(self.WC)
-        wifi2 = self.WC(_FakeWLAN(), "ssid", "pw", host=None)
+        wifi2 = self.WC(_FakeWLAN(), "ssid", "pw", "IOT_TOKEN", host=None)
         result = wifi2._send_value_to_web_sync("25.0", "Temp", "12345")
         self.assertFalse(result)
 
@@ -596,7 +596,7 @@ class TestWifiConnection(unittest.TestCase):
         self.assertFalse(self.wifi.has_queued_items())
 
     def test_singleton_returns_same_instance(self):
-        wifi2 = self.WC(self.wlan, "OtherSSID", "OtherPass")
+        wifi2 = self.WC(self.wlan, "OtherSSID", "OtherPass", "IOT_TOKEN")
         self.assertIs(self.wifi, wifi2)
 
 
